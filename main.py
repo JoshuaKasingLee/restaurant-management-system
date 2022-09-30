@@ -1,10 +1,10 @@
 #from venv import create
 from website import create_app
 import atexit
-
 import psycopg2
+from website import Restaurant
 
-#initialise restaurant class here (constructing it. it should be global)
+restaurant = Restaurant("plateup")
 
 app = create_app()
 
