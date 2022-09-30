@@ -1,0 +1,8 @@
+Week 1
+Group was formed. Our team discussed and decided which project we wanted to complete for the course. I am part of the backend team with Cyrus and Kelly. Kelly and I wrote the customer user stories together.
+Cyrus, Kelly and I started thinking about what frameworks/languages we wanted to use for the backend (database layer and business layer).  
+Week 2
+Cyrus, Kelly and I brainstormed ideas about how our SQL schema should look like as well as the UML diagram all individually and collaborated our ideas in a meeting to finalise it. We also helped each other set up PostgresSQL, psycopg and Flask
+in preparation for the sprint starting in week 3.
+
+Week 3
