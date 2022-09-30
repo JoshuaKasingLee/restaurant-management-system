@@ -4,6 +4,3 @@ class Staff:
     def __init__(self, password, restaurant):
         self.password = password # probably needs encryption
         self.restaurant = restaurant
-
-    def get_restaurant(self):
-        return self.restaurant
