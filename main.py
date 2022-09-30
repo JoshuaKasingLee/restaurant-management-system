@@ -1,18 +1,15 @@
 #from venv import create
 from website import create_app
 import atexit
-import psycopg2
-from website import Restaurant
+from website.init_db import conn
+from website.backend.restaurant import Restaurant
 
 restaurant = Restaurant("plateup")
 
 app = create_app()
 
-conn = psycopg2.connect(
-    host="localhost",
-    database="flask_db",
-    user="postgres"
-    )
+    
+restaurant.populate
 
 def closedb():
     conn.close()

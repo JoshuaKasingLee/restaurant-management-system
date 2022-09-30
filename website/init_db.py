@@ -3,23 +3,30 @@ import psycopg2
 
 #https://www.digitalocean.com/community/tutorials/how-to-use-a-postgresql-database-in-a-flask-application
 
-def query_db(query):
-    conn = psycopg2.connect(
-        host="localhost",
-        database="flask_db",
-        user="postgres"
-        )
+# def query_db(query):
+#     conn = psycopg2.connect(
+#         host="localhost",
+#         database="flask_db",
+#         user="postgres"
+#         )
     
-    cur = conn.cursor()
+#     cur = conn.cursor()
 
-    cur.execute(query)
+#     cur.execute(query)
 
-    conn.commit()
+#     conn.commit()
 
-    result = cur.fetchall()
+#     result = cur.fetchall()
 
-    cur.close()
-    conn.close()
+#     cur.close()
+#     conn.close()
 
-    return result
+#     return result
+    
+    
+conn = psycopg2.connect(
+    host="localhost",
+    database="flask_db",
+    user="postgres"
+    )
 

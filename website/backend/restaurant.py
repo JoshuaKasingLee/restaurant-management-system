@@ -1,10 +1,10 @@
-from manager import Manager
-from wait_staff import WaitStaff
-from kitchen_staff import KitchenStaff
-from table import Table
-from menu_item import MenuItem
-from main import conn
-from tag import Tag
+from .manager import Manager
+from .wait_staff import WaitStaff
+from .kitchen_staff import KitchenStaff
+from .table import Table
+from .menu_item import MenuItem
+from ..init_db import conn
+from .tag import Tag
 class Restaurant:
     def __init__(self, name):
         self.name = name
