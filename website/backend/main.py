@@ -1,8 +1,8 @@
 #from venv import create
-from website import create_app
+from __init__ import create_app
 import atexit
-from website.init_db import conn
-from website.backend.restaurant import Restaurant
+from init_db import conn
+from restaurant import Restaurant
 
 restaurant = Restaurant("plateup")
 

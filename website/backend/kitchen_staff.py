@@ -1,4 +1,4 @@
-from .staff import Staff
+from staff import Staff
 # from helper import StaffRole
 
 class KitchenStaff(Staff):

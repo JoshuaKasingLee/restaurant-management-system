@@ -1,8 +1,8 @@
 from flask import Flask
-from website.manager_routes import manager_routes
-from website.waiter_routes import waiter_routes
-from website.customer_routes import customer_routes
-from website.kitchen_routes import kitchen_routes
+from manager_routes import manager_routes
+from waiter_routes import waiter_routes
+from customer_routes import customer_routes
+from kitchen_routes import kitchen_routes
 
 def create_app():
     app = Flask(__name__)
