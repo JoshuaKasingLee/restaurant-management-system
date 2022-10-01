@@ -55,10 +55,10 @@ class Restaurant:
             
             self.menu.append(MenuItem(name, cost, category, visible, display_order, description, ingredients, menu_tags, image))
             
-        
-        
-        
-        
-        
+    def menu_contains(self, name):
+        for item in self.menu:
+            if item.name == name:
+                return True
+        return False
 
         

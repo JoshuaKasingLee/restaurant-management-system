@@ -9,13 +9,13 @@ DROP TABLE IF EXISTS tag;
 
 CREATE TABLE tag (
   id serial NOT null,
-  name varchar(100) NOT null,
+  name varchar(100) unique NOT null,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE category (
   id serial NOT null,
-  name varchar(100) NOT null,
+  name varchar(100) unique NOT null,
   display_order int NOT null,
   visible bool NOT null,
   PRIMARY KEY (id)
@@ -46,7 +46,7 @@ CREATE TABLE menu_item (
   name varchar(100) unique NOT null,
   description varchar(200) NOT null,
   ingredients varchar(150) NOT null,
-  cost float check (cost > 0),
+  cost float NOT null check (cost > 0),
   display_order int NOT null,
   category int NOT null,
   image varchar(200),
