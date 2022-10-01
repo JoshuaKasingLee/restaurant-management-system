@@ -1,5 +1,8 @@
 Week 1
+This week was group formation and brainstorming ideas. I helped to facilitate conversation by creating some meeting minutes. During the tutorial, we as a team systematically crossed out project ideas that we didn't think were achievable and/or project ideas that we didn't enjoy (of which each of us read through before coming to the lab). During our Sunday meeting, I helped to drive the conversation around what is needed for the proposal by highlighting the marking criteria. During week 1, we also formed our Jira board in order to track our user stories, structure our sprints, and generate epics etc.
 
 Week 2
+During week 2, Kelly, Josh and I spent some time to discuss the languages and frameworks we were comfortable with for both our business layer and database layer. Here we established that we'd stick with python in an object-oriented design style with PostgresSQL as our database. We also spent time during week 2 constructing our UML diagram to give a better understanding of how we would structure our implementation in the backend. We started to do some coding in week 2.
 
 Week 3
+During week 3, I spent the majority of my time writing my section of the report whilst populating the Jira board with our defined user stories & acceptance criteria. Our database implementation has been set and we've all begun doing some coding to get our allocated sections completed. At the beginning of week 3, we delegated user stories amongst ourselves with an aim to finish it slightly before the due date in order to go through an offline demo of our product.

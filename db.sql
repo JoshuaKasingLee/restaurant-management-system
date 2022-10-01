@@ -45,7 +45,7 @@ CREATE TABLE menu_item (
   id serial NOT null,
   name varchar(100) unique NOT null,
   description varchar(200) NOT null,
-  ingredients varchar(150) NOT null,
+  ingredients varchar(250) NOT null,
   cost float NOT null check (cost > 0),
   display_order int NOT null,
   category int NOT null,
