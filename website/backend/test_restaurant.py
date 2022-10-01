@@ -27,4 +27,16 @@ def test_menu_contains():
     assert(r1.menu_contains("Cheeseburger") == False)
     assert(r2.menu_contains("Sashimi") == False)
 
+def test_category_exists():
+    r1 = Restaurant("Kelly's Kitchen")
+    r2 = Restaurant("Josh's Jams")
+    assert(r1.category_exists("Desserts") == False)
+    assert(r2.category_exists("Desserts") == False)
+
+    c = Category("Desserts")
+    r1.categories.append(c)
+    assert(r1.category_exists("Desserts") == True)
+    assert(r1.category_exists("Indian") == False)
+    assert(r2.category_exists("Desserts") == False)
+
 pytest.main()
