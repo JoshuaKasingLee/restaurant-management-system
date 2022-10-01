@@ -73,7 +73,7 @@ CREATE TABLE menu_item_tags (
 
 CREATE TABLE orders (
   id serial NOT null,
-  time_ordered timestamp NOT null,
+  time_ordered timestamp NOT null default CURRENT_TIMESTAMP,
   menu_item int NOT null,
   table_num int NOT null,
   status varchar(10) NOT null check (status in ('ordered', 'cooking', 'prepared', 'completed')),

@@ -79,3 +79,19 @@ INSERT INTO tag(name) values ('vegetarian');
 INSERT INTO tag(name) values ('vegan');
 INSERT INTO tag(name) values ('pescatarian');
 INSERT INTO tag(name) values ('gluten free');
+
+INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
+
+INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = 'Banana Sushi'), (SELECT id from tag WHERE name = 'vegetarian'));
+INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = 'Banana Sushi'), (SELECT id from tag WHERE name = 'vegan'));
+INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = 'Banana Sushi'), (SELECT id from tag WHERE name = 'pescatarian'));
+INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = 'Green Tea Icecream'), (SELECT id from tag WHERE name = 'gluten free'));
+INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = 'Ahi'), (SELECT id from tag WHERE name = 'pescatarian'));
+INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = 'Ebi'), (SELECT id from tag WHERE name = 'pescatarian'));
+
+INSERT INTO orders(menu_item, table_num, status) values ((SELECT id from menu_item WHERE name = 'Ahi'), (SELECT id from tables WHERE num = 2), 'ordered');
+INSERT INTO orders(menu_item, table_num, status) values ((SELECT id from menu_item WHERE name = 'Ebi'), (SELECT id from tables WHERE num = 2), 'cooking');
+INSERT INTO orders(menu_item, table_num, status) values ((SELECT id from menu_item WHERE name = 'Tai'), (SELECT id from tables WHERE num = 2), 'ordered');
+INSERT INTO orders(menu_item, table_num, status) values ((SELECT id from menu_item WHERE name = 'Udon'), (SELECT id from tables WHERE num = 2), 'completed');
+INSERT INTO orders(menu_item, table_num, status) values ((SELECT id from menu_item WHERE name = 'Banana Sushi'), (SELECT id from tables WHERE num = 3), 'completed');
+INSERT INTO orders(menu_item, table_num, status) values ((SELECT id from menu_item WHERE name = 'Banana Sushi'), (SELECT id from tables WHERE num = 3), 'ordered');
