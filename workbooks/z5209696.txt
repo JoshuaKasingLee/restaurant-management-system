@@ -1,8 +1,19 @@
 Week 1
 Group was formed. Our team discussed and decided which project we wanted to complete for the course. I am part of the backend team with Cyrus and Kelly. Kelly and I wrote the customer user stories together.
-Cyrus, Kelly and I started thinking about what frameworks/languages we wanted to use for the backend (database layer and business layer).  
+Cyrus, Kelly and I started thinking about what frameworks/languages we wanted to use for the backend (database layer and business layer).
+I also looked into existing wait management systems and began writing about them in the proposal.
+
 Week 2
 Cyrus, Kelly and I brainstormed ideas about how our SQL schema should look like as well as the UML diagram all individually and collaborated our ideas in a meeting to finalise it. We also helped each other set up PostgresSQL, psycopg and Flask
-in preparation for the sprint starting in week 3.
+in preparation for the sprint starting in week 3. 
+The team split up user stories for Sprint 1, and I will be completing Functionalities 4 and 6 for the backend. 
 
 Week 3
+Sprint 1 began. 
+
+Cyrus, Kelly and I completed the script to create all the tables in the database as well as draft some initial data to insert into the database.
+I began thinking about how the database would be interact with the objects so as as team, we decided it was best to create classes in python reflective of the database
+and initialise them in the restaurant class.
+I fixed a bug relating to default values in the constructors.
+I implemented the populate function in restaurant which would be run to initialise all the objects in the restaurant class reading from the database.
+For the proposal, I cleaned up my references and wrote about the business, interface and database layers.
