@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import BasicSelect from "../../components/TableDropdown";
+import BasicSelect from "../../components/customer/TableDropdown";
 import { Box, Button, Stack } from '@mui/material';
 
 function Table () {
