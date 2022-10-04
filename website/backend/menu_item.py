@@ -11,3 +11,16 @@ class MenuItem:
         self.img = img
         self.visible = visible
         self.display_order = display_order
+    
+    def get_menu_item(self):
+        return {
+            "name": self.name,
+            "description": self.desc,
+            "ingredients": self.ingredients,
+            "cost": self.cost,
+            "category": self.category,
+            "tags": self.tags,
+            "img": self.img,
+            "visible": self.visible,
+            "display_order": self.display_order
+        }

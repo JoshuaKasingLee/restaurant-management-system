@@ -1,5 +1,4 @@
 from order import Order
-import requests
 from init_db import conn
 
 class Table:
@@ -31,3 +30,5 @@ class Table:
     def set_budget(self, budget = None):
         self.budget = budget
         # check whether we need to validate here > 0
+
+    
