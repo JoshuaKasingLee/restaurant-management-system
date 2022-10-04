@@ -28,17 +28,17 @@ class Restaurant:
         new_m = Manager(m_pw, self)
         self.manager = new_m
         
-        cur.execute("select password from staff where role = 'wait'")
-        result = cur.fetchall()
-        w_pw = result[0][0]
-        new_w = WaitStaff(w_pw, self)
-        self.wait = new_w
+        # cur.execute("select password from staff where role = 'wait'")
+        # result = cur.fetchall()
+        # w_pw = result[0][0]
+        # new_w = WaitStaff(w_pw, self)
+        # self.wait = new_w
         
-        cur.execute("select password from staff where role = 'kitchen'")
-        result = cur.fetchall()
-        k_pw = result[0][0]
-        new_k = KitchenStaff(k_pw, self)
-        self.kitchen = new_k
+        # cur.execute("select password from staff where role = 'kitchen'")
+        # result = cur.fetchall()
+        # k_pw = result[0][0]
+        # new_k = KitchenStaff(k_pw, self)
+        # self.kitchen = new_k
         
         cur.execute("select num, budget from tables")
         result = cur.fetchall()
@@ -58,10 +58,12 @@ class Restaurant:
             cur.execute(tag_query, [id])
             tag_list = cur.fetchall()
             menu_tags = []
-            for name in tag_list:
-                menu_tags.append(Tag(name))
+            for tag_name in tag_list:
+                for tag in tag_name:
+                    menu_tags.append(Tag(tag).get_tag())
             
-            self.menu.append(MenuItem(name, cost, category, visible, display_order, description, ingredients, menu_tags, image))
+            self.menu.append(MenuItem(name, description, ingredients, cost, category, menu_tags, image, visible, display_order))
+            
             
     # menu editor helper function
     def menu_contains(self, name):
@@ -76,4 +78,11 @@ class Restaurant:
                 return True
         return False
 
-        
+    def get_menu(self, name):
+        # for category in self.categories:
+        #     print(category.name)
+        for menu_item in self.menu:
+            print(menu_item.get_menu_item())
+
+
+        return self.menu
