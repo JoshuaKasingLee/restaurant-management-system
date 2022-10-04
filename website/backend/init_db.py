@@ -29,4 +29,3 @@ conn = psycopg2.connect(
     database="flask_db",
     user="postgres"
     )
-

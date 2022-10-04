@@ -1,4 +1,6 @@
 from order import Order
+import requests
+from init_db import conn
 
 class Table:
     def __init__(self, number, budget = None, orders=None, needs_assistance = False, occupied = False):
