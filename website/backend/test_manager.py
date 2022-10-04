@@ -97,10 +97,10 @@ def test_remove_menu_items():
     jap = Category("Japanese")
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", jap)
     m.add_menu_item("Udon", "Very yummy", "Noodles, miso, beef", "10.99", jap)
-    assert(len(r.menu) == 2)
+    assert(len(r.menu_items) == 2)
 
     m.remove_menu_item("Udon")
-    assert(len(r.menu) == 1)
+    assert(len(r.menu_items) == 1)
     assert(r.menu_contains("Sashimi") == True)
     assert(r.menu_contains("Udon") == False)
 

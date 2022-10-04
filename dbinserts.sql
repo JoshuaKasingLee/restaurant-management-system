@@ -13,10 +13,10 @@ INSERT INTO staff(id, role, password) values (1, 'wait', 'waiterA0five'), (2, 'k
 INSERT INTO leaderboard_entry(id, email, score, time_played) values (1, 'monkey@gmail.com', 20),
 (2, 'koala@gmail.com', 50), (3, 'tiger@gmail.com', 100);
 
-INSERT INTO category(name, display_order, visible) values ('Sashimi', 1, TRUE);
-INSERT INTO category(name, display_order, visible) values ('Noodle', 2, TRUE);
-INSERT INTO category(name, display_order, visible) values ('Rice bowl', 3, TRUE);
-INSERT INTO category(name, display_order, visible) values ('Dessert', 4, TRUE);
+INSERT INTO category(name, visible, display_order) values ('Sashimi', TRUE, 1);
+INSERT INTO category(name, visible, display_order) values ('Noodle', TRUE, 2);
+INSERT INTO category(name, visible, display_order) values ('Rice bowl', TRUE, 3);
+INSERT INTO category(name, visible, display_order) values ('Dessert', TRUE, 4);
 
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Ahi', 'Tuna (raw)', 'Tuna', 5, 1, (SELECT id from category WHERE name = 'Sashimi'), null, TRUE);
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Aji', 'Spanish Mackerel (raw)', 'Mackerel', 6, 2, (SELECT id from category WHERE name = 'Sashimi'), null, TRUE);

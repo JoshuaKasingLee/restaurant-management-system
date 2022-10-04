@@ -9,7 +9,7 @@ def test_make_restaurant():
     r = Restaurant("Kelly's Kitchen")
     assert(r.name == "Kelly's Kitchen")
     assert(r.tables == [])
-    assert(r.menu == [])
+    assert(r.menu_items == [])
     assert(r.leaderboard == [])
     assert(r.manager == None)
     assert(r.wait == None)
@@ -23,7 +23,7 @@ def test_menu_contains():
     assert(r2.menu_contains("Sashimi") == False)
 
     m = MenuItem("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", Category("Japanese"))
-    r1.menu.append(m)
+    r1.menu_items.append(m)
     assert(r1.menu_contains("Sashimi") == True)
     assert(r1.menu_contains("Cheeseburger") == False)
     assert(r2.menu_contains("Sashimi") == False)

@@ -34,15 +34,15 @@ class Manager(Staff):
             raise Exception(f"Menu item with name {name} already exists")
         else:
             m = MenuItem(name, desc, ingredients, cost, category, tags, img)
-            self.restaurant.menu.append(m)
+            self.restaurant.menu_items.append(m)
             return m
 
     def remove_menu_item(self, name):
         if not self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} does not exist")
-        for item in self.restaurant.menu:
+        for item in self.restaurant.menu_items:
             if item.name == name:
-                self.restaurant.menu.remove(item)
+                self.restaurant.menu_items.remove(item)
                 return True
         # check if exception needs to be thrown if no item was found
         return False

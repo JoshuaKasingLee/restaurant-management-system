@@ -11,3 +11,20 @@ class MenuItem:
         self.img = img
         self.visible = visible
         self.display_order = display_order
+    
+    def to_JSON(self):
+        tags = []
+        for tag in self.tags:
+            tags.append(tag.to_JSON())
+
+        return {
+            "name": self.name,
+            "description": self.desc,
+            "ingredients": self.ingredients,
+            "cost": self.cost,
+            "category": self.category,
+            "tags": tags,
+            "img": self.img,
+            "visible": self.visible,
+            "display_order": self.display_order
+        }

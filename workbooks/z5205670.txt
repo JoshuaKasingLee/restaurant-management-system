@@ -9,3 +9,8 @@ James, I determined the details of the game we were going to design. I added
 the game elements to the flow diagram and finished the customer interface story 
 boards.
 
+Week 3
+I finished up the customer flow diagram and storyboards for the proposal. 
+I wrote out all the customer routes and endpoints so that the frontend and
+backend can be connected easily. I set up the frontend in github and started 
+coding the landing page, table selection page and menu page. 

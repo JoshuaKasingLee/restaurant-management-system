@@ -10,6 +10,6 @@ def create_app():
     app.register_blueprint(manager_routes, url_prefix='/manager')
     app.register_blueprint(waiter_routes, url_prefix='/waiter')
     app.register_blueprint(customer_routes, url_prefix='/customer')
-    app.register_blueprint(kitchen_routes, url_prefix='/kitchen');
+    app.register_blueprint(kitchen_routes, url_prefix='/kitchen')
 
     return app

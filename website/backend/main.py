@@ -4,6 +4,7 @@ import atexit
 from init_db import conn
 from restaurant import Restaurant
 
+
 restaurant = Restaurant("plateup")
 
 app = create_app()
@@ -16,6 +17,6 @@ def closedb():
     
 atexit.register(closedb)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
+
