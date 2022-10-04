@@ -2,6 +2,7 @@ from operator import truediv
 from staff import Staff
 from menu_item import MenuItem
 from category import Category
+from table import Table
 # from helper import StaffRole
 
 class Manager(Staff):
@@ -46,4 +47,36 @@ class Manager(Staff):
         # check if exception needs to be thrown if no item was found
         return False
 
+
+    def change_wait_pw(self, new_pw):
+        self.restaurant.wait.password = new_pw
+        
+    def change_kitchen_pw(self, new_pw):
+        self.restaurant.kitchen.password = new_pw
+        
+    def change_manager_pw(self, new_pw):
+        self.password = new_pw
+        
+        
+    def choose_table_amt(self, number):
+        if (number < 0):
+            raise Exception("Number of tables cannot be negative")
+            
+        table_num = 1
+            
+        while (len(self.restaurant.tables) < number):
+
+            while (self.restaurant.tab_num_exist(table_num)):
+                table_num += 1
+            #insert into the db.
+            self.restaurant.tables.append(Table(table_num))
+                
+            
+        if (len(self.restaurant.tables) - number > self.restaurant.count_unoccupied()):
+            raise Exception("Not enough tables able to be removed")
+            
+        while (len(self.restaurant.tables) > number):
+            self.restaurant.remove_unoccupied()
+        
+        
     

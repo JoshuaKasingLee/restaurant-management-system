@@ -86,3 +86,32 @@ class Restaurant:
 
 
         return self.menu
+        
+        
+    def tab_num_exist(self, number):
+        for table in self.tables:
+            if (table.number == number):
+                return True
+        return False
+        
+        
+    def count_unoccupied(self):
+        counter = 0
+        for table in self.tables:
+            if (not table.occupied):
+                counter += 1
+        return counter
+        
+    def remove_unoccupied(self):
+        for table in self.tables:
+            if (not table.occupied):
+                #have to remove from db first as well
+                self.tables.remove(table)
+                return
+                
+                
+    def choose_table(self, number):
+        #have to edit the db as well
+        for table in self.tables:
+            if (table.number == number):
+                table.occupied = True

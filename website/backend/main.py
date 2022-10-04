@@ -9,7 +9,7 @@ restaurant = Restaurant("plateup")
 app = create_app()
 
     
-restaurant.populate
+restaurant.populate()
 
 def closedb():
     conn.close()
