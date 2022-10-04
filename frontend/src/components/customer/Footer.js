@@ -13,9 +13,11 @@ function Footer({initialValue}) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  
+  // TODO: Fix assistance thing
   return (
-    <BottomNavigation sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} value={value} onChange={handleChange}>
+    <BottomNavigation sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}  elevation={3} value={value} onChange={handleChange}>
+      
       <BottomNavigationAction
         label="Assistance"
         value="assistance"
