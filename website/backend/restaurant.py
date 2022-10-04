@@ -12,7 +12,7 @@ class Restaurant:
         self.name = name
         self.tables = []
         self.categories = []
-        self.menu = []
+        self.menu_items = []
         self.leaderboard = []
         self.manager = None
         self.wait = None
@@ -45,24 +45,37 @@ class Restaurant:
         for tab in result:
             self.tables.append(Table(tab[0], tab[1]))
 
-        cur.execute("select name, display_order, visible from category")
+        cur.execute("select name, visible, display_order from category")
         result = cur.fetchall()
         for cat in result:
-            self.categories.append(Category(cat[0], cat[2], cat[1]))
+            self.categories.append(Category(cat[0], cat[1], cat[2]))
             
         cur.execute("select mi.id, mi.name, mi.cost, mi.category, mi.visible, mi.display_order, mi.description, mi.ingredients, mi.image from menu_item mi")
         result = cur.fetchall()
         for item in result:
-            id, name, cost, category, visible, display_order, description, ingredients, image = item; 
+            id, name, cost, category_id, visible, display_order, description, ingredients, image = item; 
+
+            # get the tags assigned to the menu_item
             tag_query = """select t.name from tag t join menu_item_tags mit on mit.tag = t.id where mit.menu_item = %s"""
             cur.execute(tag_query, [id])
             tag_list = cur.fetchall()
             menu_tags = []
             for tag_name in tag_list:
                 for tag in tag_name:
-                    menu_tags.append(Tag(tag).get_tag())
+                    menu_tags.append(Tag(tag))
             
-            self.menu.append(MenuItem(name, description, ingredients, cost, category, menu_tags, image, visible, display_order))
+            # get the category where the id is a match (SQL)
+            category_query = """SELECT c.name FROM category c JOIN menu_item m ON m.category = c.id WHERE m.id = %s"""
+            cur.execute(category_query, [id])
+            category_name = cur.fetchone()[0]
+            
+            # get the name where the name is a match (python)
+            for category in self.categories:
+                if category_name == category.name:
+                    menu_item_category = category
+                break
+            
+            self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
             
             
     # menu editor helper function
@@ -77,12 +90,25 @@ class Restaurant:
             if cat.name == name:
                 return True
         return False
-
-    def get_menu(self, name):
-        # for category in self.categories:
-        #     print(category.name)
-        for menu_item in self.menu:
-            print(menu_item.get_menu_item())
-
-
-        return self.menu
+    
+    # converts a category to JSON
+    def category_to_JSON(self, name, category_name):
+        for category in self.categories:
+            if category.name == category_name:
+                item_list = []
+                for menu_item in self.menu_items:
+                    if menu_item.category == category:
+                        item_list.append(menu_item.to_JSON())
+                return {
+                    "name": category.name,
+                    "visible": category.visible,
+                    "display_order": category.display_order,
+                    "menu_items": item_list
+                }
+        
+       
+    def menu_to_JSON(self, name):
+        categories = []
+        for category in self.categories:
+            categories.append(self.category_to_JSON(self, category.name))
+        return categories
