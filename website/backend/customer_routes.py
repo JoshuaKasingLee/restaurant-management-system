@@ -9,3 +9,7 @@ def home():
 @customer_routes.route('/menu', methods=['GET'])
 def customer_menu():
     return "<h1>Test</h1>"
+
+@customer_routes.route('/table', methods=['GET'])
+def select_table():
+    return {"numTables": 10}
