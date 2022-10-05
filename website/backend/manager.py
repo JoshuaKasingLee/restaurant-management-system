@@ -3,6 +3,7 @@ from staff import Staff
 from menu_item import MenuItem
 from category import Category
 from table import Table
+from init_db import conn
 # from helper import StaffRole
 
 class Manager(Staff):
@@ -49,12 +50,21 @@ class Manager(Staff):
 
 
     def change_wait_pw(self, new_pw):
+        cur = conn.cursor()
+        cur.execute("""update staff set password = %s where role = 'wait'""", [new_pw])
+        conn.commit()
         self.restaurant.wait.password = new_pw
         
     def change_kitchen_pw(self, new_pw):
+        cur = conn.cursor()
+        cur.execute("""update staff set password = %s where role = 'kitchen'""", [new_pw])
+        conn.commit()
         self.restaurant.kitchen.password = new_pw
         
     def change_manager_pw(self, new_pw):
+        cur = conn.cursor()
+        cur.execute("""update staff set password = %s where role = 'manager'""", [new_pw])
+        conn.commit()
         self.password = new_pw
         
         
@@ -63,20 +73,25 @@ class Manager(Staff):
             raise Exception("Number of tables cannot be negative")
             
         table_num = 1
+        cur = conn.cursor()
             
         while (len(self.restaurant.tables) < number):
 
             while (self.restaurant.tab_num_exist(table_num)):
                 table_num += 1
             #insert into the db.
-            self.restaurant.tables.append(Table(table_num))
-                
             
-        if (len(self.restaurant.tables) - number > self.restaurant.count_unoccupied()):
-            raise Exception("Not enough tables able to be removed")
+            print("yay")
+            print(self.restaurant.tables)
+            self.restaurant.tables.append(Table(table_num))
+            cur.execute("""INSERT INTO tables(num, budget, needs_assistance, occupied) values (%s, null, False, False)""", [table_num])
+                
+        
+        # if (len(self.restaurant.tables) - number > self.restaurant.count_unoccupied()):
+        #     raise Exception("Not enough tables able to be removed")
             
         while (len(self.restaurant.tables) > number):
-            self.restaurant.remove_unoccupied()
+            self.restaurant.remove_table()
         
-        
+        conn.commit()
     

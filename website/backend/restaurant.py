@@ -108,22 +108,19 @@ class Restaurant:
         return False
         
         
-    def count_unoccupied(self):
-        counter = 0
-        for table in self.tables:
-            if (not table.occupied):
-                counter += 1
-        return counter
+    # def count_unoccupied(self):
+    #     counter = 0
+    #     for table in self.tables:
+    #         if (not table.occupied):
+    #             counter += 1
+    #     return counter
         
-    def remove_unoccupied(self):
+    def remove_table(self):
         cur = conn.cursor()
-        for table in self.tables:
-            if (not table.occupied):
-                
-                cur.execute("""delete from tables where num = %s""", [table.number])
-                conn.commit()
-                self.tables.remove(table)
-                return
+        table_index = len(self.tables) - 1     
+        cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
+        conn.commit()
+        self.tables.remove(self.tables[table_index])
                 
                 
     def choose_table(self, number):

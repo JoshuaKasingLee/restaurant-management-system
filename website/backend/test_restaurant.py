@@ -51,56 +51,49 @@ def test_tab_num_exist():
     assert(r.tab_num_exist(3))
     assert(not r.tab_num_exist(1))
     
-def test_count_unoccupied():
-    r = Restaurant("Kelly's Kitchen")
-    t = Table(5)
-    t2 = Table(3)
-    r.tables.append(t)
-    r.tables.append(t2)
-    t.occupied = True
-    t2.occupied = True
-    assert(r.count_unoccupied() == 0)
-    t.occupied = False
-    assert(r.count_unoccupied() == 1)
+# def test_count_table():
+#     r = Restaurant("Kelly's Kitchen")
+#     t = Table(5)
+#     t2 = Table(3)
+#     r.tables.append(t)
+#     r.tables.append(t2)
+#     t.occupied = True
+#     t2.occupied = True
+#     assert(r.count_table() == 0)
+#     t.occupied = False
+#     assert(r.count_table() == 1)
     
-def test_remove_unoccupied():
+def test_remove_table():
     r = Restaurant("Kelly's Kitchen")
-    t = Table(500000)
-    t2 = Table(300002)
-    t3 = Table(300001)
+    t = Table(1)
+    t2 = Table(2)
+    t3 = Table(3)
     r.tables.append(t)
     r.tables.append(t2)
     r.tables.append(t3)
     t3.occupied = True
     
     cur = conn.cursor()
-    cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
+    cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
     
-    
-    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001)")
-    assert(len(cur.fetchall()) == 0)
-    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (500000, null, False, False)")
-    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300002, null, False, False)")
-    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300001, null, False, True)")
-    assert(r.count_unoccupied() == 2)
-    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (2, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (3, null, False, True)")
+    cur.execute("select * from tables where num = 1 or num = 2 or num = 3")
+    assert(len(cur.fetchall()) == 3)
+    r.remove_table()
+    cur.execute("select * from tables where num = 1 or num = 2 or num = 3")
     assert(len(cur.fetchall()) == 2)
-    r.remove_unoccupied()
-    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001)")
+    r.remove_table()
+    cur.execute("select * from tables where num = 1 or num = 2 or num = 3")
     assert(len(cur.fetchall()) == 1)
-    assert(r.count_unoccupied() == 1)
-    r.remove_unoccupied()
-    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001) ")
+    r.remove_table()
+    cur.execute("select * from tables where num = 1 or num = 2 or num = 3")
     assert(len(cur.fetchall()) == 0)
-    assert(r.count_unoccupied() == 0)
-    r.remove_unoccupied()
-    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001) ")
-    assert(len(cur.fetchall()) == 0)
-    assert(r.count_unoccupied() == 0)
     
     
     
-    cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
+    cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
     conn.commit()
     
 def test_choose_table():
