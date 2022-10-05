@@ -1,4 +1,5 @@
 from flask import Blueprint
+from json import dumps
 
 customer_routes = Blueprint('customer_routes', __name__)
 

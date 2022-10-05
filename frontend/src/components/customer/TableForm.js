@@ -24,14 +24,16 @@ function TableForm ({ submit }) {
 
   React.useEffect(() => {
     const getNumTables = async () => {
-      const response = await fetch(`http://localhost:5000/customer/table`, {
+      const response = await fetch(`http://localhost:5000/customer/table`, { 
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          //Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
+      console.log('hello');
       const data = await response.json();
+      console.log('hi');
       if (response.ok) {
         setNumTables(data.numTables);
       } else {
@@ -44,7 +46,7 @@ function TableForm ({ submit }) {
   const getTableContent = numTables => {
     let content = [];
     // 4 for testing, should be numTables
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= numTables; i++) {
       content.push(<MenuItem value={i}>{i}</MenuItem>);
     }
     return content;
