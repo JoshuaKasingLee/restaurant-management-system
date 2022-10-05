@@ -11,7 +11,7 @@ function Table () {
     <>
       <Header title={"Table Selection"}/>
       <TableForm submit = {async (table) => {
-        const response = await fetch('http://localhost:5005/customer/table', {
+        const response = await fetch('http://localhost:5000/customer/table', {
           method: 'POST',
           headers: {
           'Content-type': 'application/json',
