@@ -22,7 +22,7 @@ function Header({title}) {
           <Typography variant="h1" component="div" sx={{ flexGrow: 1, ml: `${drawerWidth}px` }}>
             {title}
           </Typography>
-          <ToggleButton
+          {title !== 'Table Selection' && <ToggleButton
           value="check"
           selected={selected}
           onChange={() => {
@@ -30,7 +30,7 @@ function Header({title}) {
           }}
         >
           <RoomServiceRoundedIcon fontSize="large" />
-        </ToggleButton>
+        </ToggleButton>}
         </Toolbar>
       </AppBar>
     </Box>

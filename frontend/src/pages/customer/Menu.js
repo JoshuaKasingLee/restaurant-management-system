@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
+import MenuCategory from '../../components/customer/MenuCategory';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -73,6 +74,7 @@ function Menu() {
         </Tabs>
         <TabPanel value={value} index={0}>
           <Typography variant="h3" >Category 0</Typography>
+          <MenuCategory />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Typography variant="h3" >Category 1</Typography>

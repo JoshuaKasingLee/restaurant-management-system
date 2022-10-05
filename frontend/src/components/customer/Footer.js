@@ -7,6 +7,7 @@ import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import Typography from '@mui/material/Typography';
 
 function Footer({initialValue}) {
   const [value, setValue] = React.useState(initialValue);
@@ -24,8 +25,10 @@ function Footer({initialValue}) {
         value={value} 
         onChange={handleChange}
       >
-        <Box>
+        <Box width="180px">
+          <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Table {localStorage.getItem('table')}
+          </Typography>
         </Box> 
         <BottomNavigationAction
           label="Menu"
