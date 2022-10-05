@@ -3,6 +3,7 @@ from restaurant import Restaurant
 from menu_item import MenuItem
 from category import Category
 from table import Table
+from init_db import conn
 
 # restaurant initialisation
 def test_make_restaurant():
@@ -64,31 +65,69 @@ def test_count_unoccupied():
     
 def test_remove_unoccupied():
     r = Restaurant("Kelly's Kitchen")
-    t = Table(5)
-    t2 = Table(3)
-    t3 = Table(30)
+    t = Table(500000)
+    t2 = Table(300002)
+    t3 = Table(300001)
     r.tables.append(t)
     r.tables.append(t2)
     r.tables.append(t3)
     t3.occupied = True
+    
+    cur = conn.cursor()
+    cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
+    
+    
+    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001)")
+    assert(len(cur.fetchall()) == 0)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (500000, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300002, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300001, null, False, True)")
     assert(r.count_unoccupied() == 2)
+    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001)")
+    assert(len(cur.fetchall()) == 2)
     r.remove_unoccupied()
+    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001)")
+    assert(len(cur.fetchall()) == 1)
     assert(r.count_unoccupied() == 1)
     r.remove_unoccupied()
+    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001) ")
+    assert(len(cur.fetchall()) == 0)
     assert(r.count_unoccupied() == 0)
     r.remove_unoccupied()
+    cur.execute("select * from tables where occupied = False and (num = 500000 or num = 300002 or num = 300001) ")
+    assert(len(cur.fetchall()) == 0)
     assert(r.count_unoccupied() == 0)
     
-def choose_table():
+    
+    
+    cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
+    conn.commit()
+    
+def test_choose_table():
     r = Restaurant("Kelly's Kitchen")
-    t = Table(5)
-    t2 = Table(3)
-    t3 = Table(30)
+    t = Table(500000)
+    t2 = Table(300002)
+    t3 = Table(300001)
     r.tables.append(t)
     r.tables.append(t2)
     r.tables.append(t3)
-    choose_table(5)
+
+    
+    cur = conn.cursor()
+    cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
+    
+    
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (500000, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300002, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300001, null, False, True)")
+    r.choose_table(500000)
+    cur.execute("select occupied from tables where num = 500000")
+    assert(cur.fetchone()[0] == True)
+    
     assert(t.occupied)
+    
+    cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
+    conn.commit()
     
 
 pytest.main()

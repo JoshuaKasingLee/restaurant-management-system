@@ -28,17 +28,17 @@ class Restaurant:
         new_m = Manager(m_pw, self)
         self.manager = new_m
         
-        # cur.execute("select password from staff where role = 'wait'")
-        # result = cur.fetchall()
-        # w_pw = result[0][0]
-        # new_w = WaitStaff(w_pw, self)
-        # self.wait = new_w
+        cur.execute("select password from staff where role = 'wait'")
+        result = cur.fetchall()
+        w_pw = result[0][0]
+        new_w = WaitStaff(w_pw, self)
+        self.wait = new_w
         
-        # cur.execute("select password from staff where role = 'kitchen'")
-        # result = cur.fetchall()
-        # k_pw = result[0][0]
-        # new_k = KitchenStaff(k_pw, self)
-        # self.kitchen = new_k
+        cur.execute("select password from staff where role = 'kitchen'")
+        result = cur.fetchall()
+        k_pw = result[0][0]
+        new_k = KitchenStaff(k_pw, self)
+        self.kitchen = new_k
         
         cur.execute("select num, budget from tables")
         result = cur.fetchall()
@@ -116,17 +116,22 @@ class Restaurant:
         return counter
         
     def remove_unoccupied(self):
+        cur = conn.cursor()
         for table in self.tables:
             if (not table.occupied):
-                #have to remove from db first as well
+                
+                cur.execute("""delete from tables where num = %s""", [table.number])
+                conn.commit()
                 self.tables.remove(table)
                 return
                 
                 
     def choose_table(self, number):
-        #have to edit the db as well
+        cur = conn.cursor()
         for table in self.tables:
             if (table.number == number):
+                cur.execute("""update tables set occupied = True where num = %s""", [number])
+                conn.commit()
                 table.occupied = True
     
     # converts a category to JSON
