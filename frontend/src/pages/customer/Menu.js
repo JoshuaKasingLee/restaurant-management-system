@@ -51,9 +51,9 @@ function Menu() {
 
   return (
     <>
-      <Header title={"Category " + value } />
+      <Header title={"Menu"} />
       <Box
-        sx={{ bgcolor: 'background.paper', display: 'flex' }}
+        sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
       >
         <Tabs
           orientation="vertical"
@@ -72,25 +72,25 @@ function Menu() {
           <Tab label="Category 6" {...a11yProps(6)} />
         </Tabs>
         <TabPanel value={value} index={0}>
-          Item 0
+          <Typography variant="h3" >Category 0</Typography>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item 1
+          <Typography variant="h3" >Category 1</Typography>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item 2
+          <Typography variant="h3" >Category 2</Typography>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          Item 3
+          <Typography variant="h3" >Category 3</Typography>
         </TabPanel>
         <TabPanel value={value} index={4}>
-          Item 4
+          <Typography variant="h3" >Category 4</Typography>
         </TabPanel>
         <TabPanel value={value} index={5}>
-          Item 5
+          <Typography variant="h3" >Category 5</Typography>
         </TabPanel>
         <TabPanel value={value} index={6}>
-          Item 6
+          <Typography variant="h3" >Category 6</Typography>
         </TabPanel>
       </Box>
       <Footer initialValue={"menu"}/>

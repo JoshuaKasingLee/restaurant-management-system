@@ -19,6 +19,7 @@ function TableForm ({ submit }) {
     submit(table);
     // print out table number
     console.log(table);
+    localStorage.setItem('table', table);
   }
 
   React.useEffect(() => {
