@@ -5,3 +5,7 @@ Group formed. Jannet and I were delegated to be in charge of the frontend, and t
 Week 2
 
 Jannet and I discussed with the rest of the team some of the application decisions we had made when creating the flow chart, and made some tweaks accordingly. I finished my storyboards for the staff side of the application and showed the rest of the group to see if they had any comments. Jannet and I, discussed certain chagnes in the design of the frontend, and also ironed out the details of what our game would be.
+
+Week 3
+
+Jannet and I worked together to write up the API endpoints that we would need from the backend, including the json returns. I focused on writing up the endpoints related to the staff. I also cleaned up the user flow diagram so it fits on the page, and made some changes on the user storyboards as per previous discussions. I added all staff related user storyboards to the project proposal and annotated them. I also added in the acceptance criteria for my allocated user stories.
