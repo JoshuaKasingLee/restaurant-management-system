@@ -80,9 +80,6 @@ class Manager(Staff):
             while (self.restaurant.tab_num_exist(table_num)):
                 table_num += 1
             #insert into the db.
-            
-            print("yay")
-            print(self.restaurant.tables)
             self.restaurant.tables.append(Table(table_num))
             cur.execute("""INSERT INTO tables(num, budget, needs_assistance, occupied) values (%s, null, False, False)""", [table_num])
                 
