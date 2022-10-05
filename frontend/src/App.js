@@ -12,6 +12,8 @@ import Table from './pages/customer/Table';
 import Menu from './pages/customer/Menu';
 import Order from './pages/customer/Order';
 import Game from './pages/customer/Game';
+
+import Login from './pages/staff/Login';
 // import Register from './pages/Register';
 // import Login from './pages/Login';
 // import Dashboard from './pages/Dashboard';
@@ -34,6 +36,7 @@ function App () {
           <Route exact path='/customer/menu' element={<Menu />} />
           <Route exact path='/customer/game' element={<Game />} />
           <Route exact path='/customer/order' element={<Order />} />
+          <Route exact path='/staff/login' element={<Login />} />
           {/* <Route exact path='/' element={<Welcome />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />

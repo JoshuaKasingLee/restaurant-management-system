@@ -8,7 +8,7 @@ function Landing () {
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
       <Stack spacing={2}>
         <Button component={Link} to={'/customer/table'} variant="contained">Customer</Button>
-        <Button component={Link} to={'/staff'} variant="contained">Staff</Button>
+        <Button component={Link} to={'/staff/login'} variant="contained">Staff</Button>
       </Stack>
     </Box>
   );

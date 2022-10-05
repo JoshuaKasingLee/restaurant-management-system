@@ -1,0 +1,59 @@
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { Box, Button, Stack, Avatar, Typography } from '@mui/material';
+import LoginForm from '../../components/staff/LoginForm';
+
+
+function Login () {
+  const [role, setRole] = React.useState("");  
+  
+  if (role) {
+    return (
+      <Box
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
+        <Typography component="h1" variant="h5">
+          Enter password for {role}
+        </Typography>
+        <LoginForm submit={async (role, password) => {
+          const response = await fetch('http://localhost:5005/admin/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              role,
+              password,
+            })
+          });
+          const data = await response.json();
+          if (response.ok) {
+            localStorage.setItem('token', data.token);
+            // navigate('/dashboard');
+          } else {
+            alert(await data.error);
+          }
+        }} role={role} />
+      </Box>
+    );
+  } else {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Stack spacing={2}>
+          <Button variant="contained" onClick={(e) => setRole('kitchen')}>Kitchen Staff</Button>
+          <Button variant="contained" onClick={(e) => setRole('wait')}>Wait Staff</Button>
+          <Button variant="contained" onClick={(e) => setRole('manager')}>Manager</Button>
+        </Stack>
+      </Box>
+    );
+  }
+
+}
+
+export default Login;
