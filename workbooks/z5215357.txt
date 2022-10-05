@@ -1,0 +1,24 @@
+Week 1
+In the tute, we formed our group, chose our project and delegated developer roles this week.
+Josh and I wrote the customer user stories.
+I grouped all the user stories into distinct functionalities/objectives.
+We had a team meeting, where we reviewed all of the user stories, and assigned them all story points and priorities.
+We decided sprint dates, and allocated user stories to each sprint.
+I researched into different frameworks and libraries to use for our website backend, and also started brainstorming and
+designing a database schema for key objects in our project (e.g. menu, tables, orders, etc.)
+
+Week 2
+In the tute, we checked our user stories and progress with the tutor, and made changes as suggested.
+The backend team (Josh, Cyrus and I) helped each other set up set up PostgresSQL, psycopg and Flask,
+and set up our backend solution, making sure it was running in preparation for Sprint 1 next week.
+The backend team worked together to design a database schema, and came up with UML diagram to show how our objects would interact.
+We also split up user stories for Sprint 1, where I am in charge of the backend for stories under Functionality 2 & 5.
+I wrote about the problem our project tackles, and novelties it brings in the proposal.
+
+Week 3
+This week we began Sprint 1.
+Josh, Cyrus and I created a script to initialise the database, and started filling it with test data.
+I ran into issues with the database, so Josh helped me to troubleshoot and get it working.
+I created boilerplate constructors for all of our objects.
+I started working on the testing and code for user stories 5.3 & 5.4.
+I wrote about each of the 5 types of users of our system, and created a diagram to demonstrate the user flows in the proposal.

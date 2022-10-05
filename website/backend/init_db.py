@@ -22,4 +22,10 @@ def query_db(query):
     conn.close()
 
     return result
-
+    
+    
+conn = psycopg2.connect(
+    host="localhost",
+    database="flask_db",
+    user="postgres"
+    )
