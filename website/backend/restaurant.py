@@ -7,6 +7,7 @@ from tag import Tag
 from category import Category
 from init_db import conn
 from uuid import uuid4
+import json
 
 class Restaurant:
     def __init__(self, name):
@@ -54,7 +55,7 @@ class Restaurant:
         result = cur.fetchall()
         for cat in result:
             self.categories.append(Category(cat[0], cat[1], cat[2]))
-            
+
         cur.execute("select mi.id, mi.name, mi.cost, mi.category, mi.visible, mi.display_order, mi.description, mi.ingredients, mi.image from menu_item mi")
         result = cur.fetchall()
         for item in result:
@@ -78,7 +79,7 @@ class Restaurant:
             for category in self.categories:
                 if category_name == category.name:
                     menu_item_category = category
-                break
+                    break
             
             self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
             
@@ -94,17 +95,7 @@ class Restaurant:
         for cat in self.categories:
             if cat.name == name:
                 return True
-        return False
-
-    def get_menu(self, name):
-        # for category in self.categories:
-        #     print(category.name)
-        for menu_item in self.menu_items:
-            print(menu_item.get_menu_item())
-
-
-        return self.menu_items
-        
+        return False    
         
     def tab_num_exist(self, number):
         for table in self.tables:
@@ -196,7 +187,9 @@ class Restaurant:
         categories = []
         for category in self.categories:
             categories.append(self.category_to_JSON(self, category.name))
-        return categories
+        return {
+            "categories": categories
+        }
 
 
     def get_restaurant_info(self):
@@ -222,3 +215,10 @@ class Restaurant:
         self.manager.change_wait_pw(wait)
         self.manager.change_manager_pw(manager)
         self.manager.choose_table_amt(tab_num)
+
+    def get_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                orders_list.append(table.order)
+        return orders_list

@@ -28,5 +28,3 @@ def change_restaurant_info():
     restaurant.change_restaurant_info(rest_obj["name"], rest_obj["tables"], rest_obj["image"], pass_obj["kitchen"], pass_obj["wait"], pass_obj["manager"])
     return dumps(restaurant.get_restaurant_info())
     
-
-

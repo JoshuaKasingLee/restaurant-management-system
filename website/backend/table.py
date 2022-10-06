@@ -32,4 +32,3 @@ class Table:
         self.budget = budget
         # check whether we need to validate here > 0
 
-    

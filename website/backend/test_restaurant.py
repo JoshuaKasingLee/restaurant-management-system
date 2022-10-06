@@ -193,4 +193,30 @@ def test_change_restaurant_info():
     assert(password_obj["wait"] == "coolA0aaaaaaa")
     assert(password_obj["manager"] == "greatA0aaaaaaa")
 
+def test_menu():
+    r = Restaurant("japan")
+    
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('Sashimi_test', TRUE, 1)")
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('Dessert_test', TRUE, 4)")
+    
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Ahi_test', 'Tuna (raw)', 'Tuna', 5, 1, (SELECT id from category WHERE name = 'Sashimi_test'), null, TRUE)")
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Aji_test', 'Spanish Mackerel (raw)', 'Mackerel', 6, 2, (SELECT id from category WHERE name = 'Sashimi_test'), null, TRUE)")
+
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Banana Sushi_test', 'banana sushi!!', 'Bananas, Chocolate', 17.5, 51, (SELECT id from category WHERE name = 'Dessert_test'), null, TRUE)")    
+
+    r.populate()
+
+    res = r.menu_to_JSON(r)
+    expected = {'categories': [{'name': 'Sashimi_test', 'visible': True, 'display_order': 1, 'menu_items': ['{"category": {"display_order": 1, "name": "Sashimi_test", "visible": true}, "cost": 5.0, "desc": "Tuna (raw)", "display_order": 1, "img": null, "ingredients": "Tuna", "name": "Ahi_test", "tags": [], "visible": true}', '{"category": {"display_order": 1, "name": "Sashimi_test", "visible": true}, "cost": 6.0, "desc": "Spanish Mackerel (raw)", "display_order": 2, "img": null, "ingredients": "Mackerel", "name": "Aji_test", "tags": [], "visible": true}']}, {'name': 'Dessert_test', 'visible': True, 'display_order': 4, 'menu_items': ['{"category": {"display_order": 4, "name": "Dessert_test", "visible": true}, "cost": 17.5, "desc": "banana sushi!!", "display_order": 51, "img": null, "ingredients": "Bananas, Chocolate", "name": "Banana Sushi_test", "tags": [], "visible": true}']}]}
+    
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+    conn.commit
+    assert(res == expected)
+
 pytest.main()

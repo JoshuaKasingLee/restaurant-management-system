@@ -21,7 +21,7 @@ def choose_table():
     res = {"token": tok}
     return dumps(res)
 
-    
-    
-
-    
+@customer_routes.route('/menu', methods=['GET'])
+def display_menu():
+    res = restaurant.menu_to_JSON(restaurant)
+    return res

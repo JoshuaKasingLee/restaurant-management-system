@@ -4,3 +4,5 @@ from staff import Staff
 class KitchenStaff(Staff):
     def __init__(self, password, restaurant):
         super().__init__(password, restaurant)
+
+    
