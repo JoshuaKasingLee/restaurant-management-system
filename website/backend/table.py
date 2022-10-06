@@ -10,6 +10,7 @@ class Table:
         self.orders = orders
         self.needs_assistance = needs_assistance
         self.occupied = occupied
+        self.token = None
 
     # order menu items
 

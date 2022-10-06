@@ -4,6 +4,10 @@ from menu_item import MenuItem
 from category import Category
 from table import Table
 from init_db import conn
+from manager import Manager
+from wait_staff import WaitStaff
+from kitchen_staff import KitchenStaff
+
 
 # restaurant initialisation
 def test_make_restaurant():
@@ -113,7 +117,8 @@ def test_choose_table():
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (500000, null, False, False)")
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300002, null, False, False)")
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300001, null, False, True)")
-    r.choose_table(500000)
+    tok = r.choose_table(500000)
+    assert(t.token == tok)
     cur.execute("select occupied from tables where num = 500000")
     assert(cur.fetchone()[0] == True)
     
@@ -122,5 +127,29 @@ def test_choose_table():
     cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
     conn.commit()
     
+def test_login_and_validate():
+    r = Restaurant("Kelly's Kitchen")
+    k = KitchenStaff("kellyscool", r)
+    r.kitchen = k
+    m = Manager("tomiscool", r)
+    r.manager = m
+    w = WaitStaff("bobiscool", r)
+    r.wait = w
+    k_tok = r.login('kitchen', 'kellyscool')
+    w_tok = r.login('wait', 'bobiscool')
+    m_tok = r.login('manager', 'tomiscool')
+    assert (r.kitchen_validate(k_tok))
+    assert (r.wait_validate(w_tok))
+    assert (r.manager_validate(m_tok))
+    
+    k_tok2 = r.login('kitchen', 'kellyscool')
+    assert (r.kitchen_validate(k_tok2))
+    assert(k_tok2 != k_tok)
+    
+    t = Table(1)
+    r.tables.append(t)
+    c_tok = r.choose_table(1)
+    assert(r.customer_validate(c_tok))
+
 
 pytest.main()

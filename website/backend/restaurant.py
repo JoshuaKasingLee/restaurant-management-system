@@ -6,6 +6,7 @@ from menu_item import MenuItem
 from tag import Tag
 from category import Category
 from init_db import conn
+from uuid import uuid4
 
 class Restaurant:
     def __init__(self, name):
@@ -17,6 +18,9 @@ class Restaurant:
         self.manager = None
         self.wait = None
         self.kitchen = None
+        self.manager_tokens = []
+        self.wait_tokens = []
+        self.kitchen_tokens = []
         #may need token thingy for customer and everyone not sure
         
     def populate(self):
@@ -130,6 +134,47 @@ class Restaurant:
                 cur.execute("""update tables set occupied = True where num = %s""", [number])
                 conn.commit()
                 table.occupied = True
+                cust_token = uuid4()
+                table.token = cust_token
+                return cust_token
+                
+    def login(self, user, password):
+        if (user == 'manager' and password == self.manager.password):
+            manager_token = uuid4()
+            self.manager_tokens.append(manager_token)
+            return manager_token
+        elif (user == 'wait' and password == self.wait.password):
+            wait_token = uuid4()
+            self.wait_tokens.append(wait_token)
+            return wait_token
+        elif (user == 'kitchen' and password == self.kitchen.password):
+            kitchen_token = uuid4()
+            self.kitchen_tokens.append(kitchen_token)
+            return kitchen_token
+    
+    def kitchen_validate(self, token):
+        for tok in self.kitchen_tokens:
+            if (tok == token):
+                return True 
+        return False
+
+    def wait_validate(self, token):
+        for tok in self.wait_tokens:
+            if (tok == token):
+                return True 
+        return False
+
+    def manager_validate(self, token):
+        for tok in self.manager_tokens:
+            if (tok == token):
+                return True 
+        return False
+
+    def customer_validate(self, token):
+        for table in self.tables:
+            if (table.token == token):
+                return True 
+        return False
     
     # converts a category to JSON
     def category_to_JSON(self, name, category_name):
