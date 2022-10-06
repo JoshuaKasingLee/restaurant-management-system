@@ -80,3 +80,7 @@ CREATE TABLE orders (
   FOREIGN KEY (menu_item) REFERENCES menu_item (id),
   FOREIGN KEY (table_num) REFERENCES tables (id)
 );
+
+
+INSERT INTO staff(id, role, password) values (1, 'wait', 'waiterA0five'), (2, 'kitchen', 'kitchenA0five'),
+(3, 'manager', 'managerA0five');
