@@ -55,17 +55,13 @@ def test_tab_num_exist():
     assert(r.tab_num_exist(3))
     assert(not r.tab_num_exist(1))
     
-# def test_count_table():
-#     r = Restaurant("Kelly's Kitchen")
-#     t = Table(5)
-#     t2 = Table(3)
-#     r.tables.append(t)
-#     r.tables.append(t2)
-#     t.occupied = True
-#     t2.occupied = True
-#     assert(r.count_table() == 0)
-#     t.occupied = False
-#     assert(r.count_table() == 1)
+def test_count_tables():
+    r = Restaurant("Kelly's Kitchen")
+    t = Table(1)
+    t2 = Table(2)
+    r.tables.append(t)
+    r.tables.append(t2)
+    assert(r.count_tables() == 2)
     
 def test_remove_table():
     r = Restaurant("Kelly's Kitchen")
@@ -151,5 +147,50 @@ def test_login_and_validate():
     c_tok = r.choose_table(1)
     assert(r.customer_validate(c_tok))
 
+
+def test_get_restaurant_info():
+    r = Restaurant("cool")
+    k = KitchenStaff("kellyscool", r)
+    r.kitchen = k
+    m = Manager("tomiscool", r)
+    r.manager = m
+    w = WaitStaff("bobiscool", r)
+    r.wait = w
+    t = Table(1)
+    t2 = Table(2)
+    r.tables.append(t)
+    r.tables.append(t2)
+    res_data = r.get_restaurant_info()
+    rest_obj = res_data["restaurant"]
+    password_obj = res_data["passwords"]
+    assert(rest_obj["name"] == "cool")
+    assert(rest_obj["tables"] == 2)
+    assert(rest_obj["image"] == "sunnies.jpg")
+    assert(password_obj["kitchen"] == "kellyscool")
+    assert(password_obj["wait"] == "bobiscool")
+    assert(password_obj["manager"] == "tomiscool")
+    
+def test_change_restaurant_info():
+    r = Restaurant("cool")
+    k = KitchenStaff("kellyscool", r)
+    r.kitchen = k
+    m = Manager("tomiscool", r)
+    r.manager = m
+    w = WaitStaff("bobiscool", r)
+    r.wait = w
+    t = Table(1)
+    t2 = Table(2)
+    r.tables.append(t)
+    r.tables.append(t2)
+    r.change_restaurant_info("nice", 5, "sunnies.jpg", "epicA0aaaaaaa", "coolA0aaaaaaa", "greatA0aaaaaaa")
+    res_data = r.get_restaurant_info()
+    rest_obj = res_data["restaurant"]
+    password_obj = res_data["passwords"]
+    assert(rest_obj["name"] == "nice")
+    assert(rest_obj["tables"] == 5)
+    assert(rest_obj["image"] == "sunnies.jpg")
+    assert(password_obj["kitchen"] == "epicA0aaaaaaa")
+    assert(password_obj["wait"] == "coolA0aaaaaaa")
+    assert(password_obj["manager"] == "greatA0aaaaaaa")
 
 pytest.main()

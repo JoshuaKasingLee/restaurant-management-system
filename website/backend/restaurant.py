@@ -11,6 +11,7 @@ from uuid import uuid4
 class Restaurant:
     def __init__(self, name):
         self.name = name
+        self.pic = "sunnies.jpg"
         self.tables = []
         self.categories = []
         self.menu_items = []
@@ -112,12 +113,11 @@ class Restaurant:
         return False
         
         
-    # def count_unoccupied(self):
-    #     counter = 0
-    #     for table in self.tables:
-    #         if (not table.occupied):
-    #             counter += 1
-    #     return counter
+    def count_tables(self):
+        counter = 0
+        for table in self.tables:
+            counter += 1
+        return counter
         
     def remove_table(self):
         cur = conn.cursor()
@@ -197,3 +197,28 @@ class Restaurant:
         for category in self.categories:
             categories.append(self.category_to_JSON(self, category.name))
         return categories
+
+
+    def get_restaurant_info(self):
+        rest_obj = {
+            "name": self.name,
+            "tables": self.count_tables(),
+            "image": self.pic
+        }
+        password_obj = {
+            "kitchen": self.kitchen.password,
+            "wait": self.wait.password,
+            "manager": self.manager.password
+        }
+        return {
+            "restaurant": rest_obj,
+            "passwords": password_obj
+        }
+        
+    def change_restaurant_info(self, name, tab_num, image, kitchen, wait, manager):
+        self.name = name
+        self.pic = image 
+        self.manager.change_kitchen_pw(kitchen)
+        self.manager.change_wait_pw(wait)
+        self.manager.change_manager_pw(manager)
+        self.manager.choose_table_amt(tab_num)
