@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from 'react-router-dom';
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -20,6 +21,7 @@ export default function Header({title}) {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             color="inherit"
+            component={Link} to={'/'}
           >
             <Logout />
           </IconButton>

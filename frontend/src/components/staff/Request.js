@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
-export default function KitchenOrder({table, name}) {
+export default function Request({table}) {
     const labelId = `checkbox-list-label-${table}`;
 
     return ( <>
@@ -25,7 +25,6 @@ export default function KitchenOrder({table, name}) {
             <ListItemIcon>
             <Typography>{table}</Typography>
             </ListItemIcon>
-            <ListItemText id={labelId} primary={name} />
         </ListItemButton>
         </ListItem>
     </>
