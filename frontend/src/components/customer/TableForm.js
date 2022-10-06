@@ -24,7 +24,7 @@ function TableForm ({ submit }) {
 
   React.useEffect(() => {
     const getNumTables = async () => {
-      const response = await fetch(`http://localhost:5000/customer/table`, { 
+      const response = await fetch(`http://localhost:5000/customer/table`, {  
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
