@@ -24,3 +24,24 @@ def choose_table():
 def display_menu():
     res = restaurant.menu_to_JSON(restaurant)
     return res
+
+@customer_routes.route('/order', methods=['POST'])
+def order_dishes():
+    data = request.get_json()
+    table = data["table"]
+    menu_item = data["menuitemId"]
+    quantity = data ["quantity"]
+    for t in restaurant.tables:
+        if t.number == table:
+            tok = t.order_dishes(menu_item, quantity)
+    res = {"token": tok}
+    return res # need to check this token
+
+@customer_routes.route('/order?<int:Table>', methods=['GET'])
+def view_orders(Table):
+    data = request.get_json()
+    table = data["table"]
+    for t in restaurant.tables:
+        if t.number == Table:
+            orders = t.view_orders()
+    return orders

@@ -15,7 +15,7 @@ def get_restaurant_info():
     
 
 
-@manager_routes.route('/users', methods=['POST'])
+@manager_routes.route('/users', methods=['POST']) # is this meant to be put?
 def change_restaurant_info():
     #forgot to check token
     bearer = request.headers['Authorization']
