@@ -20,9 +20,20 @@ class Table:
     # order menu items
 
     def order_dish(self, menu_item):
+        cur = conn.cursor()
+        try:
+            cur.execute("select id from menu_item where name = %s", [menu_item.name])
+            item_id = cur.fetchone()[0]
+            cur.execute("select id from tables where num = %s", [self.number])
+            table_id = cur.fetchone()[0]
+            cur.execute("""INSERT INTO orders(menu_item, table_num, status) values (%s, %s, %s)""", [item_id, table_id, OrderStatus.ORDERED.value])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Order insert failed")
+
+        conn.commit()
         new_order = Order(menu_item, self.number, datetime.now())
         self.orders.append(new_order)
-        # TODO: Populate into the Database
 
     # request assistance
 
