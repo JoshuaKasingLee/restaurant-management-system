@@ -1,9 +1,9 @@
-from datetime import datetime
 from helper import OrderStatus
+from menu_item import MenuItem
 import json
 
 class Order:
-    def __init__(self, menu_item, table, time_ordered, status = OrderStatus.ORDERED):
+    def __init__(self, menu_item: MenuItem, table, time_ordered, status = OrderStatus.ORDERED):
         self.menu_item = menu_item
         self.table = table
         self.status = status
