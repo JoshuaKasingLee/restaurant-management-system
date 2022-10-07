@@ -52,20 +52,23 @@ class Manager(Staff):
     def change_wait_pw(self, new_pw):
         cur = conn.cursor()
         cur.execute("""update staff set password = %s where role = 'wait'""", [new_pw])
+        if (cur.rowcount == 1): 
+            self.restaurant.wait.password = new_pw
         conn.commit()
-        self.restaurant.wait.password = new_pw
         
     def change_kitchen_pw(self, new_pw):
         cur = conn.cursor()
         cur.execute("""update staff set password = %s where role = 'kitchen'""", [new_pw])
+        if (cur.rowcount == 1): 
+            self.restaurant.kitchen.password = new_pw
         conn.commit()
-        self.restaurant.kitchen.password = new_pw
         
     def change_manager_pw(self, new_pw):
         cur = conn.cursor()
         cur.execute("""update staff set password = %s where role = 'manager'""", [new_pw])
+        if (cur.rowcount == 1): 
+            self.password = new_pw
         conn.commit()
-        self.password = new_pw
         
         
     def choose_table_amt(self, number):
@@ -79,9 +82,13 @@ class Manager(Staff):
 
             while (self.restaurant.tab_num_exist(table_num)):
                 table_num += 1
-            #insert into the db.
+            try:
+                cur.execute("""INSERT INTO tables(num, budget, needs_assistance, occupied) values (%s, null, False, False)""", [table_num])
+            except Exception as err:
+                conn.rollback()
+                raise Exception("SQL Statement Failed")
+            conn.commit()
             self.restaurant.tables.append(Table(table_num))
-            cur.execute("""INSERT INTO tables(num, budget, needs_assistance, occupied) values (%s, null, False, False)""", [table_num])
                 
         
         # if (len(self.restaurant.tables) - number > self.restaurant.count_unoccupied()):

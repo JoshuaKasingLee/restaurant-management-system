@@ -162,8 +162,19 @@ def test_login_and_validate():
     
     t = Table(1)
     r.tables.append(t)
+    cur = conn.cursor()
+    cur.execute("delete from tables where num = 1")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False)")
     c_tok = r.choose_table(1)
+    assert(t.occupied)
     assert(r.customer_validate(c_tok))
+    with pytest.raises(Exception):
+        r.choose_table(3)
+    
+    cur.execute("delete from tables where num = 1")
+    conn.commit()
+    
+    
 
 
 def test_get_restaurant_info():

@@ -113,13 +113,10 @@ class Restaurant:
     def remove_table(self):
         cur = conn.cursor()
         table_index = len(self.tables) - 1
-        try:
-            cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("SQL Statement Failed")
+        cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
+        if (cur.rowcount == 1):
+            self.tables.remove(self.tables[table_index])
         conn.commit()
-        self.tables.remove(self.tables[table_index])
                 
                 
     def choose_table(self, number):
@@ -127,11 +124,14 @@ class Restaurant:
         for table in self.tables:
             if (table.number == number):
                 cur.execute("""update tables set occupied = True where num = %s""", [number])
-                conn.commit()
-                table.occupied = True
-                cust_token = uuid4()
-                table.token = cust_token
-                return cust_token
+                if (cur.rowcount == 1):
+                    cust_token = uuid4()
+                    table.occupied = True
+                    table.token = cust_token    
+                    conn.commit()
+                    return cust_token
+        raise Exception("Cannot find table")
+        
                 
     def login(self, user, password):
         if (user == 'manager' and password == self.manager.password):
