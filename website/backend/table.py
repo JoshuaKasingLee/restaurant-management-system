@@ -32,10 +32,11 @@ class Table:
             raise Exception("Order insert failed")
 
         conn.commit()
-        self.add_order_to_table(menu_item)
+        order_id = cur.lastrowid
+        self.add_order_to_table(menu_item, order_id)
 
-    def add_order_to_table(self, menu_item):
-        new_order = Order(menu_item, self.number, datetime.now())
+    def add_order_to_table(self, menu_item, order_id = None):
+        new_order = Order(menu_item, self.number, datetime.now(), order_id)
         self.orders.append(new_order)
 
     # request assistance
