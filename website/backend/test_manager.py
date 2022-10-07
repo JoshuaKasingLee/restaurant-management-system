@@ -28,14 +28,14 @@ def test_add_categories():
 
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 0)
-    m1.add_category("Japanese", False)
+    m1.add_category("Japanese")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 1)
 
     assert(r1.category_exists("Japanese") == True)
     assert(r2.category_exists("Japanese") == False)
 
-    m2.add_category("Burgers", False)
+    m2.add_category("Burgers")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 2)
 
@@ -54,13 +54,13 @@ def test_add_duplicate_categories():
 
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 0)
-    m.add_category("Burgers", False)
+    m.add_category("Burgers")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 1)
 
     assert(r.category_exists("Burgers") == True)
     with pytest.raises(Exception):
-        m.add_category("Burgers", False)
+        m.add_category("Burgers")
 
     cur.execute("delete from category")
     conn.commit()
@@ -76,8 +76,8 @@ def test_remove_categories():
 
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 0)
-    m.add_category("Japanese", False)
-    m.add_category("Burgers", False)
+    m.add_category("Japanese")
+    m.add_category("Burgers")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 2)
     assert(len(r.categories) == 2)
@@ -107,7 +107,7 @@ def test_remove_nonexistent_categories():
 
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 0)
-    m.add_category("Japanese", False)
+    m.add_category("Japanese")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 1)
     with pytest.raises(Exception):

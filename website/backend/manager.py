@@ -12,19 +12,20 @@ class Manager(Staff):
 
     # menu editor functions
 
-    def add_category(self, name, show):
+    def add_category(self, name):
         if self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} already exists")
         else:
             cur = conn.cursor()
             try:
-                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, show, 1]) # need to change to default at end
+                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, 1]) # need to change to default order at end
             except Exception as err:
                 conn.rollback()
                 raise Exception("Inserting new category failed")
             conn.commit()
-
-            c = Category(name, show)
+            cat_id = cur.lastrowid
+            c = Category(name, cat_id)
+            
             self.restaurant.categories.append(c)
             return c
 

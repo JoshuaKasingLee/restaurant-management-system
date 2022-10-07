@@ -27,3 +27,18 @@ def change_restaurant_info():
     restaurant.change_restaurant_info(rest_obj["name"], rest_obj["tables"], rest_obj["image"], pass_obj["kitchen"], pass_obj["wait"], pass_obj["manager"])
     return restaurant.get_restaurant_info()
     
+@manager_routes.route('/categories', methods=['POST'])
+def add_category():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.manager_validate(token)
+    data = request.get_json()
+    cat_name = data["name"]
+    cat = restaurant.manager.add_category(cat_name)
+    return {
+        "id": cat.id,
+        "name": cat.name,
+        "show": cat.visible,
+        "positionId": cat.display_order
+    }
+    
