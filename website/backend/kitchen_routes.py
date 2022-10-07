@@ -1,7 +1,6 @@
 from flask import Blueprint
 from flask import request
 from __init__res import restaurant
-from json import dumps
 
 kitchen_routes = Blueprint('kitchen_routes', __name__)
 
