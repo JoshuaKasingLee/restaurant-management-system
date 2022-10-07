@@ -50,7 +50,6 @@ class Table:
 
     def get_total_cost(self):
         cost = 0
-        cur = conn.cursor()
         for order in self.orders:
             cost += order.menu_item.cost
         return cost
