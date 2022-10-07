@@ -7,7 +7,7 @@ from helper import OrderStatus
 import json
 
 class Table:
-    def __init__(self, number, budget = None, orders=None, needs_assistance = False, occupied = False):
+    def __init__(self, number: int, budget = None, orders=None, needs_assistance = False, occupied = False):
         self.number = number
         self.budget = budget
         if orders is None:
@@ -32,6 +32,9 @@ class Table:
             raise Exception("Order insert failed")
 
         conn.commit()
+        self.add_order_to_table(menu_item)
+
+    def add_order_to_table(self, menu_item):
         new_order = Order(menu_item, self.number, datetime.now())
         self.orders.append(new_order)
 
@@ -42,6 +45,14 @@ class Table:
             self.needs_assistance = False
         else:
             self.needs_assistance = True
+
+    # request the (split) bill
+
+    def get_total_cost(self):
+        cost = 0
+        for order in self.orders:
+            cost += order.menu_item.cost
+        return cost
 
     # budgeting solution functions
 

@@ -3,6 +3,7 @@ from table import Table
 from menu_item import MenuItem
 from category import Category
 from helper import OrderStatus
+from order import Order
 from init_db import conn
 
 french = Category("French")
@@ -81,6 +82,16 @@ def test_order_multiple_dishes():
     cur.execute("delete from tables")
     conn.commit()
 
+# bill management
+
+def test_get_total_cost():
+    table = Table(1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m2)
+    table.add_order_to_table(m3)
+    expected_cost = 20.80*2 + 6 + 48.50
+    assert(table.get_total_cost() == expected_cost)
 
 # requests for assistance
 
