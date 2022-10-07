@@ -96,6 +96,24 @@ def test_remove_table():
     cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
     conn.commit()
     
+def test_remove_table_fail():
+    r = Restaurant("Kelly's Kitchen")
+    cur = conn.cursor()
+    cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
+    
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (2, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (3, null, False, True)")
+    cur.execute("select * from tables where num = 1 or num = 2 or num = 3")
+    assert(len(cur.fetchall()) == 3)
+    with pytest.raises(Exception):
+        r.remove_table()
+
+    assert(len(r.tables) == 0)
+    
+    cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
+    conn.commit()
+    
 def test_choose_table():
     r = Restaurant("Kelly's Kitchen")
     t = Table(500000)
@@ -182,6 +200,7 @@ def test_change_restaurant_info():
     t2 = Table(2)
     r.tables.append(t)
     r.tables.append(t2)
+    cur = conn.cursor()
     r.change_restaurant_info("nice", 5, "sunnies.jpg", "epicA0aaaaaaa", "coolA0aaaaaaa", "greatA0aaaaaaa")
     res_data = r.get_restaurant_info()
     rest_obj = res_data["restaurant"]
@@ -192,6 +211,15 @@ def test_change_restaurant_info():
     assert(password_obj["kitchen"] == "epicA0aaaaaaa")
     assert(password_obj["wait"] == "coolA0aaaaaaa")
     assert(password_obj["manager"] == "greatA0aaaaaaa")
+    
+    cur.execute("delete from tables where num != 9999")
+    m.change_kitchen_pw("kitchenA0five")
+    m.change_manager_pw('managerA0five')
+    m.change_wait_pw('waiterA0five')
+    conn.commit()
+    
+    
+    
 
 def test_menu():
     r = Restaurant("japan")

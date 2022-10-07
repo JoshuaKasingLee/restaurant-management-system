@@ -250,26 +250,7 @@ def test_choose_table_amt_negative():
     with pytest.raises(Exception):
         m.choose_table_amt(-3)
         
-# def test_choose_table_amt_need_less_tablesz():
-#     r = Restaurant("Kelly's Kitchen")
-#     m = Manager("tomiscool", r)
-#     r.manager = m
-#     t = Table(5)
-#     t2 = Table(3)
-#     t3 = Table(30)
-#     t4 = Table(20)
-#     t5 = Table(10)
-#     r.tables.append(t)
-#     r.tables.append(t4)
-#     r.tables.append(t5)
-#     r.tables.append(t2)
-#     r.tables.append(t3)
-#     # t.occupied = True
-#     # t2.occupied = True
-#     # t3.occupied = True
-#     # t4.occupied = True
-#     # with pytest.raises(Exception):
-#     #     m.choose_table_amt(-2)
+
 
 
     

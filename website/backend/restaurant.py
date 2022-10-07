@@ -112,8 +112,12 @@ class Restaurant:
         
     def remove_table(self):
         cur = conn.cursor()
-        table_index = len(self.tables) - 1     
-        cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
+        table_index = len(self.tables) - 1
+        try:
+            cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("SQL Statement Failed")
         conn.commit()
         self.tables.remove(self.tables[table_index])
                 
