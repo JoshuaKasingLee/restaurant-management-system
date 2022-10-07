@@ -44,8 +44,11 @@ def test_get_time_sorted_orders():
     table3 = restaurant.tables[2]
 
     table3.order_dish(m3)
+    time.sleep(0.1)
     table2.order_dish(m1)
+    time.sleep(0.1)
     table1.order_dish(m1)
+    time.sleep(0.1)
     table3.order_dish(m2)
 
     ordered_list = restaurant.get_order_list()
