@@ -45,3 +45,15 @@ def view_orders(Table):
         if t.number == Table:
             orders = t.view_orders()
     return orders
+
+@customer_routes.route('/bill', methods=['POST'])
+def get_bill():
+    data = request.get_json()
+    table = data["table"]
+    type = data["type"]
+    for t in restaurant.tables:
+        if t.number == table:
+            if type == 'together':
+                return {
+                    "charge": [t.get_total_cost(), 0, 0, 0]
+                }
