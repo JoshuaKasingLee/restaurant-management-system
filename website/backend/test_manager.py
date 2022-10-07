@@ -18,49 +18,103 @@ def test_make_manager():
 # add categories
 
 def test_add_categories():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+
     r1 = Restaurant("Nobu")
     r2 = Restaurant("Maccas")
     m1 = Manager("password", r1)
     m2 = Manager("mmmmmm", r2)
 
-    m1.add_category("Japanese")
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 0)
+    m1.add_category("Japanese", False)
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 1)
+
     assert(r1.category_exists("Japanese") == True)
     assert(r2.category_exists("Japanese") == False)
 
-    m2.add_category("Burgers")
+    m2.add_category("Burgers", False)
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 2)
+
     assert(r1.category_exists("Burgers") == False)
     assert(r2.category_exists("Burgers") == True)
 
+    cur.execute("delete from category")
+    conn.commit()
+
 def test_add_duplicate_categories():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+
     r = Restaurant("Maccas")
     m = Manager("password", r)
 
-    burgers = Category("Burgers")
-    m.add_category("Burgers")
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 0)
+    m.add_category("Burgers", False)
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 1)
+
     assert(r.category_exists("Burgers") == True)
     with pytest.raises(Exception):
-        m.add_category("Burgers")
+        m.add_category("Burgers", False)
+
+    cur.execute("delete from category")
+    conn.commit()
 
 # remove categories
 
 def test_remove_categories():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
-    m.add_category("Japanese")
-    m.add_category("Burgers")
+
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 0)
+    m.add_category("Japanese", False)
+    m.add_category("Burgers", False)
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 2)
     assert(len(r.categories) == 2)
 
     m.remove_category("Japanese")
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 1)
     assert(len(r.categories) == 1)
+
     assert(r.category_exists("Burgers") == True)
     assert(r.category_exists("Japanese") == False)
 
+    m.remove_category("Burgers")
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 0)
+    assert(len(r.categories) == 0)
+
+    cur.execute("delete from category")
+    conn.commit()
+
 def test_remove_nonexistent_categories():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
-    m.add_category("Japanese")
+
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 0)
+    m.add_category("Japanese", False)
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 1)
     with pytest.raises(Exception):
         m.remove_menu_item("Burgers")
+
+    cur.execute("delete from category")
+    conn.commit()
 
 # add menu items
 

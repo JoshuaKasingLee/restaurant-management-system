@@ -12,17 +12,35 @@ class Manager(Staff):
 
     # menu editor functions
 
-    def add_category(self, name):
+    def add_category(self, name, show):
         if self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} already exists")
         else:
-            c = Category(name)
+            cur = conn.cursor()
+            try:
+                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, show, 1]) # need to change to default at end
+            except Exception as err:
+                conn.rollback()
+                raise Exception("Inserting new category failed")
+            conn.commit()
+
+            c = Category(name, show)
             self.restaurant.categories.append(c)
             return c
+
 
     def remove_category(self, name):
         if not self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} does not exist")
+
+        cur = conn.cursor()
+        try:
+            cur.execute("""DELETE FROM category where name = %s""", [name])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Deleting category failed")
+        conn.commit()
+        
         for cat in self.restaurant.categories:
             if cat.name == name:
                 self.restaurant.categories.remove(cat)
