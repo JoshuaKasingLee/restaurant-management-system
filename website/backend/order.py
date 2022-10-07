@@ -12,7 +12,7 @@ class Order:
         
     def to_JSON(self):
         return {
-            "menu_item": self.menu_item,
+            "menu_item": self.menu_item, # this is  MenuItem type FYI
             "table": self.table,
             "time_ordered": self.time_ordered,
             "status": self.status

@@ -2,9 +2,10 @@ from order import Order
 from init_db import conn
 from datetime import datetime
 from helper import OrderStatus
-
+from menu_item import MenuItem
 
 import json
+
 
 class Table:
     def __init__(self, number: int, budget = None, orders=None, needs_assistance = False, occupied = False):
@@ -19,7 +20,35 @@ class Table:
 
     # order menu items
 
-    def order_dish(self, menu_item):
+    def order_dishes(self, menu_item_id: int, quantity: int):
+        if quantity > 0:
+            cur = conn.cursor()
+            try:
+                # need to check row count instead
+                cur.execute("select name, description, ingredients, cost, category, image, visible, display_order from menu_item where id = %s", [menu_item_id])
+            except Exception as err:
+                conn.rollback()
+                raise Exception("Menu item could not be found")
+
+            # print(cur.fetchone())
+            result = cur.fetchone()
+            name = result[0]
+            desc = result[1]
+            ingredients = result[2]
+            cost = result[3]
+            category = result[4]
+            img = result[5]
+            visible = result[6]
+            display_order = result[7]
+            menu_item = MenuItem(name, desc, ingredients, cost, category, None, img, visible, display_order)
+
+            i = 0
+            while (i < quantity):
+                self.order_dish(menu_item)
+                i = i + 1
+
+
+    def order_dish(self, menu_item: MenuItem):
         cur = conn.cursor()
         try:
             cur.execute("select id from menu_item where name = %s", [menu_item.name])
@@ -38,6 +67,24 @@ class Table:
     def add_order_to_table(self, menu_item, order_id = None):
         new_order = Order(menu_item, self.number, datetime.now(), order_id)
         self.orders.append(new_order)
+
+    # view orders
+
+    def view_orders(self):
+        order_items = []
+        for order in self.orders:
+            order_info = {
+                "id": order.id,      
+                "name": order.menu_item.name,
+                "status": order.status,
+                "cost": order.menu_item.cost,
+                "img": order.menu_item.img
+            }
+            order_items.append(order_info)
+        return {
+            "total": self.get_total_cost(),
+            "orderItems": order_items
+        }
 
     # request assistance
 

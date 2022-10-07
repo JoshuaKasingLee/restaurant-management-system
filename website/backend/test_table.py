@@ -82,6 +82,38 @@ def test_order_multiple_dishes():
     cur.execute("delete from tables")
     conn.commit()
 
+def test_order_duplicate_dishes():
+    cur = conn.cursor()
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+
+    table = Table(1)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+    cur.execute("select id from menu_item where name = %s", ['Escargot'])
+    item_id = cur.fetchone()[0]
+    print(item_id)
+
+    cur.execute("select * from orders")
+    assert(len(cur.fetchall()) == 0)
+    table.order_dishes(item_id, 20)
+
+    cur.execute("select * from orders")
+    assert(len(cur.fetchall()) == 20)
+    assert(len(table.orders) == 20)
+
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+    conn.commit()
+
 # bill management
 
 def test_get_total_cost():
