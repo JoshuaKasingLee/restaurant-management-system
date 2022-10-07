@@ -2,6 +2,10 @@ from restaurant import Restaurant
 from init_db import query_db
 from init_db import conn
 import json
+from table import Table
+from menu_item import MenuItem
+from category import Category
+from helper import OrderStatus
 
 cur = conn.cursor()
 
@@ -15,15 +19,19 @@ cur = conn.cursor()
 
 restaurant = Restaurant("plateup")
 
+# restaurant.populate()
+
+# # restaurant.get_menu(restaurant)
+
+# # print(restaurant.get_category(restaurant, 'Sashimi'))
+
+# # restaurant.get_menu_items(restaurant)
+
+# print((restaurant.menu_to_JSON(restaurant)))
+
+french = Category("French")
+m1 = MenuItem("Escargot", "Snails in butter", "Snails, butter, oil", 20.80, french)
+m2 = MenuItem("Croissant", "Filled with almond praline cream", "Flour, almonds, butter", 6, french)
+m3 = MenuItem("Steak", "Medium rare", "Beef, red wine jus", 48.50, french)
+
 restaurant.populate()
-
-# restaurant.get_menu(restaurant)
-
-# print(restaurant.get_category(restaurant, 'Sashimi'))
-
-# restaurant.get_menu_items(restaurant)
-
-print((restaurant.menu_to_JSON(restaurant)))
-
-
-
