@@ -1,5 +1,10 @@
 from order import Order
 from init_db import conn
+from datetime import datetime
+from helper import OrderStatus
+
+
+import json
 
 class Table:
     def __init__(self, number, budget = None, orders=None, needs_assistance = False, occupied = False):
@@ -15,8 +20,9 @@ class Table:
     # order menu items
 
     def order_dish(self, menu_item):
-        new_order = Order(menu_item, self.number)
+        new_order = Order(menu_item, self.number, datetime.now())
         self.orders.append(new_order)
+        # TODO: Populate into the Database
 
     # request assistance
 
@@ -32,3 +38,5 @@ class Table:
         self.budget = budget
         # check whether we need to validate here > 0
 
+    def to_JSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)

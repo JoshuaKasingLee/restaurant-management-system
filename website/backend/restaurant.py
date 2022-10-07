@@ -1,3 +1,4 @@
+from re import L
 from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
@@ -224,5 +225,5 @@ class Restaurant:
         orders_list = []
         for table in self.tables:
             for order in table.orders:
-                orders_list.append(table.order)
-        return orders_list
+                orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])
