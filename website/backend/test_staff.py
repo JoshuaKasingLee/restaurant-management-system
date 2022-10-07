@@ -26,6 +26,7 @@ def test_get_time_sorted_orders():
 
     cur = conn.cursor()
 
+    cur.execute("DELETE FROM orders")
     cur.execute("DELETE FROM menu_item")
     cur.execute("DELETE FROM category")
     cur.execute("DELETE FROM tables")
@@ -57,6 +58,7 @@ def test_get_time_sorted_orders():
     for order in ordered_list:
         ordered_item_list.append(order['menu_item'].name)
     
+    cur.execute("DELETE FROM orders")
     cur.execute("DELETE FROM menu_item")
     cur.execute("DELETE FROM category")
     cur.execute("DELETE FROM tables")
