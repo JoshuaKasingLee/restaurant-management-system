@@ -119,54 +119,115 @@ def test_remove_nonexistent_categories():
 # add menu items
 
 def test_add_menu_items():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+    cur.execute("delete from menu_item")
+
     r1 = Restaurant("Nobu")
     r2 = Restaurant("Maccas")
     m1 = Manager("password", r1)
     m2 = Manager("mmmmmm", r2)
 
-    jap = Category("Japanese")
+    jap = m1.add_category("Japanese")
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 0)
     m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", jap)
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
     assert(r1.menu_contains("Sashimi") == True)
     assert(r2.menu_contains("Sashimi") == False)
 
-    burgers = Category("Burgers")
+    burgers = m2.add_category("Burgers")
     m2.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", burgers)
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 2)
     assert(r1.menu_contains("Cheeseburger") == False)
     assert(r2.menu_contains("Cheeseburger") == True)
 
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
+
 def test_add_duplicate_menu_items():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+    cur.execute("delete from menu_item")
+
     r = Restaurant("Maccas")
     m = Manager("password", r)
 
-    burgers = Category("Burgers")
+    burgers = m.add_category("Burgers")
     m.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", burgers)
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
     assert(r.menu_contains("Cheeseburger") == True)
+
     with pytest.raises(Exception):
         m.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", burgers)
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
 
 # remove menu items
 
 def test_remove_menu_items():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+    cur.execute("delete from menu_item")
+
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
-    jap = Category("Japanese")
+    jap = m.add_category("Japanese")
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", jap)
     m.add_menu_item("Udon", "Very yummy", "Noodles, miso, beef", "10.99", jap)
     assert(len(r.menu_items) == 2)
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 2)
 
     m.remove_menu_item("Udon")
     assert(len(r.menu_items) == 1)
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
     assert(r.menu_contains("Sashimi") == True)
     assert(r.menu_contains("Udon") == False)
 
+    m.remove_menu_item("Sashimi")
+    assert(len(r.menu_items) == 0)
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 0)
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
+
 def test_remove_nonexistent_menu_items():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+    cur.execute("delete from menu_item")
+
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
-    jap = Category("Japanese")
+    jap = m.add_category("Japanese")
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", jap)
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
     with pytest.raises(Exception):
         m.remove_menu_item("Udon")
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
         
+
 def test_change_manager_pw():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
