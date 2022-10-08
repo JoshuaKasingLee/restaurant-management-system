@@ -44,13 +44,12 @@ function a11yProps(index) {
 function Menu() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("Category One");
+  const [menu, setMenu] = React.useState({});
 
   const handleChange = (event, newValue, newLabel) => {
     setValue(newValue);
     setLabel(newLabel);
   };
-
-  const [menu, setMenu] = React.useState('');
 
   React.useEffect(() => {
     const getMenu = async () => {
@@ -63,6 +62,8 @@ function Menu() {
       });
       const data = await response.json();
       if (response.ok) {
+        console.log(data);
+        // fix this - put whole object into useState thing.
         setMenu(data);
         localStorage.setItem("menu",data);
       } else {
@@ -73,9 +74,10 @@ function Menu() {
   }, []);
 
   const getCategories = menu => {
+    console.log('hello');
     let content = [];
-    for (let i = 1; i <= menu.categories.length; i++) {
-      content.push(<Tab label={menu.categories[i]} {...a11yProps(i)} />);
+    for (let i = 0; i < menu.categories.length; i++) {
+      content.push(<Tab label={menu.categories[i].name} {...a11yProps(i)} />);
     }
     return content;
   };
