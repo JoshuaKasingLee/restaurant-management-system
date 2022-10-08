@@ -36,7 +36,6 @@ def add_category():
     cat_name = data["name"]
     cat = restaurant.manager.add_category(cat_name)
     return {
-        "id": cat.id,
         "name": cat.name,
         "show": cat.visible,
         "positionId": cat.display_order

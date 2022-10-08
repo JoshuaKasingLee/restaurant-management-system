@@ -18,13 +18,15 @@ class Manager(Staff):
         else:
             cur = conn.cursor()
             try:
-                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, 1]) # need to change to default order at end
+                # cur.execute("""select count * from category""")
+                # display = cur.fetchone()[0]
+                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, 0]) # need to change to default order at end
             except Exception as err:
                 conn.rollback()
                 raise Exception("Inserting new category failed")
             conn.commit()
-            cat_id = cur.lastrowid
-            c = Category(name, cat_id)
+            # cat_id = cur.lastrowid
+            c = Category(name)
             
             self.restaurant.categories.append(c)
             return c
