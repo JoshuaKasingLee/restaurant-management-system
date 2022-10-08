@@ -1,3 +1,4 @@
+from re import L
 from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
@@ -5,8 +6,12 @@ from table import Table
 from menu_item import MenuItem
 from tag import Tag
 from category import Category
+from helper import OrderStatus
 from init_db import conn
 from uuid import uuid4
+import json
+
+from order import Order
 
 class Restaurant:
     def __init__(self, name):
@@ -54,7 +59,7 @@ class Restaurant:
         result = cur.fetchall()
         for cat in result:
             self.categories.append(Category(cat[0], cat[1], cat[2]))
-            
+
         cur.execute("select mi.id, mi.name, mi.cost, mi.category, mi.visible, mi.display_order, mi.description, mi.ingredients, mi.image from menu_item mi")
         result = cur.fetchall()
         for item in result:
@@ -78,7 +83,7 @@ class Restaurant:
             for category in self.categories:
                 if category_name == category.name:
                     menu_item_category = category
-                break
+                    break
             
             self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
             
@@ -94,17 +99,7 @@ class Restaurant:
         for cat in self.categories:
             if cat.name == name:
                 return True
-        return False
-
-    def get_menu(self, name):
-        # for category in self.categories:
-        #     print(category.name)
-        for menu_item in self.menu_items:
-            print(menu_item.get_menu_item())
-
-
-        return self.menu_items
-        
+        return False    
         
     def tab_num_exist(self, number):
         for table in self.tables:
@@ -121,10 +116,11 @@ class Restaurant:
         
     def remove_table(self):
         cur = conn.cursor()
-        table_index = len(self.tables) - 1     
+        table_index = len(self.tables) - 1
         cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
+        if (cur.rowcount == 1):
+            self.tables.remove(self.tables[table_index])
         conn.commit()
-        self.tables.remove(self.tables[table_index])
                 
                 
     def choose_table(self, number):
@@ -132,11 +128,14 @@ class Restaurant:
         for table in self.tables:
             if (table.number == number):
                 cur.execute("""update tables set occupied = True where num = %s""", [number])
-                conn.commit()
-                table.occupied = True
-                cust_token = uuid4()
-                table.token = cust_token
-                return cust_token
+                if (cur.rowcount == 1):
+                    cust_token = uuid4()
+                    table.occupied = True
+                    table.token = cust_token    
+                    conn.commit()
+                    return cust_token
+        raise Exception("Cannot find table")
+        
                 
     def login(self, user, password):
         if (user == 'manager' and password == self.manager.password):
@@ -196,7 +195,9 @@ class Restaurant:
         categories = []
         for category in self.categories:
             categories.append(self.category_to_JSON(self, category.name))
-        return categories
+        return {
+            "categories": categories
+        }
 
 
     def get_restaurant_info(self):
@@ -222,3 +223,26 @@ class Restaurant:
         self.manager.change_wait_pw(wait)
         self.manager.change_manager_pw(manager)
         self.manager.choose_table_amt(tab_num)
+
+    def get_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])
+
+    def get_wait_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                if order.status == OrderStatus.PREPARED:
+                    orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])
+    
+    def get_kitchen_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                if order.status == OrderStatus.ORDERED or order.status == OrderStatus.COOKING:
+                    orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])

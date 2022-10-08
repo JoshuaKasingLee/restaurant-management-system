@@ -17,3 +17,8 @@ and initialise them in the restaurant class.
 I fixed a bug relating to default values in the constructors.
 I implemented the populate function in restaurant which would be run to initialise all the objects in the restaurant class reading from the database.
 For the proposal, I cleaned up my references and wrote about the business, interface and database layers.
+
+
+Week 4
+Cyrus Kelly and I discussed a number of backend decisions relating to file structure, how to set up the routes as well as how to do testing and exception handling. I completed Sprint 1's login functionality for all users
+as well as other functionalities such as customers choosing tables. I also completed the routes and functions related to manager customisation of passwords, name and image of the restaurant. I completed tests for all these functionalities.

@@ -96,6 +96,24 @@ def test_remove_table():
     cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
     conn.commit()
     
+def test_remove_table_fail():
+    r = Restaurant("Kelly's Kitchen")
+    cur = conn.cursor()
+    cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
+    
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (2, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (3, null, False, True)")
+    cur.execute("select * from tables where num = 1 or num = 2 or num = 3")
+    assert(len(cur.fetchall()) == 3)
+    with pytest.raises(Exception):
+        r.remove_table()
+
+    assert(len(r.tables) == 0)
+    
+    cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
+    conn.commit()
+    
 def test_choose_table():
     r = Restaurant("Kelly's Kitchen")
     t = Table(500000)
@@ -144,8 +162,19 @@ def test_login_and_validate():
     
     t = Table(1)
     r.tables.append(t)
+    cur = conn.cursor()
+    cur.execute("delete from tables where num = 1")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False)")
     c_tok = r.choose_table(1)
+    assert(t.occupied)
     assert(r.customer_validate(c_tok))
+    with pytest.raises(Exception):
+        r.choose_table(3)
+    
+    cur.execute("delete from tables where num = 1")
+    conn.commit()
+    
+    
 
 
 def test_get_restaurant_info():
@@ -182,6 +211,7 @@ def test_change_restaurant_info():
     t2 = Table(2)
     r.tables.append(t)
     r.tables.append(t2)
+    cur = conn.cursor()
     r.change_restaurant_info("nice", 5, "sunnies.jpg", "epicA0aaaaaaa", "coolA0aaaaaaa", "greatA0aaaaaaa")
     res_data = r.get_restaurant_info()
     rest_obj = res_data["restaurant"]
@@ -192,5 +222,40 @@ def test_change_restaurant_info():
     assert(password_obj["kitchen"] == "epicA0aaaaaaa")
     assert(password_obj["wait"] == "coolA0aaaaaaa")
     assert(password_obj["manager"] == "greatA0aaaaaaa")
+    
+    cur.execute("delete from tables where num != 9999")
+    m.change_kitchen_pw("kitchenA0five")
+    m.change_manager_pw('managerA0five')
+    m.change_wait_pw('waiterA0five')
+    conn.commit()
+    
+    
+    
+
+def test_menu():
+    r = Restaurant("japan")
+    
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('Sashimi_test', TRUE, 1)")
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('Dessert_test', TRUE, 4)")
+    
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Ahi_test', 'Tuna (raw)', 'Tuna', 5, 1, (SELECT id from category WHERE name = 'Sashimi_test'), null, TRUE)")
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Aji_test', 'Spanish Mackerel (raw)', 'Mackerel', 6, 2, (SELECT id from category WHERE name = 'Sashimi_test'), null, TRUE)")
+
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Banana Sushi_test', 'banana sushi!!', 'Bananas, Chocolate', 17.5, 51, (SELECT id from category WHERE name = 'Dessert_test'), null, TRUE)")    
+
+    r.populate()
+
+    res = r.menu_to_JSON(r)
+    expected = {'categories': [{'name': 'Sashimi_test', 'visible': True, 'display_order': 1, 'menu_items': [{'name': 'Ahi_test', 'description': 'Tuna (raw)', 'ingredients': 'Tuna', 'cost': 5.0, 'category': 'Sashimi_test', 'tags': [], 'img': None, 'visible': True, 'display_order': 1}, {'name': 'Aji_test', 'description': 'Spanish Mackerel (raw)', 'ingredients': 'Mackerel', 'cost': 6.0, 'category': 'Sashimi_test', 'tags': [], 'img': None, 'visible': True, 'display_order': 2}]}, {'name': 'Dessert_test', 'visible': True, 'display_order': 4, 'menu_items': [{'name': 'Banana Sushi_test', 'description': 'banana sushi!!', 'ingredients': 'Bananas, Chocolate', 'cost': 17.5, 'category': 'Dessert_test', 'tags': [], 'img': None, 'visible': True, 'display_order': 51}]}]}
+    
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+    conn.commit
+    assert(res == expected)
 
 pytest.main()
