@@ -49,3 +49,30 @@ def add_category():
         "positionId": cat.display_order
     }
     
+@manager_routes.route('/items', methods=['POST'])
+def add_menu_item():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.manager_validate(token)
+    data = request.get_json()
+    name = data["name"]
+    desc = data["description"]
+    ingredients = data["ingredients"]
+    cost = data["cost"]
+    category = data["category"]
+    tags = data["tags"]
+    img = data["img"]
+    restaurant.manager.add_menu_item(name, desc, ingredients, cost, category, tags, img)
+    res = restaurant.category_to_JSON(category)
+    return res
+
+@manager_routes.route('/items/<path:ItemName>', methods=['POST'])
+def remove_menu_item(ItemName):
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.manager_validate(token)
+    data = request.get_json()
+    category = data["category"]
+    restaurant.manager.remove_menu_item(ItemName)
+    res = restaurant.category_to_JSON(category)
+    return res

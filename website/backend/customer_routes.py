@@ -37,12 +37,11 @@ def order_dishes():
     res = {"token": tok}
     return res # need to check this token
 
-@customer_routes.route('/order?<int:Table>', methods=['GET'])
-def view_orders(Table):
+@customer_routes.route('/order?<int:TableNum>', methods=['GET'])
+def view_orders(TableNum):
     data = request.get_json()
-    table = data["table"]
     for t in restaurant.tables:
-        if t.number == Table:
+        if t.number == TableNum:
             orders = t.view_orders()
     return orders
 
