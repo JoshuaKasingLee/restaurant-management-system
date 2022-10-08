@@ -17,8 +17,7 @@ function TableForm ({ submit }) {
 
   const onSubmit = () => {
     submit(table);
-    // print out table number
-    console.log(table);
+    // console.log(table);
     localStorage.setItem('table', table);
   }
 
@@ -31,9 +30,7 @@ function TableForm ({ submit }) {
           //Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log('hello');
       const data = await response.json();
-      console.log('hi');
       if (response.ok) {
         setNumTables(data.numTables);
       } else {
@@ -45,9 +42,8 @@ function TableForm ({ submit }) {
 
   const getTableContent = numTables => {
     let content = [];
-    // 4 for testing, should be numTables
     for (let i = 1; i <= numTables; i++) {
-      content.push(<MenuItem value={i}>{i}</MenuItem>);
+      content.push(<MenuItem key={i} value={i}>{i}</MenuItem>);
     }
     return content;
   };
