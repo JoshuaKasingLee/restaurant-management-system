@@ -5,6 +5,7 @@ from category import Category
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
 from table import Table
+from init_db import conn
 
 # manager initialisation
 
@@ -116,8 +117,17 @@ def test_change_manager_pw():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
     r.manager = m
-    m.change_manager_pw("Bob@5")
-    assert(r.manager.password == "Bob@5")
+    #have to keep original pw stored before editing then reset at the end
+    cur = conn.cursor()
+    cur.execute("select password from staff where role = 'manager'")
+    orig = cur.fetchall()[0][0]
+    m.change_manager_pw("Bob@5aaaaaaaa")
+    assert(r.manager.password == "Bob@5aaaaaaaa")
+    cur.execute("select password from staff where role = 'manager'")
+    assert(cur.fetchone()[0] == "Bob@5aaaaaaaa")
+    cur.execute("""update staff set password = %s where role = 'manager'""", [orig])
+    conn.commit()
+    
 
 def test_change_wait_pw():
     r = Restaurant("Kelly's Kitchen")
@@ -125,8 +135,16 @@ def test_change_wait_pw():
     r.wait = w
     m = Manager("tomiscool", r)
     r.manager = m
-    m.change_wait_pw("Bob@5")
-    assert(r.wait.password == "Bob@5")
+    
+    cur = conn.cursor()
+    cur.execute("select password from staff where role = 'wait'")
+    orig = cur.fetchall()[0][0]
+    m.change_wait_pw("Bob@5aaaaaaaa")
+    assert(r.wait.password == "Bob@5aaaaaaaa")
+    cur.execute("select password from staff where role = 'wait'")
+    assert(cur.fetchone()[0] == "Bob@5aaaaaaaa")
+    cur.execute("""update staff set password = %s where role = 'wait'""", [orig])
+    conn.commit()
     
 
 def test_change_kitchen_pw():
@@ -135,81 +153,123 @@ def test_change_kitchen_pw():
     r.kitchen = k
     m = Manager("tomiscool", r)
     r.manager = m
-    m.change_kitchen_pw("Bob@5")
-    assert(r.kitchen.password == "Bob@5")
+    
+    cur = conn.cursor()
+    cur.execute("select password from staff where role = 'kitchen'")
+    orig = cur.fetchall()[0][0]
+    m.change_kitchen_pw("Bob@5aaaaaaaa")
+    assert(r.kitchen.password == "Bob@5aaaaaaaa")
+    cur.execute("select password from staff where role = 'kitchen'")
+    assert(cur.fetchone()[0] == "Bob@5aaaaaaaa")
+    cur.execute("""update staff set password = %s where role = 'kitchen'""", [orig])
+    conn.commit()
     
 def test_choose_table_amt_need_more_tables():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("tomiscool", r)
     r.manager = m
-    t = Table(5)
-    t2 = Table(3)
-    t3 = Table(30)
+    t = Table(50000)
+    t2 = Table(30000)
+    t3 = Table(30001)
+    t4 = Table(1)
+    t5 = Table(2)
+    t6 = Table(3)
+    r.tables.append(t4)
+    r.tables.append(t5)
+    r.tables.append(t6)
     r.tables.append(t)
     r.tables.append(t2)
     r.tables.append(t3)
-    m.choose_table_amt(5)
-    assert(len(r.tables) == 5)
+    cur = conn.cursor()
+    cur.execute("delete from tables where num != 9999")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (50000, null, False, False), (30000, null, False, False), (30001, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, null, False, False), (3, null, False, False)")
+    m.choose_table_amt(7)
+    assert(len(r.tables) == 7)
+    cur.execute("select * from tables")
+    assert(len(cur.fetchall()) == 7)
     
-    m.choose_table_amt(10)
-    assert(len(r.tables) == 10)
+    m.choose_table_amt(9)
+    assert(len(r.tables) == 9)
+    cur.execute("select * from tables")
+    assert(len(cur.fetchall()) == 9)
+    cur.execute("delete from tables where num != 9999")
+    conn.commit()
+    
+    
     
 def test_choose_table_amt_need_less_tables():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("tomiscool", r)
     r.manager = m
-    t = Table(5)
-    t2 = Table(3)
-    t3 = Table(30)
-    t4 = Table(20)
-    t5 = Table(10)
+    t = Table(1)
+    t2 = Table(2)
+    t3 = Table(3)
+    t4 = Table(4)
+    t5 = Table(5)
     r.tables.append(t)
     r.tables.append(t4)
     r.tables.append(t5)
     r.tables.append(t2)
     r.tables.append(t3)
+    cur = conn.cursor()
+    cur.execute("delete from tables where num != 9999")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (4, null, False, False), (5, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, null, False, False), (3, null, False, False)")
     m.choose_table_amt(3)
     assert(len(r.tables) == 3)
+    cur.execute("select * from tables")
+    assert(len(cur.fetchall()) == 3)
     m.choose_table_amt(1)
     assert(len(r.tables) == 1)
+    cur.execute("select * from tables")
+    assert(len(cur.fetchall()) == 1)
+    cur.execute("delete from tables where num != 9999")
+    conn.commit()
     
 def test_choose_table_amt_negative():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("tomiscool", r)
     r.manager = m
-    t = Table(5)
-    t2 = Table(3)
-    t3 = Table(30)
-    t4 = Table(20)
-    t5 = Table(10)
+    t = Table(1)
+    t2 = Table(2)
+    t3 = Table(3)
+    t4 = Table(4)
+    t5 = Table(5)
     r.tables.append(t)
     r.tables.append(t4)
     r.tables.append(t5)
     r.tables.append(t2)
     r.tables.append(t3)
+    cur = conn.cursor()
+    cur.execute("delete from tables where num != 9999")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (4, null, False, False), (5, null, False, False)")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, null, False, False), (3, null, False, False)")
+    cur.execute("delete from tables where num != 9999")
+    conn.commit()
     with pytest.raises(Exception):
         m.choose_table_amt(-3)
         
-def test_choose_table_amt_need_less_tables():
-    r = Restaurant("Kelly's Kitchen")
-    m = Manager("tomiscool", r)
-    r.manager = m
-    t = Table(5)
-    t2 = Table(3)
-    t3 = Table(30)
-    t4 = Table(20)
-    t5 = Table(10)
-    r.tables.append(t)
-    r.tables.append(t4)
-    r.tables.append(t5)
-    r.tables.append(t2)
-    r.tables.append(t3)
-    t.occupied = True
-    t2.occupied = True
-    t3.occupied = True
-    t4.occupied = True
-    with pytest.raises(Exception):
-        m.choose_table_amt(2)
+# def test_choose_table_amt_need_less_tablesz():
+#     r = Restaurant("Kelly's Kitchen")
+#     m = Manager("tomiscool", r)
+#     r.manager = m
+#     t = Table(5)
+#     t2 = Table(3)
+#     t3 = Table(30)
+#     t4 = Table(20)
+#     t5 = Table(10)
+#     r.tables.append(t)
+#     r.tables.append(t4)
+#     r.tables.append(t5)
+#     r.tables.append(t2)
+#     r.tables.append(t3)
+#     # t.occupied = True
+#     # t2.occupied = True
+#     # t3.occupied = True
+#     # t4.occupied = True
+#     # with pytest.raises(Exception):
+#     #     m.choose_table_amt(-2)
 
 
     
