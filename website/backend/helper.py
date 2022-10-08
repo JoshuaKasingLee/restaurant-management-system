@@ -5,7 +5,7 @@ from enum import Enum
 class OrderStatus(Enum):
     ORDERED = 'ordered'
     COOKING = 'cooking'
-    SERVING = 'prepared'
+    PREPARED = 'prepared'
     COMPLETED = 'completed'
 
 class StaffRole(Enum):

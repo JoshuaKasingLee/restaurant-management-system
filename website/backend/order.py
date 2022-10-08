@@ -9,10 +9,14 @@ class Order:
         self.status = status
         self.time_ordered = time_ordered
         self.id = id
+
+    def update_status(self, status):
+        self.status = status
         
     def to_JSON(self):
         return {
-            "menu_item": self.menu_item, # this is  MenuItem type FYI
+            "id": self.id,
+            "menu_item": self.menu_item,
             "table": self.table,
             "time_ordered": self.time_ordered,
             "status": self.status

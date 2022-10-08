@@ -6,9 +6,12 @@ from table import Table
 from menu_item import MenuItem
 from tag import Tag
 from category import Category
+from helper import OrderStatus
 from init_db import conn
 from uuid import uuid4
 import json
+
+from order import Order
 
 class Restaurant:
     def __init__(self, name):
@@ -226,4 +229,20 @@ class Restaurant:
         for table in self.tables:
             for order in table.orders:
                 orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])
+
+    def get_wait_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                if order.status == OrderStatus.PREPARED:
+                    orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])
+    
+    def get_kitchen_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                if order.status == OrderStatus.ORDERED or order.status == OrderStatus.COOKING:
+                    orders_list.append(order.to_JSON())
         return sorted(orders_list, key=lambda d: d['time_ordered'])

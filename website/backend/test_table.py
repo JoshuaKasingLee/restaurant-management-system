@@ -1,10 +1,20 @@
 import pytest
 from table import Table
+from restaurant import Restaurant
 from menu_item import MenuItem
 from category import Category
 from helper import OrderStatus
 from order import Order
 from init_db import conn
+
+from staff import Staff
+from manager import Manager
+from wait_staff import WaitStaff
+from kitchen_staff import KitchenStaff
+from category import Category
+import time
+from datetime import datetime
+
 
 french = Category("French")
 m1 = MenuItem("Escargot", "Snails in butter", "Snails, butter, oil", 20.80, french)
@@ -146,5 +156,45 @@ def test_set_budget_none():
     table = Table(13)
     table.set_budget()
     assert(table.budget == None)
+
+def test_update_order_status():
+    restaurant = Restaurant("Catalina")
+    french = Category("french")
+    m1 = MenuItem("Escargot", "Snails in butter", "Snails, butter, oil", 20.80, french)
+
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM orders")
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+    cur.execute("DELETE FROM tables")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('french', TRUE, 1)")
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, (SELECT id from category WHERE name = 'french'), null, TRUE)")
+
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+
+
+    restaurant.populate()
+    
+    table1 = restaurant.tables[0]
+
+    table1.order_dish(m1)
+
+    ordered_list = restaurant.get_order_list()
+
+    table1.update_order_status(ordered_list[0]['id'], OrderStatus.COOKING)
+    ordered_list = restaurant.get_order_list()
+
+
+    expected = OrderStatus.COOKING
+
+    cur.execute("DELETE FROM orders")
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+    cur.execute("DELETE FROM tables")
+    conn.commit()
+    
+    assert(ordered_list[0]['status'] == expected)
 
 pytest.main()

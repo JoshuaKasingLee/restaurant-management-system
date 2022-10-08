@@ -17,6 +17,9 @@ class Table:
         self.needs_assistance = needs_assistance
         self.occupied = occupied
         self.token = None
+    
+    def to_JSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)
 
     # order menu items
 
@@ -61,7 +64,8 @@ class Table:
             raise Exception("Order insert failed")
 
         conn.commit()
-        order_id = cur.lastrowid
+        cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
+        order_id = cur.fetchone()[0]
         self.add_order_to_table(menu_item, order_id)
 
     def add_order_to_table(self, menu_item, order_id = None):
@@ -108,5 +112,15 @@ class Table:
         self.budget = budget
         # check whether we need to validate here > 0
 
-    def to_JSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)
+    # modifying order
+    def update_order_status(self, id, status):
+        for order in self.orders:
+            if order.id == id:
+                cur = conn.cursor()
+                try:
+                    cur.execute("""UPDATE orders SET status = %s WHERE id = %s""", [status.value, id])
+                except Exception as err:
+                    conn.rollback()
+                    raise Exception("Order update failed")
+                conn.commit()
+                order.update_status(status)

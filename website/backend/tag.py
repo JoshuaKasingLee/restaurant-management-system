@@ -6,4 +6,3 @@ class Tag:
         return {
             "name": self.name
         }
-        # return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)
