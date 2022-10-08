@@ -155,25 +155,25 @@ class Restaurant:
         for tok in self.kitchen_tokens:
             if (tok == token):
                 return True 
-        return False
+        raise Exception("Cannot validate")
 
     def wait_validate(self, token):
         for tok in self.wait_tokens:
             if (tok == token):
                 return True 
-        return False
+        raise Exception("Cannot validate")
 
     def manager_validate(self, token):
         for tok in self.manager_tokens:
             if (tok == token):
                 return True 
-        return False
+        raise Exception("Cannot validate")
 
     def customer_validate(self, token):
         for table in self.tables:
             if (table.token == token):
                 return True 
-        return False
+        raise Exception("Cannot validate")
     
     # converts a category to JSON
     def category_to_JSON(self, name, category_name):
