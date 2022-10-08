@@ -19,8 +19,3 @@ def choose_table():
     tok = restaurant.choose_table(num)
     res = {"token": tok}
     return res
-
-    
-    
-
-    

@@ -50,6 +50,36 @@ function Menu() {
     setLabel(newLabel);
   };
 
+  const [menu, setMenu] = React.useState('');
+
+  React.useEffect(() => {
+    const getMenu = async () => {
+      const response = await fetch(`http://localhost:5000/customer/menu`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          //Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setMenu(data);
+        localStorage.setItem("menu",data);
+      } else {
+        alert(await data.error);
+      }
+    };
+    getMenu();
+  }, []);
+
+  const getCategories = menu => {
+    let content = [];
+    for (let i = 1; i <= menu.categories.length; i++) {
+      content.push(<Tab label={menu.categories[i]} {...a11yProps(i)} />);
+    }
+    return content;
+  };
+
   return (
     <>
       <Header title={"Menu"} />
@@ -64,6 +94,7 @@ function Menu() {
           aria-label="Vertical tabs example"
           sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
         >
+          {getCategories}
           <Tab label="Category 0" {...a11yProps(0)} />
           <Tab label="Category 1" {...a11yProps(1)} />
           <Tab label="Category 2" {...a11yProps(2)} />
