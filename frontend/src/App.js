@@ -8,7 +8,9 @@ import React from 'react';
 import './App.css';
 
 import Landing from './pages/Landing';
-import Table from './pages/customer/Table.js';
+import Table from './pages/customer/Table';
+import Menu from './pages/customer/Menu';
+import Order from './pages/customer/Order';
 import Game from './pages/customer/Game';
 // import Register from './pages/Register';
 // import Login from './pages/Login';
@@ -29,7 +31,9 @@ function App () {
         <Routes>
           <Route exact path='/' element={<Landing />} />
           <Route exact path='/customer/table' element={<Table />} />
+          <Route exact path='/customer/menu' element={<Menu />} />
           <Route exact path='/customer/game' element={<Game />} />
+          <Route exact path='/customer/order' element={<Order />} />
           {/* <Route exact path='/' element={<Welcome />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />

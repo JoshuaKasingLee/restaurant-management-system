@@ -1,7 +1,6 @@
-from flask import Blueprint
+from flask import Response, Blueprint
 from flask import request
 from __init__res import restaurant
-
 
 customer_routes = Blueprint('customer_routes', __name__)
     
