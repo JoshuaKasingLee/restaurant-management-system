@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
 import TableForm from '../../components/customer/TableForm';
 import Header from '../../components/customer/Header';
 
 function Table () {
   localStorage.clear();
-  const navigate = useNavigate();
 	
 	return (
     <>
@@ -13,16 +11,17 @@ function Table () {
       <TableForm submit = {async (table) => {
         const response = await fetch('http://localhost:5000/customer/table', {
           method: 'POST',
+          mode: 'cors',
           headers: {
           'Content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
           },
-          body: JSON.stringify({table})
+          body: JSON.stringify({ table: table })
         });
         const data = await response.json();
         if (response.ok) {
-          // store token/table number backend/local storage on submit
+          // console.log(data);
           localStorage.setItem('token', data.token);
-          navigate('/menu');
         } else {
           alert(await data.error);
         }

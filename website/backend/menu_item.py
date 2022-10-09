@@ -22,7 +22,7 @@ class MenuItem:
             "description": self.desc,
             "ingredients": self.ingredients,
             "cost": self.cost,
-            "category": self.category,
+            "category": self.category.name,
             "tags": tags,
             "img": self.img,
             "visible": self.visible,

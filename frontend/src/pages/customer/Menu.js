@@ -21,7 +21,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -44,10 +44,42 @@ function a11yProps(index) {
 function Menu() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("Category One");
+  const [menu, setMenu] = React.useState({});
 
   const handleChange = (event, newValue, newLabel) => {
     setValue(newValue);
     setLabel(newLabel);
+  };
+
+  React.useEffect(() => {
+    const getMenu = async () => {
+      const response = await fetch(`http://localhost:5000/customer/menu`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          //Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data);
+        // fix this - put whole object into useState thing.
+        setMenu(data);
+        localStorage.setItem("menu",data);
+      } else {
+        alert(await data.error);
+      }
+    };
+    getMenu();
+  }, []);
+
+  const getCategories = menu => {
+    console.log('hello');
+    let content = [];
+    for (let i = 0; i < menu.categories.length; i++) {
+      content.push(<Tab label={menu.categories[i].name} {...a11yProps(i)} />);
+    }
+    return content;
   };
 
   return (
@@ -64,6 +96,7 @@ function Menu() {
           aria-label="Vertical tabs example"
           sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
         >
+          {getCategories}
           <Tab label="Category 0" {...a11yProps(0)} />
           <Tab label="Category 1" {...a11yProps(1)} />
           <Tab label="Category 2" {...a11yProps(2)} />

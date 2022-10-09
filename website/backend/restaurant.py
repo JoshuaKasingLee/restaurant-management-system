@@ -1,3 +1,4 @@
+from re import L
 from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
@@ -5,11 +6,17 @@ from table import Table
 from menu_item import MenuItem
 from tag import Tag
 from category import Category
+from helper import OrderStatus
 from init_db import conn
+from uuid import uuid4
+import json
+
+from order import Order
 
 class Restaurant:
     def __init__(self, name):
         self.name = name
+        self.pic = "sunnies.jpg"
         self.tables = []
         self.categories = []
         self.menu_items = []
@@ -17,6 +24,9 @@ class Restaurant:
         self.manager = None
         self.wait = None
         self.kitchen = None
+        self.manager_tokens = []
+        self.wait_tokens = []
+        self.kitchen_tokens = []
         #may need token thingy for customer and everyone not sure
         
     def populate(self):
@@ -49,7 +59,7 @@ class Restaurant:
         result = cur.fetchall()
         for cat in result:
             self.categories.append(Category(cat[0], cat[1], cat[2]))
-            
+
         cur.execute("select mi.id, mi.name, mi.cost, mi.category, mi.visible, mi.display_order, mi.description, mi.ingredients, mi.image from menu_item mi")
         result = cur.fetchall()
         for item in result:
@@ -73,7 +83,7 @@ class Restaurant:
             for category in self.categories:
                 if category_name == category.name:
                     menu_item_category = category
-                break
+                    break
             
             self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
             
@@ -89,17 +99,7 @@ class Restaurant:
         for cat in self.categories:
             if cat.name == name:
                 return True
-        return False
-
-    def get_menu(self, name):
-        # for category in self.categories:
-        #     print(category.name)
-        for menu_item in self.menu_items:
-            print(menu_item.get_menu_item())
-
-
-        return self.menu_items
-        
+        return False    
         
     def tab_num_exist(self, number):
         for table in self.tables:
@@ -108,22 +108,19 @@ class Restaurant:
         return False
         
         
-    def count_unoccupied(self):
+    def count_tables(self):
         counter = 0
         for table in self.tables:
-            if (not table.occupied):
-                counter += 1
+            counter += 1
         return counter
         
-    def remove_unoccupied(self):
+    def remove_table(self):
         cur = conn.cursor()
-        for table in self.tables:
-            if (not table.occupied):
-                
-                cur.execute("""delete from tables where num = %s""", [table.number])
-                conn.commit()
-                self.tables.remove(table)
-                return
+        table_index = len(self.tables) - 1
+        cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
+        if (cur.rowcount == 1):
+            self.tables.remove(self.tables[table_index])
+        conn.commit()
                 
                 
     def choose_table(self, number):
@@ -131,8 +128,52 @@ class Restaurant:
         for table in self.tables:
             if (table.number == number):
                 cur.execute("""update tables set occupied = True where num = %s""", [number])
-                conn.commit()
-                table.occupied = True
+                if (cur.rowcount == 1):
+                    cust_token = uuid4()
+                    table.occupied = True
+                    table.token = cust_token    
+                    conn.commit()
+                    return cust_token
+        raise Exception("Cannot find table")
+        
+                
+    def login(self, user, password):
+        if (user == 'manager' and password == self.manager.password):
+            manager_token = uuid4()
+            self.manager_tokens.append(manager_token)
+            return manager_token
+        elif (user == 'wait' and password == self.wait.password):
+            wait_token = uuid4()
+            self.wait_tokens.append(wait_token)
+            return wait_token
+        elif (user == 'kitchen' and password == self.kitchen.password):
+            kitchen_token = uuid4()
+            self.kitchen_tokens.append(kitchen_token)
+            return kitchen_token
+    
+    def kitchen_validate(self, token):
+        for tok in self.kitchen_tokens:
+            if (tok == token):
+                return True 
+        return False
+
+    def wait_validate(self, token):
+        for tok in self.wait_tokens:
+            if (tok == token):
+                return True 
+        return False
+
+    def manager_validate(self, token):
+        for tok in self.manager_tokens:
+            if (tok == token):
+                return True 
+        return False
+
+    def customer_validate(self, token):
+        for table in self.tables:
+            if (table.token == token):
+                return True 
+        return False
     
     # converts a category to JSON
     def category_to_JSON(self, name, category_name):
@@ -154,4 +195,54 @@ class Restaurant:
         categories = []
         for category in self.categories:
             categories.append(self.category_to_JSON(self, category.name))
-        return categories
+        return {
+            "categories": categories
+        }
+
+
+    def get_restaurant_info(self):
+        rest_obj = {
+            "name": self.name,
+            "tables": self.count_tables(),
+            "image": self.pic
+        }
+        password_obj = {
+            "kitchen": self.kitchen.password,
+            "wait": self.wait.password,
+            "manager": self.manager.password
+        }
+        return {
+            "restaurant": rest_obj,
+            "passwords": password_obj
+        }
+        
+    def change_restaurant_info(self, name, tab_num, image, kitchen, wait, manager):
+        self.name = name
+        self.pic = image 
+        self.manager.change_kitchen_pw(kitchen)
+        self.manager.change_wait_pw(wait)
+        self.manager.change_manager_pw(manager)
+        self.manager.choose_table_amt(tab_num)
+
+    def get_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])
+
+    def get_wait_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                if order.status == OrderStatus.PREPARED:
+                    orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])
+    
+    def get_kitchen_order_list(self):
+        orders_list = []
+        for table in self.tables:
+            for order in table.orders:
+                if order.status == OrderStatus.ORDERED or order.status == OrderStatus.COOKING:
+                    orders_list.append(order.to_JSON())
+        return sorted(orders_list, key=lambda d: d['time_ordered'])

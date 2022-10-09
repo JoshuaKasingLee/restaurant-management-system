@@ -4,3 +4,10 @@ from staff import Staff
 class KitchenStaff(Staff):
     def __init__(self, password, restaurant):
         super().__init__(password, restaurant)
+
+    def update_status(self, id, status):
+        for table in self.restaurant.tables:
+            table.update_order_status(id, status)
+    
+    def get_order_list(self):
+        return self.restaurant.get_kitchen_order_list()
