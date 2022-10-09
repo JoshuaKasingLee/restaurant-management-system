@@ -62,7 +62,7 @@ function Menu() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
+        // console.log(data);
         localStorage.setItem('menu', JSON.stringify(data));
         setMenu( menu => (data) );
       } else {
