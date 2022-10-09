@@ -48,6 +48,27 @@ const rows = [
 ];
 
 function OrderTable() {
+  const [order, setOrder] = React.useState([]);
+
+  React.useEffect(() => {
+    const getOrder = async () => {
+      const response = await fetch(`http://localhost:5000/customer/order?table=${localStorage.getItem('table')}`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          //Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('order', data);
+        setOrder(order => data);
+      } else {
+        alert(await data.error);
+      }
+    };
+    getOrder();
+  }, []);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -70,7 +91,7 @@ function OrderTable() {
             {rows
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (

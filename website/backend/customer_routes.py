@@ -28,12 +28,13 @@ def display_menu():
 def order_dishes():
     data = request.get_json()
     table = data["table"]
-    menu_item = data["menuitemId"]
+    menu_item = data["menuItem"]
     quantity = data ["quantity"]
     for t in restaurant.tables:
         if t.number == table:
             tok = t.order_dishes(menu_item, quantity)
-    res = {"token": tok}
+    # TODO: @kelly fix this, replaced tok with 1 just for frontend testing - Jan
+    res = {"token": 1}
     return res # need to check this token
 
 @customer_routes.route('/order?<int:TableNum>', methods=['GET'])

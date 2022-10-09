@@ -65,6 +65,7 @@ function MenuCategory({category}) {
           cost: '$' + category.menu_items[i].cost.toFixed(2),
           description: category.menu_items[i].description,
           ingredients: category.menu_items[i].ingredients,
+          quantity: 1,
           // tag: category.menu_items[i].tags //"Chef's Reccomendation"
         }
       );
@@ -88,6 +89,35 @@ function MenuCategory({category}) {
     }));
   };
   
+  const handleOrder = (item, index) => async () => {
+    const response = await fetch('http://localhost:5000/customer/order', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+      'Content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify(
+        { 
+          table: localStorage.getItem("table"),
+          menuItem: item.title,
+          quantity: item.quantity
+        }
+      )
+    });
+    const data = await response.json();
+    if (response.ok) {
+      // console.log(data);
+      localStorage.setItem('token', data.token);
+    } else {
+      alert(await data.error);
+    }
+    setOpen( state => ({ 
+      ...state, 
+      [index]: false
+    }));
+  };
+
   return (
     <ImageList sx={{ width: 950, height: 500 }} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
@@ -124,7 +154,8 @@ function MenuCategory({category}) {
             keepMounted
             onClose={handleClose(index)}
             aria-describedby="alert-dialog-slide-description"
-            maxWidth="xl"
+            fullWidth={true}
+            maxWidth='sm'
           >
             <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose(index)}>
               {item.title}
@@ -158,7 +189,7 @@ function MenuCategory({category}) {
                     </Button>
                     <Box display="flex" sx={{ border: 1, width: 50, textAlign: 'center' }} justifyContent="center" alignItems="center">
                       <Typography variant="h4">
-                        1
+                        {item.quantity}
                       </Typography>
                     </Box>
                     <Button sx={{ width: 50 }}>
@@ -172,7 +203,7 @@ function MenuCategory({category}) {
             </DialogContent>
             <DialogActions>
               {/* TODO: link this to order request */}
-              <Button onClick={handleClose(index)}>Order</Button>
+              <Button onClick={handleOrder(item, index)}>Order</Button>
             </DialogActions>
           </Dialog>
         </div>
