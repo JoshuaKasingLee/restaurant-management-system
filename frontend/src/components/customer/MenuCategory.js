@@ -171,6 +171,7 @@ function MenuCategory({category}) {
               </Grid>
             </DialogContent>
             <DialogActions>
+              {/* TODO: link this to order request */}
               <Button onClick={handleClose(index)}>Order</Button>
             </DialogActions>
           </Dialog>
