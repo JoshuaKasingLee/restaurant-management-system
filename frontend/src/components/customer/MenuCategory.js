@@ -6,10 +6,28 @@ import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 
-function MenuCategory() {
+function MenuCategory({category}) {
+  const [categoryItems, setCategoryItems] = React.useState([]);
+
+  React.useEffect(() => {
+    let content = [];
+    for (let i=0; i < category.menu_items.length; i++) {
+      content.push(
+        { 
+          img: category.menu_items[i].img,
+          title: category.menu_items[i].name,
+          cost: category.menu_items[i].cost,
+          // tag: category.menu_items[i].tags //"Chef's Reccomendation"
+        }
+      );
+      setCategoryItems( categoryItems => content );
+    }
+    // console.log(content);
+  }, [category]);
+  
   return (
-    <ImageList sx={{ width: 1000, height: 500 }} cols={4} rowHeight={250}>
-      {itemData.map((item) => (
+    <ImageList sx={{ width: 950, height: 500 }} cols={4} rowHeight={250}>
+      {categoryItems.map((item) => (
         <ImageListItem key={item.img}>
           <img
             src={`${item.img}?w=248&fit=crop&auto=format`}
