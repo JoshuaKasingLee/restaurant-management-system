@@ -1,5 +1,5 @@
 class MenuItem:
-    def __init__(self, name, desc, ingredients, cost, category, tags = None, img = 'images/no-image-available.png', visible = False, display_order = 0):
+    def __init__(self, name, desc, ingredients, cost, category, tags = None, img = 'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg', visible = False, display_order = 0):
         self.name = name
         self.desc = desc
         self.ingredients = ingredients
