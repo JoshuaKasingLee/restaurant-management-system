@@ -8,6 +8,10 @@ kitchen_routes = Blueprint('kitchen_routes', __name__)
 
 @kitchen_routes.route('/orders', methods=['PUT'])
 def kitchen_update_order():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.kitchen_validate(token)
+
     data = request.get_json()
     id = data['id']
     given_status = data['status']
@@ -25,6 +29,10 @@ def kitchen_update_order():
 
 @kitchen_routes.route('/orders', methods=['GET'])
 def kitchen_orders():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.kitchen_validate(token)
+    
     res = kitchen_staff.get_order_list()
     return {
         'orders': res
