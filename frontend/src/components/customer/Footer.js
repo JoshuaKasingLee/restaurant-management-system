@@ -9,7 +9,7 @@ import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 import Typography from '@mui/material/Typography';
 
-function Footer({initialValue}) {
+function Footer({initialValue, title}) {
   const [value, setValue] = React.useState(initialValue);
 
   const handleChange = (event, newValue) => {
@@ -29,24 +29,24 @@ function Footer({initialValue}) {
         value={value} 
         onChange={handleChange}
       >
-        <BottomNavigationAction
+        {title !== 'Bill' && <BottomNavigationAction
           label="Menu"
           value="menu"
           icon={<RestaurantMenuRoundedIcon fontSize="large" />}
           component={Link} to={'/customer/menu'}
-        />
-        <BottomNavigationAction
-          label="Order"
-          value="order"
-          icon={<ListAltRoundedIcon fontSize="large" />}
-          component={Link} to={'/customer/order'}
-        />
-        <BottomNavigationAction 
-          label="Game" 
-          value="game" 
-          icon={<SportsEsportsRoundedIcon fontSize="large" />} 
-          component={Link} to={'/customer/game'}
-        />
+        />}
+        {title !== 'Bill' && <BottomNavigationAction
+            label="Order"
+            value="order"
+            icon={<ListAltRoundedIcon fontSize="large" />}
+            component={Link} to={'/customer/order'}
+        />}
+        {title !== 'Bill' && <BottomNavigationAction
+            label="Game" 
+            value="game" 
+            icon={<SportsEsportsRoundedIcon fontSize="large" />} 
+            component={Link} to={'/customer/game'}
+        />}
         <BottomNavigationAction 
           label="Admin" 
           value="admin" 

@@ -22,7 +22,7 @@ function Header({title}) {
           <Typography variant="h1" component="div" sx={{ flexGrow: 1, ml: `${drawerWidth}px` }}>
             {title}
           </Typography>
-          {title !== 'Table Selection' && <ToggleButton
+          {title !== 'Table Selection' && title !== 'Admin' && <ToggleButton
           value="check"
           selected={selected}
           onChange={() => {

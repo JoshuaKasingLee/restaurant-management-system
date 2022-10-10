@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -66,7 +67,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-function OrderTable() {
+function OrderTable({submit}) {
   const [order, setOrder] = React.useState([]);
   const [totalCost, setTotalCost] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -78,6 +79,10 @@ function OrderTable() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleBill = () => {
+    submit();
+  }
 
   React.useEffect(() => {
     const getOrder = async () => {
@@ -162,7 +167,7 @@ function OrderTable() {
             <Typography variant="h3" >Total: ${totalCost.toFixed(2)}</Typography>
             <Typography variant="h7" sx={{ mx:'5px' }} >Including Tax</Typography>
           </Stack>
-          <Button size="large" variant="contained" onClick={handleClickOpen}>End Dining</Button>
+          <Button size="large" variant="contained" onClick={handleClickOpen}>Request Bill</Button>
           <Dialog
             open={open}
             TransitionComponent={Transition}
@@ -181,7 +186,7 @@ function OrderTable() {
               </Typography>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus onClick={handleClose}>
+              <Button autoFocus component={Link} to={'/customer/bill'} onClick={handleBill}>
                 Request Bill
               </Button>
             </DialogActions>
