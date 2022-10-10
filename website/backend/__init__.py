@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 from flask_cors import CORS
 from manager_routes import manager_routes
 from waiter_routes import waiter_routes
@@ -24,6 +24,8 @@ def create_app():
         role = data["role"]
         password = password["password"]
         token = restaurant.login(role, password)
+        if (token == None):
+            return Response(response="Wrong username or password", status=401)
         res = {"token": token}
         return dumps(res)
     return app
