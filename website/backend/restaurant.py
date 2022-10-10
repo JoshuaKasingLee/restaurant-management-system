@@ -131,7 +131,7 @@ class Restaurant:
                 if (cur.rowcount == 1):
                     cust_token = uuid4()
                     table.occupied = True
-                    table.token = cust_token    
+                    table.token = str(cust_token)    
                     conn.commit()
                     return cust_token
         raise Exception("Cannot find table")
