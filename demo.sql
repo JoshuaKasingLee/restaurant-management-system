@@ -94,6 +94,8 @@ INSERT INTO tag(name) values ('dairy free');
 INSERT INTO leaderboard_entry(id, email, score, time_played) values (1, 'monkey@gmail.com', 20),
 (2, 'koala@gmail.com', 50), (3, 'tiger@gmail.com', 100);
 
+INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
+
 INSERT INTO category(name, visible, display_order) values ('Sashimi', TRUE, 1);
 INSERT INTO category(name, visible, display_order) values ('Noodle', TRUE, 2);
 INSERT INTO category(name, visible, display_order) values ('Rice bowl', TRUE, 3);
