@@ -16,7 +16,7 @@ class Order:
     def to_JSON(self):
         return {
             "id": self.id,
-            "menu_item": self.menu_item,
+            "menu_item": self.menu_item.to_JSON(),
             "table": self.table,
             "time_ordered": self.time_ordered,
             "status": self.status.value
