@@ -150,6 +150,8 @@ class Restaurant:
             kitchen_token = uuid4()
             self.kitchen_tokens.append(str(kitchen_token))
             return str(kitchen_token)
+        else:
+            return None
     
     def kitchen_validate(self, token):
         for tok in self.kitchen_tokens:
