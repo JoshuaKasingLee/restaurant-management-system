@@ -32,15 +32,8 @@ def order_dishes():
     quantity = data ["quantity"]
     for t in restaurant.tables:
         if t.number == table:
-<<<<<<< HEAD
-            tok = t.order_dishes(menu_item, quantity)
-    # TODO: @kelly fix this, replaced tok with 1 just for frontend testing - Jan
-    res = {"token": 1}
-    return res # need to check this token
-=======
             t.order_dishes(menu_item, quantity)
     return Response(status = 200)
->>>>>>> main
 
 @customer_routes.route('/order?<int:TableNum>', methods=['GET'])
 def view_orders(TableNum):
