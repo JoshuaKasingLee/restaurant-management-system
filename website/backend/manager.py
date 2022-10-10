@@ -50,27 +50,61 @@ class Manager(Staff):
         # check if exception needs to be thrown if no category was found
         return False
 
-    def add_menu_item(self, name, desc, ingredients, cost, category: Category, tags = None, img = None):
+    def add_menu_item(self, name, desc, ingredients, cost, category: str, tags = None, img = None):
         if self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} already exists")
         else:
             cur = conn.cursor()
             try:
-                cur.execute("select id from category where name = %s", [category.name])
+                cur.execute("select id from category where name = %s", [category])
                 cat_id = cur.fetchone()[0]
-                # cur.execute("select * from category")
-                # print(cur.fetchone())
                 cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values (%s, %s, %s, %s, %s, %s, %s, %s);", [name, desc, ingredients, cost, 0, cat_id, img, False]) # need to change to default order at end
             except Exception as err:
                 conn.rollback()
-                raise Exception("Inserting new category failed")
+                raise Exception("Inserting new menu item failed")
             conn.commit()
-            # cur.execute("SELECT id FROM MENU_ITEM ORDER BY time_ordered DESC LIMIT 1")
-            # item_id = cur.fetchone()[0]
-            # STILL NEED TO DO TAGS
+
+            # adding tags
+            if tags != None:
+                if tags["vegetarian"]:
+                    try:
+                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegetarian'));", [name])
+                    except Exception as err:
+                        conn.rollback()
+                        raise Exception("Inserting new tag failed")
+                if tags['vegan']:
+                    try:
+                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegan'));", [name])
+                    except Exception as err:
+                        conn.rollback()
+                        raise Exception("Inserting new tag failed")
+                if tags['gluten free']:
+                    try:
+                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'gluten free'));", [name])
+                    except Exception as err:
+                        conn.rollback()
+                        raise Exception("Inserting new tag failed")
+                if tags['nut free']:
+                    try:
+                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'nut free'));", [name])
+                    except Exception as err:
+                        conn.rollback()
+                        raise Exception("Inserting new tag failed")
+                if tags['dairy free']:
+                    try:
+                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'dairy free'));", [name])
+                    except Exception as err:
+                        conn.rollback()
+                        raise Exception("Inserting new tag failed")
+                if tags['chef recommended']:
+                    try:
+                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'chef recommended'));", [name])
+                    except Exception as err:
+                        conn.rollback()
+                        raise Exception("Inserting new tag failed")
+            conn.commit()
 
             m = MenuItem(name, desc, ingredients, cost, category, tags, img)
-            # m.add_tags(tags)
             self.restaurant.menu_items.append(m)
             return m
                 

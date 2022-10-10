@@ -9,3 +9,7 @@ Jannet and I discussed with the rest of the team some of the application decisio
 Week 3
 
 Jannet and I worked together to write up the API endpoints that we would need from the backend, including the json returns. I focused on writing up the endpoints related to the staff. I also cleaned up the user flow diagram so it fits on the page, and made some changes on the user storyboards as per previous discussions. I added all staff related user storyboards to the project proposal and annotated them. I also added in the acceptance criteria for my allocated user stories.
+
+Week 4
+
+I cleaned up the API endpoints with Jannet after discussions with the team. I read up on the documentation for React and mocked up a frontend with all the necessary staff pages for sprint 1, unconnected to the backend. This was demoed to the team, to make sure everyone liked it. Then, I connected most of the kitchen, wait, and login side of staff with the backend.

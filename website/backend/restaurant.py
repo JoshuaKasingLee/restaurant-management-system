@@ -69,11 +69,12 @@ class Restaurant:
             tag_query = """select t.name from tag t join menu_item_tags mit on mit.tag = t.id where mit.menu_item = %s"""
             cur.execute(tag_query, [id])
             tag_list = cur.fetchall()
-            menu_tags = []
+            # menu_tags = []
+            menu_tags = {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False}
             for tag_name in tag_list:
                 for tag in tag_name:
-                    menu_tags.append(Tag(tag))
-            
+                    menu_tags[tag] = True
+
             # get the category where the id is a match (SQL)
             category_query = """SELECT c.name FROM category c JOIN menu_item m ON m.category = c.id WHERE m.id = %s"""
             cur.execute(category_query, [id])
@@ -133,23 +134,25 @@ class Restaurant:
                     table.occupied = True
                     table.token = str(cust_token)    
                     conn.commit()
-                    return cust_token
+                    return str(cust_token)
         raise Exception("Cannot find table")
         
                 
     def login(self, user, password):
         if (user == 'manager' and password == self.manager.password):
             manager_token = uuid4()
-            self.manager_tokens.append(manager_token)
-            return manager_token
+            self.manager_tokens.append(str(manager_token))
+            return str(manager_token)
         elif (user == 'wait' and password == self.wait.password):
             wait_token = uuid4()
-            self.wait_tokens.append(wait_token)
-            return wait_token
+            self.wait_tokens.append(str(wait_token))
+            return str(wait_token)
         elif (user == 'kitchen' and password == self.kitchen.password):
             kitchen_token = uuid4()
-            self.kitchen_tokens.append(kitchen_token)
-            return kitchen_token
+            self.kitchen_tokens.append(str(kitchen_token))
+            return str(kitchen_token)
+        else:
+            return None
     
     def kitchen_validate(self, token):
         for tok in self.kitchen_tokens:
