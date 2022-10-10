@@ -80,7 +80,7 @@ class Table:
             order_info = {
                 "id": order.id,      
                 "name": order.menu_item.name,
-                "status": order.status,
+                "status": order.status.value,
                 "cost": order.menu_item.cost,
                 "img": order.menu_item.img
             }

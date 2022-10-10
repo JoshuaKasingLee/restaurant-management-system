@@ -40,7 +40,7 @@ def test_order_dish():
 
     cur.execute("select * from orders")
     assert(len(cur.fetchall()) == 0)
-    table.order_dish(m1)
+    table.order_dishes("Escargot", 1)
     
     assert(len(table.orders) == 1)
     assert(table.orders[0].menu_item.name == "Escargot")

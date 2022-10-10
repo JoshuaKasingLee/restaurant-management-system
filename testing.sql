@@ -90,3 +90,4 @@ INSERT INTO tag(name) values ('vegan');
 INSERT INTO tag(name) values ('gluten free');
 INSERT INTO tag(name) values ('nut free');
 INSERT INTO tag(name) values ('dairy free');
+INSERT INTO tag(name) values ('chef recommended');
