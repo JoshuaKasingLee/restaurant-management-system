@@ -1,5 +1,7 @@
 // https://javascript.plainenglish.io/create-a-click-shape-game-with-react-and-javascript-c4fa18698081
 import React, { useState } from "react";
+import Header from '../../components/customer/Header';
+import Footer from '../../components/customer/Footer';
 
 function Game() {
   const [score, setScore] = useState(0);
@@ -23,34 +25,38 @@ function Game() {
     setCircleY(undefined);
   };
   return (
-    <div className="Game">
-      <style>
-        {`
-        .circle {
-          border: 1px solid black;
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-        }
-        `}
-      </style>
-      <button onClick={start}>start game</button>
-      <button onClick={end}>end game</button>
-      <p>score: {score}</p>
-      {circleX && circleY && (
-        <div
-          className="circle"
-          style={{
-            position: "absolute",
-            top: `${circleY}px`,
-            left: `${circleX}px`
-          }}
-          onClick={onClick}
-        >
-          &nbsp;
-        </div>
-      )}
-    </div>
+    <>
+      <Header title={"Game"} />
+      <div className="Game">
+        <style>
+          {`
+          .circle {
+            border: 1px solid black;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+          }
+          `}
+        </style>
+        <button onClick={start}>start game</button>
+        <button onClick={end}>end game</button>
+        <p>score: {score}</p>
+        {circleX && circleY && (
+          <div
+            className="circle"
+            style={{
+              position: "absolute",
+              top: `${circleY}px`,
+              left: `${circleX}px`
+            }}
+            onClick={onClick}
+          >
+            &nbsp;
+          </div>
+        )}
+      </div>
+      <Footer initialValue={"game"}/>
+    </ >
   );
 }
 
