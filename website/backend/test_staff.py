@@ -57,7 +57,7 @@ def test_get_time_sorted_orders():
     ordered_item_list = []
 
     for order in ordered_list:
-        ordered_item_list.append(order['menu_item'].name)
+        ordered_item_list.append(order['menu_item']['name'])
     
     cur.execute("DELETE FROM orders")
     cur.execute("DELETE FROM menu_item")
