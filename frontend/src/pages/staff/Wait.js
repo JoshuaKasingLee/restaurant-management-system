@@ -7,7 +7,60 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 function Wait() {
-    return (
+  const [preparedOrders, setPrepared] = React.useState([]);
+
+  React.useEffect(() => {  
+    const getWaitOrders = async () => {
+      // const response = await fetch(`http://localhost:5000/wait/orders`, {  
+      //   method: 'GET',
+      //   headers: {
+      //     'Content-type': 'application/json',
+      //     'Access-Control-Allow-Origin': '*',
+      //     'Authorization': `Bearer ${localStorage.getItem('token')}`
+      //   },
+      // });
+      // const data = await response.json();
+      // if (response.ok) {
+      //   setPrepared(data.orders);
+      // } else {
+      //   alert(await data.error);
+      // }
+          
+      const data = {
+        orders: [
+          {
+            id: 1,
+            table: 1,
+            name: "name",
+            status: "prepared"
+          },
+          {
+            id: 1,
+            table: 1,
+            name: "name",
+            status: "prepared"
+          }
+        ]
+      }
+      if (true) {
+        setPrepared(data.orders);
+      } else {
+        alert(await data.error);
+      }
+    }
+
+    getWaitOrders()
+
+
+    // const intervalID = setInterval(getWaitOrders, 1000)
+
+    // return (() => {
+    //   clearInterval(intervalID)
+    // })
+
+  }, []);   
+  
+  return (
       <>
         <Header title={"WAIT"} />
         <Box sx={{
@@ -18,7 +71,7 @@ function Wait() {
         }}>
           <Box sx={{ p: 2, m: 3, display: 'flex', flexDirection: 'column', flex: 3 }}>
             <Typography variant="h5">Waiting to be Served</Typography>
-            <WaitOrders></WaitOrders>
+            <WaitOrders orders={preparedOrders}></WaitOrders>
           </Box>
           <Box sx={{ p: 2, m: 3, display: 'flex', flexDirection: 'column', flex: 1 }}>
             <Typography variant="h5">Requests for Assistance</Typography>

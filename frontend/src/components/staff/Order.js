@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
-export default function KitchenOrder({id, table, name, nextStatus}) {
+export default function Order({id, table, name, nextStatus}) {
     const labelId = `checkbox-list-label-${table}`;
 
     async function progressOrderStatus() {
