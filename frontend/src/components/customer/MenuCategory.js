@@ -105,10 +105,10 @@ function MenuCategory({category}) {
         }
       )
     });
-    const data = await response.json();
+    const data = await response;
     if (response.ok) {
       // console.log(data);
-      localStorage.setItem('token', data.token);
+      //localStorage.setItem('token', data.token);
     } else {
       alert(await data.error);
     }
