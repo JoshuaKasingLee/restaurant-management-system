@@ -18,13 +18,13 @@ function Footer({initialValue}) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Box width="130px">
+      <Box width="180px">
         <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }}>
         Table {localStorage.getItem('table')}
         </Typography>
       </Box> 
       <BottomNavigation 
-        sx={{ position: 'fixed', display:'flex', justifyContent:'space-between', bottom: 0, left: 130, right: 0 }}  
+        sx={{position: 'fixed', display:'flex', justifyContent:'space-between', bottom: 0, left: 180, right: 0 }}  
         elevation={3} 
         value={value} 
         onChange={handleChange}

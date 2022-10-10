@@ -25,7 +25,7 @@ function Table () {
         } else {
           alert(await data.error);
         }
-        }} 
+      }} 
       />
     </ >
 	);

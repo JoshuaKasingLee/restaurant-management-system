@@ -44,11 +44,55 @@ function a11yProps(index) {
 function Menu() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("Category One");
+  const [menu, setMenu] = React.useState({'categories': []});
 
   const handleChange = (event, newValue, newLabel) => {
     setValue(newValue);
     setLabel(newLabel);
   };
+
+  React.useEffect(() => {
+    const getMenu = async () => {
+      const response = await fetch(`http://localhost:5000/customer/menu`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          //Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        // console.log(data);
+        localStorage.setItem('menu', JSON.stringify(data));
+        setMenu( menu => (data) );
+      } else {
+        alert(await data.error);
+      }
+    };
+    getMenu();
+  }, []);
+
+  const getCategoriesTabs = menu => {
+    let content = [];
+    for (let i = 0; i < menu.categories.length; i++) {
+      content.push(<Tab key={i} label={menu.categories[i].name} {...a11yProps(i)} />);
+    }
+    return content;
+  };
+
+  const getCategoriesTabPanels = menu => {
+    let content = [];
+    for (let i = 0; i < menu.categories.length; i++) {
+      content.push(
+        <TabPanel  key={i} value={value} index={i}>
+          <Typography variant="h3" >{menu.categories[value].name}</Typography>
+          <MenuCategory category={menu.categories[value]}/>
+        </TabPanel>
+      );
+    }
+    return content;
+  };
+
 
   return (
     <>
@@ -64,36 +108,9 @@ function Menu() {
           aria-label="Vertical tabs example"
           sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
         >
-          <Tab label="Category 0" {...a11yProps(0)} />
-          <Tab label="Category 1" {...a11yProps(1)} />
-          <Tab label="Category 2" {...a11yProps(2)} />
-          <Tab label="Category 3" {...a11yProps(3)} />
-          <Tab label="Category 4" {...a11yProps(4)} />
-          <Tab label="Category 5" {...a11yProps(5)} />
-          <Tab label="Category 6" {...a11yProps(6)} />
+          {getCategoriesTabs(menu)}
         </Tabs>
-        <TabPanel value={value} index={0}>
-          <Typography variant="h3" >Category 0</Typography>
-          <MenuCategory />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Typography variant="h3" >Category 1</Typography>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Typography variant="h3" >Category 2</Typography>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <Typography variant="h3" >Category 3</Typography>
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <Typography variant="h3" >Category 4</Typography>
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          <Typography variant="h3" >Category 5</Typography>
-        </TabPanel>
-        <TabPanel value={value} index={6}>
-          <Typography variant="h3" >Category 6</Typography>
-        </TabPanel>
+        {getCategoriesTabPanels(menu)}
       </Box>
       <Footer initialValue={"menu"}/>
     </ >
