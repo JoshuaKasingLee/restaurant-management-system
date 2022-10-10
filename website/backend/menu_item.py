@@ -39,9 +39,9 @@ class MenuItem:
                             t[enum] = True
     
     def to_JSON(self):
-        # tags = []
-        # for tag in self.tags:
-        #     tags.append(tag.to_JSON())
+        tags = []
+        for tag in self.tags:
+            tags.append(tag.to_JSON())
 
         return {
             "name": self.name,
@@ -49,7 +49,7 @@ class MenuItem:
             "ingredients": self.ingredients,
             "cost": self.cost,
             "category": self.category.name,
-            "tags": self.tags,
+            "tags": tags,
             "img": self.img,
             "visible": self.visible,
             "display_order": self.display_order
