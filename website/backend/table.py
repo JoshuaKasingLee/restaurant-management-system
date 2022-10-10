@@ -23,12 +23,12 @@ class Table:
 
     # order menu items
 
-    def order_dishes(self, menu_item_id: int, quantity: int):
+    def order_dishes(self, menu_item_name, quantity: int):
         if quantity > 0:
             cur = conn.cursor()
             try:
                 # need to check row count instead
-                cur.execute("select name, description, ingredients, cost, category, image, visible, display_order from menu_item where id = %s", [menu_item_id])
+                cur.execute("select name, description, ingredients, cost, category, image, visible, display_order from menu_item where name = %s", [menu_item_name])
             except Exception as err:
                 conn.rollback()
                 raise Exception("Menu item could not be found")
