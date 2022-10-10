@@ -26,6 +26,7 @@ export default function Login () {
         <LoginForm submit={async (role, password) => {
           const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
+            mode: 'cors',
             headers: {
               'Content-type': 'application/json',
               'Access-Control-Allow-Origin': '*'
