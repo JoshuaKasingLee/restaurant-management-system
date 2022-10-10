@@ -11,7 +11,14 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import logo from './logo.png'
+import PropTypes from 'prop-types';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import Slide from '@mui/material/Slide';
+import CloseIcon from '@mui/icons-material/Close';
 
 const columns = [
   { id: 'image', label: '', minWidth: 160 },
@@ -26,47 +33,83 @@ const columns = [
   },
 ];
 
-function createData(image, name, status, cost) {
-  return { image, name, status, cost };
-}
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
-const rows = [
-  createData(logo, 'Onigiri', 'Preparing', 12.43),
-  createData(logo, 'Tuna Sushi', 'Preparing', 13.31),
-  createData(logo, 'Spicy Mayo Sushi', 'Preparing', 43.43),
-  createData(logo, 'Avo Roll', 'Cooking', 34.23),
-  createData(logo, 'Udon', 'Cooking', 65.65),
-  createData(logo, 'Ramen', 'Cooking', 34),
-  createData(logo, 'Takoyaki', 'Cooking', 43.2),
-  createData(logo, 'Okinomiyaki', 'Cooking', 23.7),
-  createData(logo, 'Nigiri', 'Cooking', 98.5),
-  createData(logo, 'Salmon Sashimi', 'Cooking', 22.2),
-  createData(logo, 'Toro Roll', 'Ready', 11),
-  createData(logo, 'Cucumber Roll', 'Ready', 12.1),
-  createData(logo, 'Mochi Icecream', 'Complete', 31.5),
-  createData(logo, 'Mochi', 'Complete', 54.3),
-  createData(logo, 'Tamago Roll', 'Complete', 23.1),
-];
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
 
-// function OrderTable({order}) {
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
+
 function OrderTable() {
-  // const [orderItems, setOrderItems] = React.useState([]);
+  const [order, setOrder] = React.useState([]);
+  const [totalCost, setTotalCost] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   let content = [];
-  //   for (let i=0; i < order.orderItems.length; i++) {
-  //     content.push(
-  //       { 
-  //         img: order.orderItems[i].img,
-  //         title: order.orderItems[i].name,
-  //         status: order.orderItems[i].status,
-  //         cost: order.orderItems[i].cost,
-  //       }
-  //     );
-  //     setOrderItems( orderItems => content );
-  //   }
-  //   // console.log(content);
-  // }, [order]);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  React.useEffect(() => {
+    const getOrder = async () => {
+      const response = await fetch(`http://localhost:5000/customer/order?table=${localStorage.getItem('table')}`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('order', JSON.stringify(data));
+        let content = [];
+        for (let i=0; i < data.orderItems.length; i++) {
+          content.push(
+            { 
+              img: data.orderItems[i].img,
+              name: data.orderItems[i].name,
+              status: data.orderItems[i].status,
+              cost: data.orderItems[i].cost,
+            }
+          );
+          setOrder( order => content );
+        }
+        setTotalCost( totalCost => data.total);
+      } else {
+        alert(await data.error);
+      }
+    };
+    getOrder();
+  }, []);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -88,15 +131,15 @@ function OrderTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .map((row) => {
+            {order
+              .map((row, index) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          { column.id === 'image' && <img width='160' src={value} alt=''/> }
+                          { column.id === 'image' && <img width='160' src={row.img} alt=''/> }
                           { column.format && column.format(value) }
                           { column.id !== 'image' && !column.format && value }
                         </TableCell>
@@ -116,10 +159,33 @@ function OrderTable() {
           sx={{ width: '97%', position: 'fixed' }}
         >
           <Stack sx={{ mx:'30px' }}>
-            <Typography variant="h3" >Total: $1000</Typography>
+            <Typography variant="h3" >Total: ${totalCost.toFixed(2)}</Typography>
             <Typography variant="h7" sx={{ mx:'5px' }} >Including Tax</Typography>
           </Stack>
-          <Button size="large" variant="contained">End Dining</Button>
+          <Button size="large" variant="contained" onClick={handleClickOpen}>End Dining</Button>
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+            aria-describedby="alert-dialog-slide-description"
+            fullWidth={true}
+            maxWidth='sm'
+          >
+            <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+              Request Bill
+            </BootstrapDialogTitle>
+            <DialogContent dividers>
+              <Typography gutterBottom>
+                We hope you enjoyed you're meal. Would you like to pay now?
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={handleClose}>
+                Request Bill
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       </Grid>
     </Paper>
