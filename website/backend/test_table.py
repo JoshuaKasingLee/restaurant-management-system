@@ -184,7 +184,7 @@ def test_update_order_status():
     ordered_list = restaurant.get_order_list()
 
 
-    expected = OrderStatus.COOKING
+    expected = OrderStatus.COOKING.value
 
     cur.execute("DELETE FROM orders")
     cur.execute("DELETE FROM menu_item")
