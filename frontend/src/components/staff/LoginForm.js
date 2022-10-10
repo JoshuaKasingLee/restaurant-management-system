@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-function LoginForm ({ submit, role }) {
+export default function LoginForm ({ submit, role }) {
   const [password, setPassword] = React.useState('');
 
   const onSubmit = () => {
@@ -33,5 +33,3 @@ function LoginForm ({ submit, role }) {
 LoginForm.propTypes = {
   submit: PropTypes.elementType
 }
-
-export default LoginForm;

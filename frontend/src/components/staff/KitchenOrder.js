@@ -7,26 +7,50 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
-export default function KitchenOrder({table, name}) {
+export default function KitchenOrder({id, table, name, nextStatus}) {
     const labelId = `checkbox-list-label-${table}`;
+
+    async function progressOrderStatus() {
+        const response = await fetch(`http://localhost:5000/kitchen/orders`, {  
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                id: id,
+                table: table,
+                name: name,
+                status: nextStatus
+            })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            
+        } else {
+            alert(await data.error);
+        }
+    }
 
     return ( <>
         <ListItem
-        key={table}
-        secondaryAction={
-            <IconButton edge="end" aria-label="comments">
-            <ArrowCircleRightIcon />
-            </IconButton>
-        }
-        disablePadding
-        divider
-        >
-        <ListItemButton role={undefined} dense>
-            <ListItemIcon>
-            <Typography>{table}</Typography>
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={name} />
-        </ListItemButton>
+            key={table}
+            secondaryAction={
+                <IconButton
+                    edge="end"
+                    onClick={progressOrderStatus}>
+                    <ArrowCircleRightIcon />
+                </IconButton>
+            }
+            disablePadding
+            divider
+            >
+            <ListItemButton role={undefined} dense>
+                <ListItemIcon>
+                    <Typography>{table}</Typography>
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={name} />
+            </ListItemButton>
         </ListItem>
     </>
     )

@@ -22,7 +22,7 @@ def create_app():
     def user_login():
         data = request.get_json()
         role = data["role"]
-        password = password["password"]
+        password = data["password"]
         token = restaurant.login(role, password)
         res = {"token": token}
         return dumps(res)

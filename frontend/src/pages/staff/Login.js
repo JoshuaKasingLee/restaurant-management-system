@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Stack, Avatar, Typography } from '@mui/material';
 import LoginForm from '../../components/staff/LoginForm';
 
+export default function Login () {
+  localStorage.clear();
 
-function Login () {
+  const navigate = useNavigate();
   const [role, setRole] = React.useState("");  
   
   if (role) {
@@ -22,20 +24,20 @@ function Login () {
           Enter password for {role}
         </Typography>
         <LoginForm submit={async (role, password) => {
-          const response = await fetch('http://localhost:5005/admin/auth/login', {
+          const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
             headers: {
-              'Content-type': 'application/json',
+              'Content-type': 'application/json'
             },
             body: JSON.stringify({
-              role,
-              password,
+              role: role,
+              password: password,
             })
           });
           const data = await response.json();
           if (response.ok) {
             localStorage.setItem('token', data.token);
-            // navigate('/dashboard');
+            navigate(`/staff/${role}`);
           } else {
             alert(await data.error);
           }
@@ -55,5 +57,3 @@ function Login () {
   }
 
 }
-
-export default Login;
