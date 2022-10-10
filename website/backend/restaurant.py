@@ -133,23 +133,23 @@ class Restaurant:
                     table.occupied = True
                     table.token = str(cust_token)    
                     conn.commit()
-                    return cust_token
+                    return str(cust_token)
         raise Exception("Cannot find table")
         
                 
     def login(self, user, password):
         if (user == 'manager' and password == self.manager.password):
             manager_token = uuid4()
-            self.manager_tokens.append(manager_token)
-            return manager_token
+            self.manager_tokens.append(str(manager_token))
+            return str(manager_token)
         elif (user == 'wait' and password == self.wait.password):
             wait_token = uuid4()
-            self.wait_tokens.append(wait_token)
-            return wait_token
+            self.wait_tokens.append(str(wait_token))
+            return str(wait_token)
         elif (user == 'kitchen' and password == self.kitchen.password):
             kitchen_token = uuid4()
-            self.kitchen_tokens.append(kitchen_token)
-            return kitchen_token
+            self.kitchen_tokens.append(str(kitchen_token))
+            return str(kitchen_token)
     
     def kitchen_validate(self, token):
         for tok in self.kitchen_tokens:
