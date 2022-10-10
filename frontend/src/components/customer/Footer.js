@@ -17,14 +17,14 @@ function Footer({initialValue}) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Box width="180px">
-        <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, position: 'fixed', bottom: 10, color: 'background.paper' }}>
+      <Box width="160px" alignItems='end' sx={{ mx: '10px', bgcolor: 'text.secondary', borderRadius: '16px' }}>
+        <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
         Table {localStorage.getItem('table')}
         </Typography>
       </Box> 
       <BottomNavigation 
-        sx={{position: 'fixed', display:'flex', justifyContent:'space-between', bottom: 0, left: 180, right: 0 }}  
+        sx={{ position: 'fixed', display:'flex', justifyContent:'space-between', bottom: 0, left: 180, right: 0 }}  
         elevation={3} 
         value={value} 
         onChange={handleChange}
