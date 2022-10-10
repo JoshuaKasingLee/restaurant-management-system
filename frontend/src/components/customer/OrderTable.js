@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -108,18 +109,20 @@ function OrderTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box 
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="flex-end" 
-        sx={{ width: '100%', position: 'fixed'}}
-      >
-        <Stack>
-          <Typography variant="h3" >Total: $1000</Typography>
-          <Typography variant="h6" >Including Tax</Typography>
-        </Stack>
-        <Button size="large" variant="contained">End Dining</Button>
-      </Box>
+      <Grid container justify = "center">
+        <Box 
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center" 
+          sx={{ width: '97%', position: 'fixed' }}
+        >
+          <Stack sx={{ mx:'30px' }}>
+            <Typography variant="h3" >Total: $1000</Typography>
+            <Typography variant="h7" sx={{ mx:'5px' }} >Including Tax</Typography>
+          </Stack>
+          <Button size="large" variant="contained">End Dining</Button>
+        </Box>
+      </Grid>
     </Paper>
   );
 }
