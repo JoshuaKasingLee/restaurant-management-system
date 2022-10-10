@@ -132,7 +132,7 @@ def test_add_menu_items():
 
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 0)
-    m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", jap)
+    m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
 
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 1)
@@ -140,7 +140,7 @@ def test_add_menu_items():
     assert(r2.menu_contains("Sashimi") == False)
 
     burgers = m2.add_category("Burgers")
-    m2.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", burgers)
+    m2.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", "Burgers")
 
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 2)
@@ -160,16 +160,110 @@ def test_add_duplicate_menu_items():
     m = Manager("password", r)
 
     burgers = m.add_category("Burgers")
-    m.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", burgers)
+    m.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", "Burgers")
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 1)
     assert(r.menu_contains("Cheeseburger") == True)
 
     with pytest.raises(Exception):
-        m.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", burgers)
+        m.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", "Burgers")
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 1)
 
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
+
+def test_add_menu_item_with_no_tags():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from menu_item_tags")
+
+    r1 = Restaurant("Nobu")
+    m1 = Manager("password", r1)
+
+    jap = m1.add_category("Japanese")
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 0)
+    cur.execute("select * from menu_item_tags")
+    assert(len(cur.fetchall()) == 0)
+
+    cur.execute("select * from tag")
+    assert(len(cur.fetchall()) == 6)
+
+    item = m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese", {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False})
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
+    
+    cur.execute("select * from menu_item_tags")
+    assert(len(cur.fetchall()) == 0)
+
+    assert(item.tags == {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False})
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from menu_item_tags")
+    conn.commit()
+
+def test_add_menu_item_with_tags():
+    cur = conn.cursor()
+    cur.execute("delete from menu_item_tags")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+
+    r1 = Restaurant("Nobu")
+    m1 = Manager("password", r1)
+
+    jap = m1.add_category("Japanese")
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 0)
+    cur.execute("select * from menu_item_tags")
+    assert(len(cur.fetchall()) == 0)
+
+    cur.execute("select * from tag")
+    assert(len(cur.fetchall()) == 6)
+
+    item = m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese", {"vegetarian": True, "vegan": False, "gluten free": True, "nut free": False, "dairy free": False, "chef recommended": False})
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
+    
+    cur.execute("select * from menu_item_tags")
+    assert(len(cur.fetchall()) == 2)
+
+    assert(item.tags == {"vegetarian": True, "vegan": False, "gluten free": True, "nut free": False, "dairy free": False, "chef recommended": False})
+
+    cur.execute("delete from menu_item_tags")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
+
+def test_add_menu_item_with_all_tags():
+    cur = conn.cursor()
+    cur.execute("delete from menu_item_tags")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+
+    r1 = Restaurant("Nobu")
+    m1 = Manager("password", r1)
+
+    jap = m1.add_category("Japanese")
+
+    item = m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese", {"vegetarian": True, "vegan": True, "gluten free": True, "nut free": True, "dairy free": True, "chef recommended": True})
+
+    cur.execute("select * from menu_item")
+    assert(len(cur.fetchall()) == 1)
+    
+    cur.execute("select * from menu_item_tags")
+    assert(len(cur.fetchall()) == 6)
+
+    assert(item.tags == {"vegetarian": True, "vegan": True, "gluten free": True, "nut free": True, "dairy free": True, "chef recommended": True})
+
+    cur.execute("delete from menu_item_tags")
     cur.execute("delete from menu_item")
     cur.execute("delete from category")
     conn.commit()
@@ -184,8 +278,8 @@ def test_remove_menu_items():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
     jap = m.add_category("Japanese")
-    m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", jap)
-    m.add_menu_item("Udon", "Very yummy", "Noodles, miso, beef", "10.99", jap)
+    m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
+    m.add_menu_item("Udon", "Very yummy", "Noodles, miso, beef", "10.99", "Japanese")
     assert(len(r.menu_items) == 2)
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 2)
@@ -214,7 +308,7 @@ def test_remove_nonexistent_menu_items():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
     jap = m.add_category("Japanese")
-    m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", jap)
+    m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 1)
     with pytest.raises(Exception):

@@ -69,11 +69,12 @@ class Restaurant:
             tag_query = """select t.name from tag t join menu_item_tags mit on mit.tag = t.id where mit.menu_item = %s"""
             cur.execute(tag_query, [id])
             tag_list = cur.fetchall()
-            menu_tags = []
+            # menu_tags = []
+            menu_tags = {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False}
             for tag_name in tag_list:
                 for tag in tag_name:
-                    menu_tags.append(Tag(tag))
-            
+                    menu_tags[tag] = True
+
             # get the category where the id is a match (SQL)
             category_query = """SELECT c.name FROM category c JOIN menu_item m ON m.category = c.id WHERE m.id = %s"""
             cur.execute(category_query, [id])

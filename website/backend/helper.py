@@ -19,3 +19,4 @@ class TagNames(Enum):
     GF = 'gluten free'
     NF = 'nut free'
     DF = 'dairy free'
+    CR = 'chef recommended'
