@@ -21,17 +21,17 @@ def choose_table():
 
 @customer_routes.route('/menu', methods=['GET'])
 def display_menu():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # restaurant.customer_validate(token)
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.customer_validate(token)
     res = restaurant.menu_to_JSON(restaurant)
     return res
 
 @customer_routes.route('/order', methods=['POST'])
 def order_dishes():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # restaurant.customer_validate(token)
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.customer_validate(token)
     data = request.get_json()
     table = data["table"]
     menu_item = data["menuItem"]
@@ -43,9 +43,9 @@ def order_dishes():
 
 @customer_routes.route('/order', methods=['GET'])
 def view_orders():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # restaurant.customer_validate(token)
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.customer_validate(token)
     args = request.args
     table = args.get("table")
     orders = {}
@@ -56,9 +56,9 @@ def view_orders():
 
 @customer_routes.route('/bill', methods=['POST'])
 def get_bill():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # restaurant.customer_validate(token)
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    restaurant.customer_validate(token)
     data = request.get_json()
     table = data["table"]
     type = data["type"]

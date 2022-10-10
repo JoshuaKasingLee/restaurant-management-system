@@ -53,6 +53,7 @@ function Menu() {
 
   React.useEffect(() => {
     const getMenu = async () => {
+      await new Promise(response => setTimeout(response, 100));
       const response = await fetch(`http://localhost:5000/customer/menu`, {  
         method: 'GET',
         headers: {

@@ -90,12 +90,14 @@ function MenuCategory({category}) {
   };
   
   const handleOrder = (item, index) => async () => {
+
     const response = await fetch('http://localhost:5000/customer/order', {
       method: 'POST',
       mode: 'cors',
       headers: {
       'Content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify(
         { 
