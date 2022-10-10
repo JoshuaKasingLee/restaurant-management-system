@@ -12,3 +12,10 @@ class StaffRole(Enum):
     WAIT = 1
     KITCHEN = 2
     MANAGER = 3
+
+class TagNames(Enum):
+    VEGETARIAN = 'vegetarian'
+    VEGAN = 'vegan'
+    GF = 'gluten free'
+    NF = 'nut free'
+    DF = 'dairy free'

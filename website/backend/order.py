@@ -19,5 +19,5 @@ class Order:
             "menu_item": self.menu_item,
             "table": self.table,
             "time_ordered": self.time_ordered,
-            "status": self.status
+            "status": self.status.value
         }

@@ -4,7 +4,6 @@ from menu_item import MenuItem
 from category import Category
 from table import Table
 from init_db import conn
-# from helper import StaffRole
 
 class Manager(Staff):
     def __init__(self, password, restaurant):
@@ -71,8 +70,10 @@ class Manager(Staff):
             # STILL NEED TO DO TAGS
 
             m = MenuItem(name, desc, ingredients, cost, category, tags, img)
+            # m.add_tags(tags)
             self.restaurant.menu_items.append(m)
             return m
+                
 
     def remove_menu_item(self, name):
         if not self.restaurant.menu_contains(name):
