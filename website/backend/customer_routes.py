@@ -37,7 +37,7 @@ def order_dishes():
     menu_item = data["menuItem"]
     quantity = data ["quantity"]
     for t in restaurant.tables:
-        if t.number == table:
+        if t.number == int(table):
             t.order_dishes(menu_item, quantity)
     return {}
 

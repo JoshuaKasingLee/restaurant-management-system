@@ -8,7 +8,7 @@ function Order() {
     <>
       <Header title={"Orderlist"} />
       <OrderTable />
-      <Footer initialValue={"order"}/>
+      <Footer initialValue={"order"} />
     </ >
   );
 }

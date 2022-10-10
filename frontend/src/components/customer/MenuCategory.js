@@ -62,7 +62,7 @@ function MenuCategory({category}) {
         { 
           img: category.menu_items[i].img,
           title: category.menu_items[i].name,
-          cost: '$' + category.menu_items[i].cost.toFixed(2),
+          cost: category.menu_items[i].cost,
           description: category.menu_items[i].description,
           ingredients: category.menu_items[i].ingredients,
           quantity: 1,
@@ -70,7 +70,7 @@ function MenuCategory({category}) {
         }
       );
       setCategoryItems( categoryItems => content );
-      setOpen( open => (new Array(category.menu_items.length).fill(false)) )
+      setOpen( open => (new Array(category.menu_items.length).fill(false)) );
     }
     // console.log(content);
   }, [category]);
@@ -90,7 +90,6 @@ function MenuCategory({category}) {
   };
   
   const handleOrder = (item, index) => async () => {
-
     const response = await fetch('http://localhost:5000/customer/order', {
       method: 'POST',
       mode: 'cors',
@@ -139,7 +138,7 @@ function MenuCategory({category}) {
             />}
             <ImageListItemBar
               title={item.title}
-              subtitle={<span>{item.cost}</span>}
+              subtitle={<span>${item.cost.toFixed(2)}</span>}
               position="below"
               actionIcon={
                 <IconButton
@@ -181,7 +180,7 @@ function MenuCategory({category}) {
                     Category: {category.name}
                   </Typography>
                   <Typography gutterBottom>
-                    Cost: {item.cost}
+                    Cost: ${item.cost.toFixed(2)}
                   </Typography>
                   <ButtonGroup variant="outlined" aria-label="outlined button group">
                     <Button sx={{ width: 50 }}>
