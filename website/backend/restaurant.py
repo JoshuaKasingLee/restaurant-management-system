@@ -177,7 +177,7 @@ class Restaurant:
         raise Exception("Cannot validate")
     
     # converts a category to JSON
-    def category_to_JSON(self, name, category_name):
+    def category_to_JSON(self, category_name):
         for category in self.categories:
             if category.name == category_name:
                 item_list = []
@@ -192,10 +192,10 @@ class Restaurant:
                 }
         
        
-    def menu_to_JSON(self, name):
+    def menu_to_JSON(self):
         categories = []
         for category in self.categories:
-            categories.append(self.category_to_JSON(self, category.name))
+            categories.append(self.category_to_JSON(category.name))
         return {
             "categories": categories
         }

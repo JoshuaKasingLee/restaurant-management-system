@@ -32,7 +32,7 @@ def edit_menu():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
     restaurant.manager_validate(token)
-    res = restaurant.menu_to_JSON(restaurant)
+    res = restaurant.menu_to_JSON()
     return res
 
 @manager_routes.route('/categories', methods=['POST'])
@@ -66,7 +66,7 @@ def add_menu_item():
     res = restaurant.category_to_JSON(category)
     return res
 
-@manager_routes.route('/items/<path:ItemName>', methods=['POST'])
+@manager_routes.route('/items/<path:ItemName>', methods=['DELETE'])
 def remove_menu_item(ItemName):
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
