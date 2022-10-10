@@ -14,15 +14,15 @@ import Typography from '@mui/material/Typography';
 import logo from './logo.png'
 
 const columns = [
-  { id: 'image', label: 'Image', minWidth: 170 },
-  { id: 'name', label: 'Name', minWidth: 100 },
-  { id: 'status', label: 'Status', minWidth: 170, align: 'right'},
+  { id: 'image', label: '', minWidth: 160 },
+  { id: 'name', label: 'Dish', minWidth: 160 },
+  { id: 'status', label: 'Status', minWidth: 160, align: 'right'},
   {
     id: 'cost',
-    label: 'Cost ($)',
-    minWidth: 170,
+    label: 'Cost',
+    minWidth: 160,
     align: 'right',
-    format: (value) => value.toFixed(2),
+    format: (value) => '$' + value.toFixed(2),
   },
 ];
 
@@ -48,28 +48,25 @@ const rows = [
   createData(logo, 'Tamago Roll', 'Complete', 23.1),
 ];
 
+// function OrderTable({order}) {
 function OrderTable() {
-  const [order, setOrder] = React.useState([]);
+  // const [orderItems, setOrderItems] = React.useState([]);
 
-  React.useEffect(() => {
-    const getOrder = async () => {
-      const response = await fetch(`http://localhost:5000/customer/order?table=${localStorage.getItem('table')}`, {  
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.setItem('order', data);
-        setOrder(order => data);
-      } else {
-        alert(await data.error);
-      }
-    };
-    getOrder();
-  }, []);
+  // React.useEffect(() => {
+  //   let content = [];
+  //   for (let i=0; i < order.orderItems.length; i++) {
+  //     content.push(
+  //       { 
+  //         img: order.orderItems[i].img,
+  //         title: order.orderItems[i].name,
+  //         status: order.orderItems[i].status,
+  //         cost: order.orderItems[i].cost,
+  //       }
+  //     );
+  //     setOrderItems( orderItems => content );
+  //   }
+  //   // console.log(content);
+  // }, [order]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -83,7 +80,9 @@ function OrderTable() {
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
-                  {column.label}
+                  <Typography variant="h6">
+                    {column.label}
+                  </Typography>
                 </TableCell>
               ))}
             </TableRow>
@@ -97,7 +96,7 @@ function OrderTable() {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          { column.id === 'image' && <img width='170' src={value} alt=''/> }
+                          { column.id === 'image' && <img width='160' src={value} alt=''/> }
                           { column.format && column.format(value) }
                           { column.id !== 'image' && !column.format && value }
                         </TableCell>
