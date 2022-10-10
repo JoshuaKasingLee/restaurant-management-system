@@ -250,7 +250,7 @@ def test_menu():
 
     r.populate()
 
-    res = r.menu_to_JSON(r)
+    res = r.menu_to_JSON()
     expected = {'categories': [{'name': 'Sashimi_test', 'visible': True, 'display_order': 1, 'menu_items': [{'name': 'Ahi_test', 'description': 'Tuna (raw)', 'ingredients': 'Tuna', 'cost': 5.0, 'category': 'Sashimi_test', 'tags': {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False}, 'img': None, 'visible': True, 'display_order': 1}, {'name': 'Aji_test', 'description': 'Spanish Mackerel (raw)', 'ingredients': 'Mackerel', 'cost': 6.0, 'category': 'Sashimi_test', 'tags': {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False}, 'img': None, 'visible': True, 'display_order': 2}]}, {'name': 'Dessert_test', 'visible': True, 'display_order': 4, 'menu_items': [{'name': 'Banana Sushi_test', 'description': 'banana sushi!!', 'ingredients': 'Bananas, Chocolate', 'cost': 17.5, 'category': 'Dessert_test', 'tags': {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False}, 'img': None, 'visible': True, 'display_order': 51}]}]}
     
     cur.execute("DELETE FROM menu_item")

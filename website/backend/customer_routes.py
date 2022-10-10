@@ -24,7 +24,7 @@ def display_menu():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
     restaurant.customer_validate(token)
-    res = restaurant.menu_to_JSON(restaurant)
+    res = restaurant.menu_to_JSON()
     return res
 
 @customer_routes.route('/order', methods=['POST'])
