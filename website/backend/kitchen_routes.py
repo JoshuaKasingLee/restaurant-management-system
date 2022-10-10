@@ -32,6 +32,7 @@ def kitchen_orders():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
     restaurant.kitchen_validate(token)
+    
     res = kitchen_staff.get_order_list()
     return {
         'orders': res
