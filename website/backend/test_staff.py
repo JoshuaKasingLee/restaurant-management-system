@@ -85,7 +85,6 @@ def test_kitchen_order_cooking():
 
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
 
-
     restaurant.populate()
     
     table1 = restaurant.tables[0]
@@ -99,7 +98,7 @@ def test_kitchen_order_cooking():
     ordered_list = restaurant.get_order_list()
 
 
-    expected = OrderStatus.COOKING
+    expected = OrderStatus.COOKING.value
 
     cur.execute("DELETE FROM orders")
     cur.execute("DELETE FROM menu_item")
@@ -142,7 +141,7 @@ def test_kitchen_order_cooking():
     ordered_list = restaurant.get_order_list()
 
 
-    expected = OrderStatus.PREPARED
+    expected = OrderStatus.PREPARED.value
 
     cur.execute("DELETE FROM orders")
     cur.execute("DELETE FROM menu_item")
@@ -184,7 +183,7 @@ def test_wait_order_serving():
     ordered_list = restaurant.get_order_list()
 
 
-    expected = OrderStatus.COMPLETED
+    expected = OrderStatus.COMPLETED.value
 
     cur.execute("DELETE FROM orders")
     cur.execute("DELETE FROM menu_item")
