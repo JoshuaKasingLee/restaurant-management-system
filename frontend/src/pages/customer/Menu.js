@@ -84,13 +84,13 @@ function Menu() {
     return content;
   };
 
-  const getCategoriesTabPanels = menu => {
+  const getCategoriesTabPanels = (menu, filters) => {
     let content = [];
     for (let i = 0; i < menu.categories.length; i++) {
       content.push(
         <TabPanel  key={i} value={value} index={i}>
           <Typography variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategory category={menu.categories[value]}/>
+          <MenuCategory category={menu.categories[value]} filters={filters}/>
         </TabPanel>
       );
     }
@@ -98,26 +98,22 @@ function Menu() {
   };
 
   const [chipData, setChipData] = React.useState([
-    { key: 0, label: 'Vegetarian', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 1, label: 'Vegan', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 2, label: 'Gluten Free', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 3, label: 'Nut Free', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 4, label: 'Dairy Free', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 5, label: "Chef's Recommendation", icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 0, label: "Chef's Recommendation", icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 1, label: 'Vegetarian', icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 2, label: 'Vegan', icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 3, label: 'Gluten Free', icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 4, label: 'Nut Free', icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 5, label: 'Dairy Free', icon: TagFacesIcon, selected: 'outlined default' },
   ]);
+  const [filters, setFilters] = React.useState([]);
 
   const handleClick = (data) => () => {
-    console.log(chipData);
     let newChipData = [...chipData];
-    let newSelected = ((data.selected === 'filled info') ? 'outlined default' : 'filled info');
+    let newSelected = ((data.selected === 'filled primary') ? 'outlined default' : 'filled primary');
     newChipData[data.key] = { key: data.key, label: data.label, icon: data.icon, selected: newSelected };
     setChipData(newChipData);
-    // setChipData( chipData => ({ 
-    //   ...chipData, 
-    //   [data.key]: { key: data.key, label: data.label, icon: data.icon, selected: ((data.selected === 'filled') ? 'outlined' : 'filled') }
-    // }));
-    console.log(chipData);
-    console.log(data.key);
+    if (newSelected === 'filled primary') setFilters( state => ([...state, data.label]) );
+    else setFilters( filters => filters.filter(state => state !== data.label) );
   };
 
   return (
@@ -129,7 +125,6 @@ function Menu() {
               <Chip 
                 variant={data.selected.split(' ')[0]} 
                 color={data.selected.split(' ')[1]} 
-                label="Small" 
                 size="small"
                 icon={<data.icon/>}
                 label={data.label}
@@ -151,7 +146,7 @@ function Menu() {
         >
           {getCategoriesTabs(menu)}
         </Tabs>
-        {getCategoriesTabPanels(menu)}
+        {getCategoriesTabPanels(menu, filters)}
       </Box>
       <Footer initialValue={"menu"}/>
     </ >

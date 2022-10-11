@@ -152,7 +152,7 @@ function OrderTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Grid container justify = "center">
+      <Grid container position="fixed" bottom="135px" justify = "center">
         <Box 
           display="flex"
           justifyContent="space-between"

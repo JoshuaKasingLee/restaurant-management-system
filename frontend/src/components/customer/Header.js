@@ -5,7 +5,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import RoomServiceRoundedIcon from '@mui/icons-material/RoomServiceRounded';
-import logo from './logo.png'
 
 const drawerWidth = 50;
 
@@ -29,7 +28,7 @@ function Header({title}) {
           {title !== 'Table Selection' && title !== 'Admin' && <ToggleButton
           value="check"
           selected={selected}
-          color="info"
+          color="primary"
           onChange={() => {
             setSelected( selected => !selected );
           }}

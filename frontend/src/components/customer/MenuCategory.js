@@ -59,7 +59,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-function MenuCategory({category}) {
+function MenuCategory({category, filters}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
   const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
