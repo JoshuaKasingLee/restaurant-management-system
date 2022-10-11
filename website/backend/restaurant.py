@@ -184,7 +184,7 @@ class Restaurant:
             if category.name == category_name:
                 item_list = []
                 for menu_item in self.menu_items:
-                    if menu_item.category == category:
+                    if menu_item.category.name == category.name:
                         item_list.append(menu_item.to_JSON())
                 return {
                     "name": category.name,
