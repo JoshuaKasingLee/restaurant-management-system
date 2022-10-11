@@ -67,7 +67,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-function OrderTable({submit}) {
+function OrderTable() {
   const [order, setOrder] = React.useState([]);
   const [totalCost, setTotalCost] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -79,10 +79,6 @@ function OrderTable({submit}) {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handleBill = () => {
-    submit();
-  }
 
   React.useEffect(() => {
     const getOrder = async () => {
@@ -186,7 +182,7 @@ function OrderTable({submit}) {
               </Typography>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus component={Link} to={'/customer/bill'} onClick={handleBill}>
+              <Button autoFocus component={Link} to={'/customer/bill'}>
                 Request Bill
               </Button>
             </DialogActions>
