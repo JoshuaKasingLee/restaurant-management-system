@@ -22,7 +22,7 @@ def kitchen_update_order():
         status = OrderStatus.PREPARED
 
     kitchen_staff.get_order_list()
-    res = KitchenStaff.get_order_list(restaurant)
+    res = KitchenStaff.get_order_list()
     return {
         'orders': res
     }

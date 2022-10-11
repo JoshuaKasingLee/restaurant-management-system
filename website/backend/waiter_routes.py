@@ -19,7 +19,7 @@ def waiter_update_order():
         status = OrderStatus.COMPLETED
 
     wait_staff.get_order_list()
-    res = WaitStaff.order_list(restaurant)
+    res = WaitStaff.get_order_list()
     return {
         'orders': res
     }
