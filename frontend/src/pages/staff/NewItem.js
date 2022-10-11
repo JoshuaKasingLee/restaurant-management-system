@@ -96,7 +96,7 @@ export default function NewItem() {
             />
             <div>
                 <Button variant="contained" onClick={addNewItem}>Add</Button>
-                <Button sx={{marginLeft: 2}} >Cancel</Button>
+                <Button sx={{marginLeft: 2}} onClick={() => navigate('/staff/manager/')}>Cancel</Button>
             </div>
         </Box>
     )

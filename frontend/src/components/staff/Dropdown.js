@@ -15,6 +15,7 @@ export default function Dropdown({update}) {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           label="Category"
+          defaultValue=""
           onChange={e => update(e.target.value)}
         >
           <MenuItem value="Sashimi">Sashimi</MenuItem>
