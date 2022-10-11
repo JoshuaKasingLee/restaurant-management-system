@@ -43,7 +43,7 @@ function a11yProps(index) {
 
 function Menu() {
   const [value, setValue] = React.useState(0);
-  const [label, setLabel] = React.useState("Category One");
+  const [label, setLabel] = React.useState("");
   const [menu, setMenu] = React.useState({'categories': []});
 
   const handleChange = (event, newValue, newLabel) => {

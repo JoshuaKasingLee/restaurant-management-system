@@ -10,7 +10,11 @@ import logo from './logo.png'
 const drawerWidth = 50;
 
 function Header({title}) {
-  const [selected, setSelected] = React.useState(false);
+  const [selected, setSelected] = React.useState(JSON.parse(localStorage.getItem('assistance')));
+
+  React.useEffect(() => {
+    localStorage.setItem('assistance', selected)
+  }, [selected]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -26,11 +30,11 @@ function Header({title}) {
           value="check"
           selected={selected}
           onChange={() => {
-            setSelected(!selected);
+            setSelected( selected => !selected );
           }}
-        >
-          <RoomServiceRoundedIcon fontSize="large" />
-        </ToggleButton>}
+          >
+            <RoomServiceRoundedIcon fontSize="large" />
+          </ToggleButton>}
         </Toolbar>
       </AppBar>
     </Box>
