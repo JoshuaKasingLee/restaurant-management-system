@@ -59,7 +59,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-function MenuCategory({category}) {
+function MenuCategory({category, filters}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
   const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
@@ -160,9 +160,8 @@ function MenuCategory({category}) {
       {categoryItems.map((item, index) => (
         < div key={item.img}>
           <ImageListItem sx={{ width: 230 }} onClick={handleClickOpen(index)}>
-            <img
+            <Img
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
-              srcSet={`${item.img}?w=230&h=200&fit=crop&auto=format&dpr=2 2x`}
               alt={item.title}
               loading="lazy"
             />
