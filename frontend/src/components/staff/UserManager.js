@@ -13,6 +13,7 @@ export default function NewItem() {
     const [kPass, setKPass] = React.useState('');
     const [wPass, setWPass] = React.useState('');
     const [mPass, setMPass] = React.useState('');
+    const [trigger, setTrigger] = React.useState(false);
 
     React.useEffect(() => {  
         const getFields = async () => {
@@ -38,8 +39,9 @@ export default function NewItem() {
         }
 
         getFields()
+        setTrigger(false)
 
-        }, []);
+        }, [trigger]);
 
     const getTableContent = numTables => {
         let content = [];
@@ -135,7 +137,7 @@ export default function NewItem() {
             />
             <div>
                 <Button variant="contained" onClick={updateInfo}>Save</Button>
-                <Button sx={{marginLeft: 2}}>Reset</Button>
+                <Button sx={{marginLeft: 2}} onClick={() => setTrigger(true)}>Reset</Button>
             </div>
         </Box>
     )

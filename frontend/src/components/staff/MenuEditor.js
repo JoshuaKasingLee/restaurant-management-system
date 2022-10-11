@@ -44,6 +44,7 @@ function MenuEditor() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("");
   const [menu, setMenu] = React.useState({'categories': []});
+  const [trigger, setTrigger] = React.useState(false);
 
   const handleChange = (event, newValue, newLabel) => {
     setValue(newValue);
@@ -70,7 +71,8 @@ function MenuEditor() {
       }
     };
     getMenu();
-  }, []);
+    setTrigger(false);
+  }, [trigger]);
 
   const getCategoriesTabs = menu => {
     let content = [];
@@ -86,7 +88,7 @@ function MenuEditor() {
       content.push(
         <TabPanel  key={i} value={value} index={i}>
           <Typography variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategoryEditor category={menu.categories[value]}/>
+          <MenuCategoryEditor category={menu.categories[value]} updateMenu={setTrigger}/>
         </TabPanel>
       );
     }

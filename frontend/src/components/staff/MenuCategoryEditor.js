@@ -57,7 +57,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-function MenuCategory({category}) {
+function MenuCategory({category, updateMenu}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
 
@@ -101,36 +101,31 @@ function MenuCategory({category}) {
     }));
   };
   
-  const handleOrder = (item, index) => async () => {
-    // const response = await fetch(`http://localhost:5000/manager/categories/${item.title}`, {
-    //   method: 'POST',
-    //   mode: 'cors',
-    //   headers: {
-    //   'Content-type': 'application/json',
-    //   'Access-Control-Allow-Origin': '*',
-    //   'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    //   },
-    //   body: JSON.stringify(
-    //     { 
-    //       table: localStorage.getItem("table"),
-    //       menuItem: item.title,
-    //       quantity: quantity[index]
-    //     }
-    //   )
-    // });
-    // const data = await response;
-    // if (response.ok) {
-    //   setOpen( state => ({ 
-    //     ...state, 
-    //     [index]: false
-    //   }));
-    //   setQuantity( state => ({ 
-    //     ...state, 
-    //     [index]: 1
-    //   }));
-    // } else {
-    //   alert(await data.error);
-    // }
+  const handleDelete = (item, index) => async () => {
+    const response = await fetch(`http://localhost:5000/manager/items/${item.title}`, {
+      method: 'DELETE',
+      mode: 'cors',
+      headers: {
+      'Content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(
+        { 
+          category: category.name
+        }
+      )
+    });
+    const data = await response;
+    if (response.ok) {
+      updateMenu(true);
+      setOpen( state => ({ 
+        ...state, 
+        [index]: false
+      }));
+    } else {
+      alert(await data.error);
+    }
   };
 
   return (
@@ -204,7 +199,7 @@ function MenuCategory({category}) {
               </Grid>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleOrder(item, index)}>Order</Button>
+              <Button onClick={handleDelete(item, index)}>Delete</Button>
             </DialogActions>
           </Dialog>
         </div>
