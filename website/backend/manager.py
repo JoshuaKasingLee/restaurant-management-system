@@ -115,6 +115,9 @@ class Manager(Staff):
 
         cur = conn.cursor()
         try:
+            cur.execute("select id from menu_item where name = %s", [name])
+            item_id = cur.fetchone()[0]
+            cur.execute("""DELETE FROM menu_item_tags where menu_item = %s""", [item_id])
             cur.execute("""DELETE FROM menu_item where name = %s""", [name])
         except Exception as err:
             conn.rollback()
