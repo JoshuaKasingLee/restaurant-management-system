@@ -2,6 +2,7 @@ from order import Order
 from init_db import conn
 from datetime import datetime
 from helper import OrderStatus
+from category import Category
 from menu_item import MenuItem
 
 import json
@@ -39,7 +40,7 @@ class Table:
             desc = result[1]
             ingredients = result[2]
             cost = result[3]
-            category = result[4]
+            category = Category(result[4])
             img = result[5]
             visible = result[6]
             display_order = result[7]
