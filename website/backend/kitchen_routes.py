@@ -21,8 +21,8 @@ def kitchen_update_order():
     elif given_status == 'prepared':
         status = OrderStatus.PREPARED
 
-    kitchen_staff.get_order_list()
-    res = KitchenStaff.get_order_list()
+    # kitchen_staff.get_order_list()
+    res = kitchen_staff.get_order_list()
     return {
         'orders': res
     }
