@@ -17,44 +17,57 @@ function Footer({initialValue, title}) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, position: 'fixed', bottom: 10, color: 'background.paper' }}>
+    <Box sx={{ flexGrow: 1, position: 'fixed', bottom: 10 }}>
       <Box width="160px" alignItems='end' sx={{ mx: '10px', bgcolor: 'text.secondary', borderRadius: '16px' }}>
-        <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+        <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
         Table {localStorage.getItem('table')}
         </Typography>
       </Box> 
-      <BottomNavigation 
+      {title !== 'Bill'
+      ? (<BottomNavigation 
         sx={{ position: 'fixed', display:'flex', justifyContent:'space-between', bottom: 0, left: 180, right: 0 }}  
         elevation={3} 
         value={value} 
         onChange={handleChange}
       >
-        {title !== 'Bill' && <BottomNavigationAction
+        <BottomNavigationAction
           label="Menu"
           value="menu"
           icon={<RestaurantMenuRoundedIcon fontSize="large" />}
           component={Link} to={'/customer/menu'}
-        />}
-        {title !== 'Bill' && <BottomNavigationAction
+        />
+        <BottomNavigationAction
             label="Order"
             value="order"
             icon={<ListAltRoundedIcon fontSize="large" />}
             component={Link} to={'/customer/order'}
-        />}
-        {title !== 'Bill' && <BottomNavigationAction
+        />
+        <BottomNavigationAction
             label="Game" 
             value="game" 
             icon={<SportsEsportsRoundedIcon fontSize="large" />} 
             component={Link} to={'/customer/game'}
-        />}
+        />
         <BottomNavigationAction 
           label="Admin" 
           value="admin" 
           icon={<AdminPanelSettingsRoundedIcon fontSize="large" />} 
           component={Link} to={'/'}
         />
-      </BottomNavigation>
-
+      </BottomNavigation>)
+      : (<BottomNavigation 
+        sx={{ position: 'fixed', display:'flex', justifyContent:'flex-end', bottom: 0, left: 180, right: 0 }}  
+        elevation={3} 
+        value={value} 
+        onChange={handleChange}
+      >
+        <BottomNavigationAction 
+          label="Admin" 
+          value="admin" 
+          icon={<AdminPanelSettingsRoundedIcon fontSize="large" />} 
+          component={Link} to={'/'}
+        />
+      </BottomNavigation>)}
     </Box>
   );
 }
