@@ -112,6 +112,27 @@ class Table:
         self.budget = budget
         # check whether we need to validate here > 0
 
+    # clear table
+
+    def clear_table(self):
+        cur = conn.cursor()
+
+        try:
+            cur.execute("select id from tables where num = %s", [self.number])
+            table_id = cur.fetchone()[0]
+            cur.execute("update tables set budget = %s, needs_assistance = %s, occupied = %s where num = %s", [None, False, False, self.number])
+            cur.execute("delete from orders where table_num = %s", [table_id])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Clearing table failed")
+        conn.commit()
+        
+        self.budget = None
+        self.orders = []
+        self.needs_assistance = False
+        self.occupied = False
+        self.token = None
+
     # modifying order
     def update_order_status(self, id, status):
         for order in self.orders:

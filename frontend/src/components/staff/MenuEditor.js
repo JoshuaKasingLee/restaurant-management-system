@@ -4,9 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Header from '../../components/customer/Header';
-import AddNewButton from './AddNewButton';
-import MenuCategory from '../../components/customer/MenuCategory';
+import MenuCategoryEditor from './MenuCategoryEditor';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,9 +39,9 @@ function a11yProps(index) {
   };
 }
 
-export default function MenuEditor() {
+function MenuEditor() {
   const [value, setValue] = React.useState(0);
-  const [label, setLabel] = React.useState("Category One");
+  const [label, setLabel] = React.useState("");
   const [menu, setMenu] = React.useState({'categories': []});
 
   const handleChange = (event, newValue, newLabel) => {
@@ -54,7 +52,7 @@ export default function MenuEditor() {
   React.useEffect(() => {
     const getMenu = async () => {
       await new Promise(response => setTimeout(response, 1000));
-      const response = await fetch(`http://localhost:5000/customer/menu`, {  
+      const response = await fetch(`http://localhost:5000/manager/menu`, {  
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -87,7 +85,7 @@ export default function MenuEditor() {
       content.push(
         <TabPanel  key={i} value={value} index={i}>
           <Typography variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategory category={menu.categories[value]}/>
+          <MenuCategoryEditor category={menu.categories[value]}/>
         </TabPanel>
       );
     }
@@ -122,3 +120,5 @@ export default function MenuEditor() {
     </ >
   );
 }
+
+export default MenuEditor;

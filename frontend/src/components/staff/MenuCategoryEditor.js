@@ -62,7 +62,6 @@ const Img = styled('img')({
 function MenuCategory({category}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
-  const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
 
   React.useEffect(() => {
     let content = [];
@@ -102,57 +101,38 @@ function MenuCategory({category}) {
       ...state, 
       [index]: false
     }));
-    setQuantity( state => ({ 
-      ...state, 
-      [index]: 1
-    }));
-  };
-
-  const handleSubtract = (index) => () => {
-    setQuantity( state => ({ 
-      ...state, 
-      [index]: (Math.max(1, state[index] - 1))
-    }));
-  };
-
-  const handleAdd = (index) => () => {
-    setQuantity( state => ({ 
-      ...state, 
-      [index]: (state[index] + 1)
-    }));
   };
   
   const handleOrder = (item, index) => async () => {
-    const response = await fetch('http://localhost:5000/customer/order', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-      'Content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(
-        { 
-          table: localStorage.getItem("table"),
-          menuItem: item.title,
-          quantity: quantity[index]
-        }
-      )
-    });
-    const data = await response;
-    if (response.ok) {
-      setOpen( state => ({ 
-        ...state, 
-        [index]: false
-      }));
-      setQuantity( state => ({ 
-        ...state, 
-        [index]: 1
-      }));
-    } else {
-      alert(await data.error);
-    }
-
+    // const response = await fetch(`http://localhost:5000/manager/categories/${item.title}`, {
+    //   method: 'POST',
+    //   mode: 'cors',
+    //   headers: {
+    //   'Content-type': 'application/json',
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    //   },
+    //   body: JSON.stringify(
+    //     { 
+    //       table: localStorage.getItem("table"),
+    //       menuItem: item.title,
+    //       quantity: quantity[index]
+    //     }
+    //   )
+    // });
+    // const data = await response;
+    // if (response.ok) {
+    //   setOpen( state => ({ 
+    //     ...state, 
+    //     [index]: false
+    //   }));
+    //   setQuantity( state => ({ 
+    //     ...state, 
+    //     [index]: 1
+    //   }));
+    // } else {
+    //   alert(await data.error);
+    // }
   };
 
   return (
@@ -222,23 +202,6 @@ function MenuCategory({category}) {
                   <Typography gutterBottom>
                     Cost: ${item.cost.toFixed(2)}
                   </Typography>
-                  <ButtonGroup variant="outlined" aria-label="outlined button group">
-                    <Button sx={{ width: 50 }} onClick={handleSubtract(index)}>
-                      <Typography variant="h4">
-                        -
-                      </Typography>
-                    </Button>
-                    <Box display="flex" sx={{ border: 1, width: 50, textAlign: 'center' }} justifyContent="center" alignItems="center">
-                      <Typography variant="h4">
-                        {JSON.stringify(quantity[index])}
-                      </Typography>
-                    </Box>
-                    <Button sx={{ width: 50 }} onClick={handleAdd(index)}>
-                      <Typography variant="h4">
-                        +
-                      </Typography>
-                    </Button>
-                </ButtonGroup>
                 </Grid>
               </Grid>
             </DialogContent>

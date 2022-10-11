@@ -10,8 +10,9 @@ import './App.css';
 import Landing from './pages/Landing';
 import Table from './pages/customer/Table';
 import Menu from './pages/customer/Menu';
-import Order from './pages/customer/Order';
 import Game from './pages/customer/Game';
+import Order from './pages/customer/Order';
+import Bill from './pages/customer/Bill';
 
 import Login from './pages/staff/Login';
 import Kitchen from './pages/staff/Kitchen';
@@ -40,6 +41,7 @@ function App () {
           <Route exact path='/customer/menu' element={<Menu />} />
           <Route exact path='/customer/game' element={<Game />} />
           <Route exact path='/customer/order' element={<Order />} />
+          <Route exact path='/customer/bill' element={<Bill />} />
           <Route exact path='/staff/login' element={<Login />} />
           <Route exact path='/staff/kitchen' element={<Kitchen />} />
           <Route exact path='/staff/wait' element={<Wait />} />

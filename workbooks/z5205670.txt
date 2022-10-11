@@ -14,3 +14,13 @@ I finished up the customer flow diagram and storyboards for the proposal.
 I wrote out all the customer routes and endpoints so that the frontend and
 backend can be connected easily. I set up the frontend in github and started 
 coding the landing page, table selection page and menu page. 
+
+Week 4
+I continued coding the customer table selection page, menu page and menu item
+dialogs on the frontend side. I debugged frontend and backend connection issues 
+such as CORS errors.
+
+Week 5
+I continued coding the customer menu page, menu item dialogs, order page and
+bill page. I completed all that was assigned for sprint 1. I planned the 
+structure of Demo A.

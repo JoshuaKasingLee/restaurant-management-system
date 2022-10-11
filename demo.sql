@@ -90,6 +90,7 @@ INSERT INTO tag(name) values ('vegan');
 INSERT INTO tag(name) values ('gluten free');
 INSERT INTO tag(name) values ('nut free');
 INSERT INTO tag(name) values ('dairy free');
+INSERT INTO tag(name) values ('chef recommended');
 
 INSERT INTO leaderboard_entry(id, email, score, time_played) values (1, 'monkey@gmail.com', 20),
 (2, 'koala@gmail.com', 50), (3, 'tiger@gmail.com', 100);

@@ -39,7 +39,8 @@ def order_dishes():
     for t in restaurant.tables:
         if t.number == int(table):
             t.order_dishes(menu_item, quantity)
-    return {}
+            return {}
+    raise Exception("Cannot find table")
 
 @customer_routes.route('/order', methods=['GET'])
 def view_orders():
@@ -52,7 +53,8 @@ def view_orders():
     for t in restaurant.tables:
         if t.number == int(table):
             orders = t.view_orders()
-    return orders
+            return orders
+    raise Exception("Cannot find table")
 
 @customer_routes.route('/bill', methods=['POST'])
 def get_bill():
@@ -63,8 +65,11 @@ def get_bill():
     table = data["table"]
     type = data["type"]
     for t in restaurant.tables:
-        if t.number == table:
+        if t.number == int(table):
             if type == 'together':
+                cost = t.get_total_cost()
+                t.clear_table()
                 return {
-                    "charge": [t.get_total_cost(), 0, 0, 0]
+                    "charge": [cost, 0, 0, 0]
                 }
+    raise Exception("Cannot find table")

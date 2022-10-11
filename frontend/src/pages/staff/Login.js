@@ -51,6 +51,7 @@ export default function Login () {
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
         <Stack spacing={2}>
           <Button variant="contained" onClick={(e) => setRole('kitchen')}>Kitchen Staff</Button>
+          {console.log(localStorage.getItem('assistance'))}
           <Button variant="contained" onClick={(e) => setRole('wait')}>Wait Staff</Button>
           <Button variant="contained" onClick={(e) => setRole('manager')}>Manager</Button>
         </Stack>
