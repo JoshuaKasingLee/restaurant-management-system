@@ -4,7 +4,7 @@ import Header from '../../components/customer/Header';
 
 function Table () {
   localStorage.clear();
-	
+  
 	return (
     <>
       <Header title={"Table Selection"}/>
@@ -20,6 +20,7 @@ function Table () {
         });
         const data = await response.json();
         if (response.ok) {
+          localStorage.setItem('assistance', false);
           // console.log(data);
           localStorage.setItem('token', data.token);
         } else {
