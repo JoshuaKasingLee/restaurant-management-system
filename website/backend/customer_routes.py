@@ -67,7 +67,9 @@ def get_bill():
     for t in restaurant.tables:
         if t.number == int(table):
             if type == 'together':
+                cost = t.get_total_cost()
+                t.clear_table()
                 return {
-                    "charge": [t.get_total_cost(), 0, 0, 0]
+                    "charge": [cost, 0, 0, 0]
                 }
     raise Exception("Cannot find table")

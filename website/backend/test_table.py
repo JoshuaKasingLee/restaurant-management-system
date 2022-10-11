@@ -132,6 +132,56 @@ def test_get_total_cost():
     expected_cost = 20.80*2 + 6 + 48.50
     assert(table.get_total_cost() == expected_cost)
 
+# clearing table
+
+def test_clear_table():
+    cur = conn.cursor()
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Croissant', 'Filled with almond praline cream', 'Flour, almonds, butter', 6, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Steak', 'Medium rare', 'Beef, red wine jus', 48.50, 1, %s, TRUE);", [cat_id])
+
+    table = Table(1, 100, [], True, True)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, 100, True, True)")
+    table.order_dish(m1)
+    table.order_dish(m2)
+    table.order_dish(m3)
+
+    assert(table.budget == 100)
+    assert(len(table.orders) == 3)
+    assert(table.needs_assistance)
+    assert(table.occupied)
+    table.clear_table()
+
+    cur.execute("select budget from tables where num = %s", ['1'])
+    assert(cur.fetchall()[0][0] == None)
+    assert(table.budget == None)
+
+    cur.execute("select * from orders where table_num = %s", ['1'])
+    assert(len(cur.fetchall()) == 0)
+    assert(len(table.orders) == 0)
+
+    cur.execute("select needs_assistance from tables where num = %s", ['1'])
+    assert(cur.fetchall()[0][0] == False)
+    assert(table.needs_assistance == False)
+
+    cur.execute("select occupied from tables where num = %s", ['1'])
+    assert(cur.fetchall()[0][0] == False)
+    assert(table.occupied == False)
+
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+    conn.commit()
+
 # requests for assistance
 
 def test_request_assistance():
