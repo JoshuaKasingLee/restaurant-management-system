@@ -20,12 +20,15 @@ const MenuProps = {
 };
 
 const names = [
-  'nuts',
-  'gluten-free',
+  'vegetarian',
   'vegan',
+  'gluten free',
+  'nut free',
+  'dairy free',
+  'chef recommended'
 ];
 
-export default function MultipleSelectCheckmarks() {
+export default function MultipleSelectCheckmarks({update}) {
   const [tag, setTag] = React.useState([]);
 
   const handleChange = (event) => {
@@ -36,6 +39,7 @@ export default function MultipleSelectCheckmarks() {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+    update(tag);
   };
 
   return (

@@ -14,27 +14,10 @@ export default function Kitchen() {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
       });
       const data = await response.json();
-      // const data = {
-      //   orders: [
-      //     {
-      //       id: 1,
-      //       table: 1,
-      //       name: "name",
-      //       status: "ordered"
-      //     },
-      //     {
-      //       id: 1,
-      //       table: 1,
-      //       name: "name",
-      //       status: "cooking"
-      //     }
-      //   ]
-      // }
 
       if (response.ok) {
         setNotStarted(data.orders.filter(o => o.status === "ordered"));
@@ -43,8 +26,6 @@ export default function Kitchen() {
         alert(await data.error);
       }
     }
-    
-    // getKitchenOrders()
 
     const intervalID = setInterval(getKitchenOrders, 1000)
 

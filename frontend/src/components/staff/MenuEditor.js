@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import MenuCategoryEditor from './MenuCategoryEditor';
+import AddNewButton from './AddNewButton';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -92,6 +93,7 @@ function MenuEditor() {
     return content;
   };
 
+  
 
   return (
     <>
@@ -101,7 +103,6 @@ function MenuEditor() {
         }}>
         <AddNewButton />
       </Box>
-      <Header title={"Menu"} />
       <Box
         sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
       >

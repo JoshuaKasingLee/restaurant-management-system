@@ -11,52 +11,26 @@ function Wait() {
 
   React.useEffect(() => {  
     const getWaitOrders = async () => {
-      // const response = await fetch(`http://localhost:5000/wait/orders`, {  
-      //   method: 'GET',
-      //   headers: {
-      //     'Content-type': 'application/json',
-      //     'Access-Control-Allow-Origin': '*',
-      //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-      //   },
-      // });
-      // const data = await response.json();
-      // if (response.ok) {
-      //   setPrepared(data.orders);
-      // } else {
-      //   alert(await data.error);
-      // }
-          
-      const data = {
-        orders: [
-          {
-            id: 1,
-            table: 1,
-            name: "name",
-            status: "prepared"
-          },
-          {
-            id: 1,
-            table: 1,
-            name: "name",
-            status: "prepared"
-          }
-        ]
-      }
-      if (true) {
+      const response = await fetch(`http://localhost:5000/waiter/orders`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
         setPrepared(data.orders);
       } else {
         alert(await data.error);
       }
     }
 
-    getWaitOrders()
+    const intervalID = setInterval(getWaitOrders, 1000)
 
-
-    // const intervalID = setInterval(getWaitOrders, 1000)
-
-    // return (() => {
-    //   clearInterval(intervalID)
-    // })
+    return (() => {
+      clearInterval(intervalID)
+    })
 
   }, []);   
   

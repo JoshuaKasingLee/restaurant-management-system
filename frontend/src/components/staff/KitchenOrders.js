@@ -24,7 +24,8 @@ export default function KitchenOrders({orders}) {
             id={o.id}
             table={o.table}
             name={o.name}
-            nextStatus={nextOrderStatus(o.status)}>
+            nextStatus={nextOrderStatus(o.status)}
+            role="kitchen">
           </Order>
         );
       })}

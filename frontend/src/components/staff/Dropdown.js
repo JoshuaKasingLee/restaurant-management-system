@@ -5,13 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function Dropdown() {
-  const [value, setValue] = React.useState('');
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
+export default function Dropdown({update}) {
+  // TODO: dynamically add categories
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth required>
@@ -19,13 +14,13 @@ export default function Dropdown() {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={value}
           label="Category"
-          onChange={handleChange}
+          onChange={e => update(e.target.value)}
         >
-          <MenuItem value={10}>Category 1</MenuItem>
-          <MenuItem value={20}>Category 2</MenuItem>
-          <MenuItem value={30}>Category 3</MenuItem>
+          <MenuItem value="Sashimi">Sashimi</MenuItem>
+          <MenuItem value="Noodle">Noodle</MenuItem>
+          <MenuItem value="Rice bowl">Rice bowl</MenuItem>
+          <MenuItem value="Dessert">Dessert</MenuItem>
         </Select>
       </FormControl>
     </Box>

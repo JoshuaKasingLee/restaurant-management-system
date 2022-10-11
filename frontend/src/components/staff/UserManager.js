@@ -20,7 +20,6 @@ export default function NewItem() {
             method: 'GET',
             headers: {
               'Content-type': 'application/json',
-              'Access-Control-Allow-Origin': '*',
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
           });
@@ -56,7 +55,8 @@ export default function NewItem() {
           mode: 'cors',
           headers: {
           'Content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           body: JSON.stringify({
             restaurant: {
@@ -85,7 +85,7 @@ export default function NewItem() {
     } 
 
     return (
-        <Box maxWidth="md" m="auto" component="form" onChange={updateInfo}
+        <Box maxWidth="md" m="auto" component="form"
             sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', p: 10 }} >
             <Typography variant="h5">Restaurant</Typography>
             <TextField
@@ -97,14 +97,19 @@ export default function NewItem() {
             <FormControl fullWidth required>
                 <InputLabel>Tables</InputLabel>
                 <Select
-                value={table}
+                value={tables}
                 label="Table"
                 onChange={e => setTables(e.target.value)}
                 >
                 {getTableContent(numTables)}
                 </Select>
             </FormControl>
-            <Button variant="outlined">Upload Image</Button>
+            {/* <Button variant="outlined">Upload Image</Button> */}
+            <TextField
+                required
+                label="Image Link"
+                onChange={e => setImage(e.target.value)}
+            />
             <Typography variant="h5">Passwords</Typography>
             <TextField
             label="Kitchen Password"
@@ -128,7 +133,7 @@ export default function NewItem() {
             onChange={e => setMPass(e.target.value)}
             />
             <div>
-                <Button variant="contained">Save</Button>
+                <Button variant="contained" onClick={updateInfo}>Save</Button>
                 <Button sx={{marginLeft: 2}}>Reset</Button>
             </div>
         </Box>

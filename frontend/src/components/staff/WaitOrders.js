@@ -24,7 +24,8 @@ export default function WaitOrders({orders}) {
             id={o.id}
             table={o.table}
             name={o.name}
-            nextStatus={nextOrderStatus(o.status)}>
+            nextStatus={nextOrderStatus(o.status)}
+            role="waiter">
           </Order>
         );
       })}
