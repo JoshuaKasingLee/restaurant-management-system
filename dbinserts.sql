@@ -79,6 +79,9 @@ INSERT INTO tag(name) values ('vegetarian');
 INSERT INTO tag(name) values ('vegan');
 INSERT INTO tag(name) values ('pescatarian');
 INSERT INTO tag(name) values ('gluten free');
+INSERT INTO tag(name) values ('nut free');
+INSERT INTO tag(name) values ('dairy free');
+INSERT INTO tag(name) values ('chef recommended');
 
 INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
 

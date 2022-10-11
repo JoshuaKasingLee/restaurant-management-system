@@ -104,7 +104,7 @@ class Manager(Staff):
                         raise Exception("Inserting new tag failed")
             conn.commit()
 
-            m = MenuItem(name, desc, ingredients, cost, category, tags, img)
+            m = MenuItem(name, desc, ingredients, cost, Category(category), tags, img)
             self.restaurant.menu_items.append(m)
             return m
                 
