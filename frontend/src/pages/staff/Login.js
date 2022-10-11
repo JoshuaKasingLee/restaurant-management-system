@@ -2,15 +2,31 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Stack, Avatar, Typography } from '@mui/material';
 import LoginForm from '../../components/staff/LoginForm';
+import Header from '../../components/staff/Header';
 
 export default function Login () {
   localStorage.clear();
 
   const navigate = useNavigate();
-  const [role, setRole] = React.useState("");  
+  const [role, setRole] = React.useState("Admin");
   
-  if (role) {
-    return (
+  if (role === "Admin") {
+    return (<>
+        <Header title={role} />
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+          <Stack spacing={2}>
+            <Button variant="contained" onClick={(e) => setRole('kitchen')}>Kitchen Staff</Button>
+            {console.log(localStorage.getItem('assistance'))}
+            <Button variant="contained" onClick={(e) => setRole('wait')}>Wait Staff</Button>
+            <Button variant="contained" onClick={(e) => setRole('manager')}>Manager</Button>
+          </Stack>
+        </Box>
+      </>
+    );
+    
+  } else {
+    return (<>
+      <Header title={role} />
       <Box
       sx={{
         marginTop: 8,
@@ -45,17 +61,7 @@ export default function Login () {
           }
         }} role={role} />
       </Box>
-    );
-  } else {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        <Stack spacing={2}>
-          <Button variant="contained" onClick={(e) => setRole('kitchen')}>Kitchen Staff</Button>
-          {console.log(localStorage.getItem('assistance'))}
-          <Button variant="contained" onClick={(e) => setRole('wait')}>Wait Staff</Button>
-          <Button variant="contained" onClick={(e) => setRole('manager')}>Manager</Button>
-        </Stack>
-      </Box>
+      </>
     );
   }
 
