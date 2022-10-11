@@ -108,6 +108,7 @@ export default function NewItem() {
             <TextField
                 required
                 label="Image Link"
+                value={image}
                 onChange={e => setImage(e.target.value)}
             />
             <Typography variant="h5">Passwords</Typography>
