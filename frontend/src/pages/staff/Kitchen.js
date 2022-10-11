@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Header from '../../components/staff/Header';
 import KitchenOrders from '../../components/staff/KitchenOrders';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 export default function Kitchen() {
-  const [notStartedOrders, setNotStarted] = React.useState('');
-  const [cookingOrders, setCooking] = React.useState('');
+  const [notStartedOrders, setNotStarted] = React.useState([]);
+  const [cookingOrders, setCooking] = React.useState([]);
 
   React.useEffect(() => {  
     const getKitchenOrders = async () => {
@@ -15,26 +14,24 @@ export default function Kitchen() {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
       });
       const data = await response.json();
+
       if (response.ok) {
-        setNotStarted(data.orders.filter(o => o.status == "ordered"));
-        setCooking(data.orders.filter(o => o.status == "cooking"));
-        console.log({notStartedOrders})
+        setNotStarted(data.orders.filter(o => o.status === "ordered"));
+        setCooking(data.orders.filter(o => o.status === "cooking"));
       } else {
         alert(await data.error);
       }
     }
-    
-    // const intervalID = setInterval(getKitchenOrders, 1000)
-    getKitchenOrders()
 
-    // return (() => {
-    //   clearInterval(intervalID)
-    // })
+    const intervalID = setInterval(getKitchenOrders, 1000)
+
+    return (() => {
+      clearInterval(intervalID)
+    })
 
   }, []);  
   

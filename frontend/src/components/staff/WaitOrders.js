@@ -2,21 +2,31 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import WaitOrder from './WaitOrder'
+import Order from './Order'
+import { nextOrderStatus } from '../../utilities/constants';
 
 
-export default function WaitOrders() {
+export default function WaitOrders({orders}) { 
+
+  React.useEffect(() => {
+    console.log("inside", orders)
+  })
 
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        <ListItem>
-            <Typography sx={{minWidth: '56px'}}>Table</Typography>
-            <Typography>Item Name</Typography>
-        </ListItem>
-      {[0, 1, 2, 3].map((value) => {
+      <ListItem>
+          <Typography sx={{minWidth: '56px'}}>Table</Typography>
+          <Typography>Item Name</Typography>
+      </ListItem>
+      {orders.map((o) => {
         return (
-            <WaitOrder table={value} name={`Line item ${value + 1}`}>
-            </WaitOrder>
+          <Order
+            id={o.id}
+            table={o.table}
+            name={o.name}
+            nextStatus={nextOrderStatus(o.status)}
+            role="waiter">
+          </Order>
         );
       })}
     </List>

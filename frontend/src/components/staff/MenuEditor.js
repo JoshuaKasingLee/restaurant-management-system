@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import MenuCategoryEditor from './MenuCategoryEditor';
+import AddNewButton from './AddNewButton';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,6 +44,7 @@ function MenuEditor() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("");
   const [menu, setMenu] = React.useState({'categories': []});
+  const [trigger, setTrigger] = React.useState(false);
 
   const handleChange = (event, newValue, newLabel) => {
     setValue(newValue);
@@ -69,7 +71,8 @@ function MenuEditor() {
       }
     };
     getMenu();
-  }, []);
+    setTrigger(false);
+  }, [trigger]);
 
   const getCategoriesTabs = menu => {
     let content = [];
@@ -85,16 +88,23 @@ function MenuEditor() {
       content.push(
         <TabPanel  key={i} value={value} index={i}>
           <Typography variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategoryEditor category={menu.categories[value]}/>
+          <MenuCategoryEditor category={menu.categories[value]} updateMenu={setTrigger}/>
         </TabPanel>
       );
     }
     return content;
   };
 
+  
 
   return (
     <>
+      <Box
+        sx={{
+          height: 70
+        }}>
+        <AddNewButton />
+      </Box>
       <Box
         sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
       >

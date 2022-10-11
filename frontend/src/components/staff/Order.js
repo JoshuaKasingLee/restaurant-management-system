@@ -7,20 +7,18 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
-export default function KitchenOrder({id, table, name, nextStatus}) {
+export default function Order({id, table, name, nextStatus, role}) {
     const labelId = `checkbox-list-label-${table}`;
 
     async function progressOrderStatus() {
-        const response = await fetch(`http://localhost:5000/kitchen/orders`, {  
-            method: 'POST',
+        const response = await fetch(`http://localhost:5000/${role}/orders`, {  
+            method: 'PUT',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 id: id,
-                table: table,
-                name: name,
                 status: nextStatus
             })
         });
