@@ -21,7 +21,7 @@ function Header({title}) {
       <AppBar position="static" color="transparent">
         <Toolbar>
           <Box>
-            <img src={logo} alt="Logo" height="125px" width="125px"/>
+            <img src={'https://menufyproduction.imgix.net/637950714526548063+871748.png'} alt="Logo" height="125px" width="125px"/>
           </Box>
           <Typography variant="h1" component="div" sx={{ flexGrow: 1, ml: `${drawerWidth}px` }}>
             {title}
@@ -29,6 +29,7 @@ function Header({title}) {
           {title !== 'Table Selection' && title !== 'Admin' && <ToggleButton
           value="check"
           selected={selected}
+          color="info"
           onChange={() => {
             setSelected( selected => !selected );
           }}
