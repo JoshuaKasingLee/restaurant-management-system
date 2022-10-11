@@ -18,7 +18,7 @@ def waiter_update_order():
     if given_status == 'completed':
         status = OrderStatus.COMPLETED
 
-    # wait_staff.get_order_list()
+    wait_staff.update_status(id, status)
     res = wait_staff.get_order_list()
     return {
         'orders': res
