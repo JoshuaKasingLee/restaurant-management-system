@@ -12,10 +12,14 @@ export default function NewItem() {
     const [description, setDescription] = React.useState('');
     const [ingredients, setIngredients] = React.useState('');
     const [tags, setTags] = React.useState('');
-    const [cost, setCost] = React.useState(0);
+    const [cost, setCost] = React.useState(0.0);
     const [image, setImage] = React.useState('https://assets.stickpng.com/images/58889577bc2fc2ef3a1860be.png');
 
     const navigate = useNavigate();
+
+    const setCostWrapper = (value) => {
+        setCost(parseFloat(value))
+    }
 
     const addNewItem = async () => {
         const response = await fetch('http://localhost:5000/manager/items', {
@@ -50,8 +54,7 @@ export default function NewItem() {
           alert(await data.error);
         }
     } 
-    
-    
+
     return (
         <Box maxWidth="md" m="auto" component="form"
             sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', p: 10 }} >
@@ -65,7 +68,7 @@ export default function NewItem() {
                 <InputLabel htmlFor="outlined-adornment-amount">Cost</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-amount"
-                    onChange={e => setCost(e.target.value)}
+                    onChange={e => setCostWrapper(e.target.value)}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     label="Cost"
                     type="number"
