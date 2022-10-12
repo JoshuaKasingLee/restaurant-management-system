@@ -32,7 +32,7 @@ export default function Order({id, table, name, nextStatus, role}) {
 
     return ( <>
         <ListItem
-            key={table}
+            key={id}
             secondaryAction={
                 <IconButton
                     edge="end"
