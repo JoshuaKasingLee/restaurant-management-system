@@ -12,14 +12,14 @@ export default function Request({table}) {
 
     return ( <>
         <ListItem
-        key={table}
-        secondaryAction={
-            <IconButton edge="end" aria-label="comments">
-            <ArrowCircleRightIcon />
-            </IconButton>
-        }
-        disablePadding
-        divider
+            key={table}
+            secondaryAction={
+                <IconButton edge="end" aria-label="comments">
+                <ArrowCircleRightIcon />
+                </IconButton>
+            }
+            disablePadding
+            divider
         >
         <ListItemButton role={undefined} dense>
             <ListItemIcon>

@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { MenuItem, FormControl, InputLabel, Select } from '@mui/material';
-import Dropdown from '../../components/staff/Dropdown';
-import Checkboxes from '../../components/staff/Checkboxes';
 
 export default function NewItem() {
     const numTables = 20;
@@ -46,7 +43,7 @@ export default function NewItem() {
     const getTableContent = numTables => {
         let content = [];
         for (let i = 1; i <= numTables; i++) {
-          content.push(<MenuItem value={i}>{i}</MenuItem>);
+          content.push(<MenuItem key={i} value={i}>{i}</MenuItem>);
         }
         return content;
     };

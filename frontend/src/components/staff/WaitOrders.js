@@ -21,8 +21,8 @@ export default function WaitOrders({orders}) {
       {orders.map((o) => {
         return (
           <Order
-          key={o.id}  
-          id={o.id}
+            key={o.id}  
+            id={o.id}
             table={o.table}
             name={o.name}
             nextStatus={nextOrderStatus(o.status)}

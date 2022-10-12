@@ -20,7 +20,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography component="div">{children}</Typography>
+          <Typography component="span">{children}</Typography>
         </Box>
       )}
     </div>
@@ -87,7 +87,7 @@ function MenuEditor() {
     for (let i = 0; i < menu.categories.length; i++) {
       content.push(
         <TabPanel  key={i} value={value} index={i}>
-          <Typography variant="h3" >{menu.categories[value].name}</Typography>
+          <Typography component='span' variant="h3" >{menu.categories[value].name}</Typography>
           <MenuCategoryEditor category={menu.categories[value]} updateMenu={setTrigger}/>
         </TabPanel>
       );

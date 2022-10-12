@@ -15,7 +15,7 @@ export default function AddNewButton() {
   };
 
   return (
-    <div>
+    <>
       <Button
         id="basic-button"
         variant="outlined"
@@ -32,6 +32,6 @@ export default function AddNewButton() {
         <MenuItem onClick={handleClose}>Category</MenuItem>
         <MenuItem onClick={handleClose} component={Link} to={'/staff/manager/item/new'}>Food Item</MenuItem>
       </Menu>
-    </div>
+    </ >
   );
 }
