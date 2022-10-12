@@ -16,6 +16,8 @@ def choose_table():
     data = request.get_json()
     num = data["table"]
     tok = restaurant.choose_table(num)
+    if (tok == None):
+        return {"error": "Wrong username or password"}, 401
     res = {"token": tok}
     return res
 
@@ -23,7 +25,9 @@ def choose_table():
 def display_menu():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.customer_validate(token)
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     res = restaurant.menu_to_JSON()
     return res
 
@@ -31,7 +35,9 @@ def display_menu():
 def order_dishes():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.customer_validate(token)
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     table = data["table"]
     menu_item = data["menuItem"]
@@ -46,7 +52,9 @@ def order_dishes():
 def view_orders():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.customer_validate(token)
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     args = request.args
     table = args.get("table")
     orders = {}
@@ -60,7 +68,9 @@ def view_orders():
 def get_bill():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.customer_validate(token)
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     table = data["table"]
     type = data["type"]

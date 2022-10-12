@@ -10,7 +10,9 @@ waiter_routes = Blueprint('waiter_routes', __name__)
 def waiter_update_order():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.wait_validate(token)
+    valid = restaurant.wait_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     id = data['id']
     given_status = data['status']
@@ -28,7 +30,9 @@ def waiter_update_order():
 def waiter_orders():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.wait_validate(token)
+    valid = restaurant.wait_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     res = wait_staff.get_order_list()
     return {
         'orders': res

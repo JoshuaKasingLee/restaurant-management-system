@@ -10,7 +10,9 @@ kitchen_routes = Blueprint('kitchen_routes', __name__)
 def kitchen_update_order():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.kitchen_validate(token)
+    valid = restaurant.kitchen_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
 
     data = request.get_json()
     id = data['id']
@@ -31,7 +33,9 @@ def kitchen_update_order():
 def kitchen_orders():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.kitchen_validate(token)
+    valid = restaurant.kitchen_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     
     res = kitchen_staff.get_order_list()
     return {

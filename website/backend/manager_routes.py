@@ -7,20 +7,22 @@ manager_routes = Blueprint('manager_routes', __name__)
 
 @manager_routes.route('/users', methods=['GET'])
 def get_restaurant_info():
-    #forgot to check token
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.manager_validate(token)
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     return restaurant.get_restaurant_info()
     
 
 
 @manager_routes.route('/users', methods=['POST']) # is this meant to be put?
 def change_restaurant_info():
-    #forgot to check token
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.manager_validate(token)
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     rest_obj = data["restaurant"] 
     pass_obj = data["passwords"]
@@ -31,7 +33,9 @@ def change_restaurant_info():
 def edit_menu():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.manager_validate(token)
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     res = restaurant.menu_to_JSON()
     return res
 
@@ -39,7 +43,9 @@ def edit_menu():
 def add_category():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.manager_validate(token)
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     cat_name = data["name"]
     cat = restaurant.manager.add_category(cat_name)
@@ -53,7 +59,9 @@ def add_category():
 def add_menu_item():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.manager_validate(token)
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     name = data["name"]
     desc = data["description"]
@@ -70,7 +78,9 @@ def add_menu_item():
 def remove_menu_item(ItemName):
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    restaurant.manager_validate(token)
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     category = data["category"]
     restaurant.manager.remove_menu_item(ItemName)

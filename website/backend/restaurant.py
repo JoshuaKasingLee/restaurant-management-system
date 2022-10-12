@@ -135,7 +135,7 @@ class Restaurant:
                     table.token = str(cust_token)    
                     conn.commit()
                     return str(cust_token)
-        raise Exception("Cannot find table")
+        return None
         
                 
     def login(self, user, password):
@@ -158,25 +158,25 @@ class Restaurant:
         for tok in self.kitchen_tokens:
             if (tok == token):
                 return True 
-        raise Exception("Cannot validate")
+        return False
 
     def wait_validate(self, token):
         for tok in self.wait_tokens:
             if (tok == token):
                 return True 
-        raise Exception("Cannot validate")
+        return False
 
     def manager_validate(self, token):
         for tok in self.manager_tokens:
             if (tok == token):
                 return True 
-        raise Exception("Cannot validate")
+        return False
 
     def customer_validate(self, token):
         for table in self.tables:
             if (table.token == token):
                 return True 
-        raise Exception("Cannot validate")
+        return False
     
     # converts a category to JSON
     def category_to_JSON(self, category_name):

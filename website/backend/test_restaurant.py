@@ -168,8 +168,6 @@ def test_login_and_validate():
     c_tok = r.choose_table(1)
     assert(t.occupied)
     assert(r.customer_validate(c_tok))
-    with pytest.raises(Exception):
-        r.choose_table(3)
     
     cur.execute("delete from tables where num = 1")
     conn.commit()
