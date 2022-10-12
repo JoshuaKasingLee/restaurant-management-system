@@ -101,7 +101,9 @@ function MenuEditor() {
     <>
       <Box
         sx={{
-          height: 70
+          height: 70,
+          position: 'fixed',
+          right: '40px',
         }}>
         <AddNewButton />
       </Box>

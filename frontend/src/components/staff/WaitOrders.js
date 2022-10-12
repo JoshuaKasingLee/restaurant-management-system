@@ -8,9 +8,9 @@ import { nextOrderStatus } from '../../utilities/constants';
 
 export default function WaitOrders({orders}) { 
 
-  React.useEffect(() => {
-    console.log("inside", orders)
-  })
+  // React.useEffect(() => {
+  //   console.log("inside", orders)
+  // })
 
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>

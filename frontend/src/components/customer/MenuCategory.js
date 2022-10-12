@@ -160,8 +160,9 @@ function MenuCategory({category, filters}) {
       {categoryItems.map((item, index) => (
         < div key={item.img}>
           <ImageListItem sx={{ width: 230 }} onClick={handleClickOpen(index)}>
-            <Img
+            <img
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
+              srcSet={`${item.img}?w=230&h=200&fit=crop&auto=format&dpr=2 2x`}
               alt={item.title}
               loading="lazy"
             />

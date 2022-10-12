@@ -119,8 +119,8 @@ function Menu() {
   return (
     <>
       <Header title={"Menu"} />
-      <Stack position='fixed' right='0' direction="row" spacing={1} sx={{ mr: '25px' }}>
-        {chipData.map((data, index) => (
+      <Stack position='fixed' right='0' direction="row" spacing={1} sx={{ mt: '10px', mr: '25px' }}>
+        {chipData.map((data) => (
             <Stack key={data.key}>
               <Chip 
                 variant={data.selected.split(' ')[0]} 
