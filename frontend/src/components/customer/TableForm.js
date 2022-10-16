@@ -48,7 +48,7 @@ function TableForm ({ submit }) {
   };
   
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
 			<Stack spacing={2}>
         <Box sx={{ minWidth: 120 }}>
           <FormControl fullWidth>

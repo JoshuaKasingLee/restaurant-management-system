@@ -44,7 +44,7 @@ function BillTable() {
               cost: data.orderItems[i].cost,
             }
           );
-          setOrder( order => content );
+          setOrder( content );
         }
       } else {
         alert(await data.error);

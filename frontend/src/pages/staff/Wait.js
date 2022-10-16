@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Header from '../../components/staff/Header';
 import WaitOrders from '../../components/staff/WaitOrders';
 import Requests from '../../components/staff/Requests';

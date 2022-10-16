@@ -8,9 +8,9 @@ import { nextOrderStatus } from '../../utilities/constants';
 
 export default function WaitOrders({orders}) { 
 
-  React.useEffect(() => {
-    console.log("inside", orders)
-  })
+  // React.useEffect(() => {
+  //   console.log("inside", orders)
+  // })
 
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -21,6 +21,7 @@ export default function WaitOrders({orders}) {
       {orders.map((o) => {
         return (
           <Order
+            key={o.id}  
             id={o.id}
             table={o.table}
             name={o.name}

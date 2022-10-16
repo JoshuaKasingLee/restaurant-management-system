@@ -131,7 +131,7 @@ function MenuCategory({category, updateMenu}) {
   return (
     <ImageList sx={{ width: 950, height: 500 }} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
-        < div key={item.img}>
+        < div key={index}>
           <ImageListItem sx={{ width: 230 }} onClick={handleClickOpen(index)}>
             <img
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}

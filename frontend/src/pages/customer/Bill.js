@@ -6,7 +6,9 @@ import Box from '@mui/material/Box';
 import BillTable from '../../components/customer/BillTable';
 
 function Bill() {
+  // const [total, setTotal] = React.useState(0);
   const [charge, setCharge] = React.useState(0);
+  // const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
     const getBill = async () => {
@@ -36,7 +38,10 @@ function Bill() {
       if (response.ok) {
         // console.log(data);
         localStorage.setItem('charge', data.charge[0]);
-        setCharge( charge => data.charge[0] );
+        setCharge( data.charge[0] );
+        // setTotal( data.total );
+        // setOrder( data.orderItems );
+
       } else {
         alert(await data.error);
       }
@@ -52,6 +57,7 @@ function Bill() {
           Thank you for dining with us!
         </Typography>
         <BillTable />
+        {/* <BillTable orderItems={orderItems} */}
         <Box alignItems='end' sx={{ px: '16px', py: '8px', bgcolor: 'text.secondary', borderRadius: '24px' }}>
           <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Total Charge: ${charge.toFixed(2)}
