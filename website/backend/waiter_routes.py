@@ -37,3 +37,31 @@ def waiter_orders():
     return {
         'orders': res
     }
+
+@waiter_routes.route('/assist', methods=['GET'])
+def get_assistance_requests():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.wait_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    res = wait_staff.get_assistance_requests()
+    return {
+        "tables": res
+    }
+
+@waiter_routes.route('/assist', methods=['PUT'])
+def resolve_assistance_request():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.wait_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+
+    data = request.get_json()
+    table = data["table"]
+    wait_staff.resolve_assistance_request(table)
+    res = wait_staff.get_assistance_requests()
+    return {
+        "tables": res
+    }
