@@ -64,6 +64,21 @@ def view_orders():
             return orders
     raise Exception("Cannot find table")
 
+@customer_routes.route('/assistance', methods=['PUT'])
+def toggle_assistance():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    table = data["table"]
+    for t in restaurant.tables:
+        if t.number == int(table):
+            t.toggle_assistance()
+    return {}
+
+
 @customer_routes.route('/bill', methods=['POST'])
 def get_bill():
     bearer = request.headers['Authorization']
