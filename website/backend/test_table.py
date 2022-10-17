@@ -185,12 +185,33 @@ def test_clear_table():
 # requests for assistance
 
 def test_request_assistance():
+    cur = conn.cursor()
+    cur.execute("delete from tables")
+
     table = Table(1)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+
+    cur.execute("select needs_assistance from tables where num = %s", ['1'])
+    assert(cur.fetchone()[0] == False)
     assert(not table.needs_assistance)
+
     table.toggle_assistance()
+    cur.execute("select needs_assistance from tables where num = %s", ['1'])
+    assert(cur.fetchone()[0] == True)
     assert(table.needs_assistance)
+
     table.toggle_assistance()
+    cur.execute("select needs_assistance from tables where num = %s", ['1'])
+    assert(cur.fetchone()[0] == False)
     assert(not table.needs_assistance)
+
+    table.toggle_assistance()
+    cur.execute("select needs_assistance from tables where num = %s", ['1'])
+    assert(cur.fetchone()[0] == True)
+    assert(table.needs_assistance)
+
+    cur.execute("delete from tables")
+    conn.commit()
 
 # setting budgets
 
