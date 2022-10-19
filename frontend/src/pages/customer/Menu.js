@@ -1,15 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import TagFacesIcon from '@mui/icons-material/TagFaces';
+import { Box, Chip, Stack, Tab, Tabs, Typography } from '@mui/material';
+
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
 import MenuCategory from '../../components/customer/MenuCategory';
-import Chip from '@mui/material/Chip';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
+import ProductSort from '../../components/customer/menu/ProductSort';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -112,27 +109,30 @@ function Menu() {
     let newSelected = ((data.selected === 'filled primary') ? 'outlined default' : 'filled primary');
     newChipData[data.key] = { key: data.key, label: data.label, icon: data.icon, selected: newSelected };
     setChipData(newChipData);
-    if (newSelected === 'filled primary') setFilters( state => ([...state, data.label]) );
+    if (newSelected === 'filled primary') setFilters( state => ([...state, data.label].sort()) );
     else setFilters( filters => filters.filter(state => state !== data.label) );
   };
 
   return (
     <>
       <Header title={"Menu"} />
-      <Stack position='fixed' right='0' direction="row" spacing={1} sx={{ mt: '10px', mr: '25px' }}>
-        {chipData.map((data) => (
-            <Stack key={data.key}>
-              <Chip 
-                variant={data.selected.split(' ')[0]} 
-                color={data.selected.split(' ')[1]} 
-                size="small"
-                icon={<data.icon/>}
-                label={data.label}
-                onClick={handleClick(data)}
-              />
-            </Stack>
-        ))}
-      </Stack>
+      <Box display='flex' alignItems='flex-end' flexDirection="column" position='fixed' right='0' spacing={1} sx={{ mt: '10px', mr: '25px' }}>
+        <Stack direction="row" spacing={1}>
+          {chipData.map((data) => (
+              <Stack key={data.key}>
+                <Chip 
+                  variant={data.selected.split(' ')[0]} 
+                  color={data.selected.split(' ')[1]} 
+                  size="small"
+                  icon={<data.icon/>}
+                  label={data.label}
+                  onClick={handleClick(data)}
+                />
+              </Stack>
+          ))}
+        </Stack>
+        <ProductSort />
+      </Box>
       <Box
         sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
       >

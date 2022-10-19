@@ -1,23 +1,11 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
-import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
-import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
+import { styled } from '@mui/material/styles';
+import { Box, Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
+  IconButton, ImageList, ImageListItem, ImageListItemBar, Slide, Typography } from '@mui/material';
+import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
+import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -74,6 +62,7 @@ function MenuCategory({category, filters}) {
       if (category.menu_items[i].tags['nut free']) tagList.push('Nut Free');
       if (category.menu_items[i].tags['dairy free']) tagList.push('Dairy Free');
       if (category.menu_items[i].tags['chef recommended']) tagList.push("Chef's Recommendation");
+      tagList.sort();
       content.push(
         { 
           img: category.menu_items[i].img,
@@ -81,14 +70,13 @@ function MenuCategory({category, filters}) {
           cost: category.menu_items[i].cost,
           description: category.menu_items[i].description,
           ingredients: category.menu_items[i].ingredients,
-          tags: tagList //"Chef's Reccomendation"
+          tags: tagList,
         }
       );
-      setCategoryItems( categoryItems => content );
-      setOpen( open => (new Array(category.menu_items.length).fill(false)) );
     }
-    // console.log(content);
-  }, [category]);
+    setCategoryItems( content.filter( state => filters.every(val => state.tags.includes(val))) );
+    setOpen( open => (new Array(category.menu_items.length).fill(false)) );
+  }, [category, filters]);
 
   const handleClickOpen = (index) => () => {
     setOpen( state => ({ 
