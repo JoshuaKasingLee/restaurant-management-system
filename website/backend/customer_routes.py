@@ -89,12 +89,10 @@ def get_bill():
     data = request.get_json()
     table = data["table"]
     type = data["type"]
+    num_split = data["numSplit"]
     for t in restaurant.tables:
         if t.number == int(table):
-            if type == 'together':
-                cost = t.get_total_cost()
-                t.clear_table()
-                return {
-                    "charge": [cost, 0, 0, 0]
-                }
+            res = t.get_bill(type, num_split)
+            t.clear_table()
+            return res
     raise Exception("Cannot find table")

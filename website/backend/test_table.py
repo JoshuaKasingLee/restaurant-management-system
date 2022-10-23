@@ -132,6 +132,90 @@ def test_get_total_cost():
     expected_cost = 20.80*2 + 6 + 48.50
     assert(table.get_total_cost() == expected_cost)
 
+def test_get_bill_together():
+    cur = conn.cursor()
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Croissant', 'Filled with almond praline cream', 'Flour, almonds, butter', 6, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Steak', 'Medium rare', 'Beef, red wine jus', 48.50, 1, %s, TRUE);", [cat_id])
+
+    table = Table(1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m2)
+    table.add_order_to_table(m3)
+    table.add_order_to_table(m3)
+    expected_cost = 20.80*3 + 6 + 48.50*2
+    assert(table.get_bill('together') == {
+        "total": expected_cost,
+        "charge": [expected_cost, 0, 0, 0],
+        "order_items": [{
+            "name": "Escargot",
+            "quantity": 3,
+            "cost": 20.80*3
+        }, {
+            "name": "Croissant",
+            "quantity": 1,
+            "cost": 6
+        }, {
+            "name": "Steak",
+            "quantity": 2,
+            "cost": 48.50*2
+        }]
+    })
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.close()
+
+def test_get_bill_equal_split():
+    cur = conn.cursor()
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Croissant', 'Filled with almond praline cream', 'Flour, almonds, butter', 6, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Steak', 'Medium rare', 'Beef, red wine jus', 48.50, 1, %s, TRUE);", [cat_id])
+
+    table = Table(1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m1)
+    table.add_order_to_table(m2)
+    table.add_order_to_table(m3)
+    table.add_order_to_table(m3)
+    expected_cost = 20.80*3 + 6 + 48.50*2
+    assert(table.get_bill('equal', 3) == {
+        "total": expected_cost,
+        "charge": [expected_cost / 3, expected_cost / 3, expected_cost / 3, 0],
+        "order_items": [{
+            "name": "Escargot",
+            "quantity": 3,
+            "cost": 20.80*3
+        }, {
+            "name": "Croissant",
+            "quantity": 1,
+            "cost": 6
+        }, {
+            "name": "Steak",
+            "quantity": 2,
+            "cost": 48.50*2
+        }]
+    })
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.close()
+
 # clearing table
 
 def test_clear_table():
