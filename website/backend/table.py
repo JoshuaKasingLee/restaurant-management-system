@@ -123,6 +123,57 @@ class Table:
             cost += order.menu_item.cost
         return cost
 
+    def get_bill(self, type: str, num_split: int = 0):
+        cur = conn.cursor()
+
+        receipt = []
+
+        for dish_name, quantity in self.get_order_quantities().items():
+            cur.execute("select cost from menu_item where name = %s", [dish_name])
+            item_cost = cur.fetchone()[0]
+
+            receipt.append({
+                "name": dish_name,
+                "quantity": quantity,
+                "cost": quantity * item_cost
+            })
+
+        if (type == 'together'):
+            return {
+                "total": self.get_total_cost(),
+                "charge": [self.get_total_cost(), 0, 0, 0],
+                "order_items": receipt
+            }
+
+        if (type == 'equal'):
+            cost_pp = self.get_total_cost() / num_split
+            charge_array = []
+            i = 0
+            while i < 4:
+                if i < num_split:
+                    charge_array.append(cost_pp)
+                else:
+                    charge_array.append(0)
+                i += 1
+
+            return {
+                "total": self.get_total_cost(),
+                "charge": charge_array,
+                "order_items": receipt
+            }
+
+        if (type == 'dish'):
+            return self.get_order_quantities()
+
+    def get_order_quantities(self) -> dict:
+        receipt = {}
+        for order in self.orders:
+            if order.menu_item.name in receipt:
+                receipt[order.menu_item.name] += 1
+            else:
+                receipt[order.menu_item.name] = 1
+        return receipt
+
     # budgeting solution functions
 
     def set_budget(self, budget = None):
