@@ -47,7 +47,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-function MenuCategory({category, filters}) {
+function MenuCategory({category, filters, sort}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
   const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
@@ -74,9 +74,15 @@ function MenuCategory({category, filters}) {
         }
       );
     }
-    setCategoryItems( content.filter( state => filters.every(val => state.tags.includes(val))) );
-    setOpen( open => (new Array(category.menu_items.length).fill(false)) );
-  }, [category, filters]);
+    if (sort.value !== 'none') {
+      content.sort((a, b)=> {
+        if (a.cost === b.cost) return a.title < b.title ? -1 : 1
+        else if (sort.value === 'priceDesc') return a.cost > b.cost ? -1 : 1
+        else return a.cost < b.cost ? -1 : 1
+      });
+    }
+    setCategoryItems(content.filter( state => filters.every(val => state.tags.includes(val))));
+  }, [category, filters, sort]);
 
   const handleClickOpen = (index) => () => {
     setOpen( state => ({ 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 // material
 import { Menu, Button, MenuItem, Typography } from '@mui/material';
 // component
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -12,15 +12,18 @@ const SORT_BY_OPTIONS = [
   { value: 'priceAsc', label: 'Price: Low-High' }
 ];
 
-export default function ShopProductSort() {
+function MenuSort({ submit }) {
   const [open, setOpen] = useState(null);
+  const [sort, setSort] = useState({ value: 'none', label: 'None' });
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (option) => {
     setOpen(null);
+    setSort(option);
+    submit(option);
   };
 
   return (
@@ -33,7 +36,7 @@ export default function ShopProductSort() {
       >
         Sort By:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          None
+          {sort.label}
         </Typography>
       </Button>
       <Menu
@@ -47,8 +50,8 @@ export default function ShopProductSort() {
         {SORT_BY_OPTIONS.map((option) => (
           <MenuItem
             key={option.value}
-            selected={option.value === 'newest'}
-            onClick={handleClose}
+            selected={option.value === sort.value}
+            onClick={() => handleClose(option)}
             sx={{ typography: 'body2' }}
           >
             {option.label}
@@ -58,3 +61,5 @@ export default function ShopProductSort() {
     </>
   );
 }
+
+export default MenuSort;
