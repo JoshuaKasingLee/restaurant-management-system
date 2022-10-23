@@ -67,7 +67,7 @@ function Menu() {
       if (response.ok) {
         // console.log(data);
         localStorage.setItem('menu', JSON.stringify(data));
-        setMenu( menu => (data) );
+        setMenu( data );
       } else {
         alert(await data.error);
       }
