@@ -45,7 +45,7 @@ function Menu() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("");
   const [menu, setMenu] = React.useState({'categories': []}); 
-  const [sort, setSort] = React.useState('none');
+  const [sort, setSort] = React.useState({ value: 'none', label: 'None' });
   const [filters, setFilters] = React.useState([]);
 
   const handleChange = (event, newValue, newLabel) => {

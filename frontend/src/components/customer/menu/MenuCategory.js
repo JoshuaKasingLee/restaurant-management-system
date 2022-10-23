@@ -65,6 +65,7 @@ function MenuCategory({category, filters, sort}) {
       tagList.sort();
       content.push(
         { 
+          order: category.menu_items[i].display_order,
           img: category.menu_items[i].img,
           title: category.menu_items[i].name,
           cost: category.menu_items[i].cost,
@@ -74,11 +75,13 @@ function MenuCategory({category, filters, sort}) {
         }
       );
     }
-    if (sort.value !== 'none') {
-      content.sort((a, b)=> {
-        if (a.cost === b.cost) return a.title < b.title ? -1 : 1
-        else if (sort.value === 'priceDesc') return a.cost > b.cost ? -1 : 1
-        else return a.cost < b.cost ? -1 : 1
+    if (sort.value === 'none') 
+      content.sort( (a, b) => a.order < b.order ? -1 : 1 );
+    else {
+      content.sort( (a, b) => {
+        if (a.cost === b.cost) return a.title < b.title ? -1 : 1;
+        else if (sort.value === 'priceDesc') return a.cost > b.cost ? -1 : 1;
+        else return a.cost < b.cost ? -1 : 1;
       });
     }
     setCategoryItems(content.filter( state => filters.every(val => state.tags.includes(val))));
