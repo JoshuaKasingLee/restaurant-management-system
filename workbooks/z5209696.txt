@@ -22,3 +22,7 @@ For the proposal, I cleaned up my references and wrote about the business, inter
 Week 4
 Cyrus Kelly and I discussed a number of backend decisions relating to file structure, how to set up the routes as well as how to do testing and exception handling. I completed Sprint 1's login functionality for all users
 as well as other functionalities such as customers choosing tables. I also completed the routes and functions related to manager customisation of passwords, name and image of the restaurant. I completed tests for all these functionalities.
+
+Week 5 
+Cyrus, Kelly and I finished the last few user stories for Sprint 1 and as a team, tested connecting the frontend to the routes we made and debugged any errors we found. We also split the user stories again for Sprint 2 and completed the retrospective together
+as a team. I began thinking about how to complete my assigned user stories which mainly involves the 'menu editor' functionality (from the manager side).
