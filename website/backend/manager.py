@@ -257,3 +257,21 @@ class Manager(Staff):
         
         conn.commit()
     
+    
+    def category_edit(self, cat_id, show, new_name):
+        cur = conn.cursor()
+        cur.execute("""select name from category where id = %s""", [cat_id])
+        name = cur.fetchone()[0]
+        if not self.restaurant.category_exists(name):
+            
+            raise Exception(f"Category with name {name} does not exist")
+
+        cur.execute("""update category set visible = %s, name = %s where id = %s""", [show, new_name, cat_id])
+        if (cur.rowcount == 1): 
+            for cat in self.restaurant.categories:
+                if cat.name == name:
+                    cat.visible = show
+                    cat.name = new_name
+        else:
+            raise Exception("Unable to update category visibility")
+        conn.commit()

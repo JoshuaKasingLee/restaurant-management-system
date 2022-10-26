@@ -555,5 +555,22 @@ def test_edit_menu_item():
     conn.commit()
     
 
-
+def test_category_edit():
+    cur = conn.cursor()
+    cur.execute("delete from category")
+    
+    r1 = Restaurant("Nobu")
+    m1 = Manager("password", r1)
+    m1.add_category("Tasty")
+    m1.add_category("Yummers")
+    
+    cur.execute("select id from category where name = %s", ["Tasty"])
+    id = cur.fetchone()[0]
+    m1.category_edit(id, True, "Bob")
+    assert(m1.restaurant.categories[0].visible)
+    assert(m1.restaurant.categories[0].name == "Bob")
+    cur.execute("delete from category")
+    conn.commit()
+    
+    
 pytest.main()

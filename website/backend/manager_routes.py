@@ -132,3 +132,17 @@ def edit_menu_item(ItemName):
     res = restaurant.menu_to_JSON()
     return res
     
+    
+@manager_routes.route('/categories/<path:CategoryId>', methods=['PUT'])
+def category_edit(CategoryId):
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    try:
+        restaurant.manager.category_edit(int(CategoryId), data['show'], data['name'])
+    except:
+        return {"error": "Editing category visibility failed"}, 401
+    return {}
