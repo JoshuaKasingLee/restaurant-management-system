@@ -6,9 +6,9 @@ import Box from '@mui/material/Box';
 import BillTable from '../../components/customer/BillTable';
 
 function Bill() {
-  // const [total, setTotal] = React.useState(0);
-  const [charge, setCharge] = React.useState(0);
-  // const [orderItems, setOrderItems] = React.useState([]);
+  const [total, setTotal] = React.useState(0);
+  // const [charge, setCharge] = React.useState(0);
+  const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
     const getBill = async () => {
@@ -24,7 +24,7 @@ function Bill() {
           { 
             table: localStorage.getItem('table'),
             type: 'together',
-            num: 4,
+            numSplit: 4,
             dishes: {
               person1: [],
               person2: [],
@@ -36,12 +36,10 @@ function Bill() {
       });
       const data = await response.json();
       if (response.ok) {
-        // console.log(data);
-        localStorage.setItem('charge', data.charge[0]);
-        setCharge( data.charge[0] );
-        // setTotal( data.total );
-        // setOrder( data.orderItems );
-
+        // localStorage.setItem('charge', data.charge[0]);
+        // setCharge( data.charge[0] );
+        setTotal( data.total );
+        setOrderItems( data.order_items );
       } else {
         alert(await data.error);
       }
@@ -56,11 +54,10 @@ function Bill() {
         <Typography align='center' variant="h3">
           Thank you for dining with us!
         </Typography>
-        <BillTable />
-        {/* <BillTable orderItems={orderItems} */}
+        <BillTable orderItems={orderItems} />
         <Box alignItems='end' sx={{ px: '16px', py: '8px', bgcolor: 'text.secondary', borderRadius: '24px' }}>
           <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            Total Charge: ${charge.toFixed(2)}
+            Total Charge: ${total.toFixed(2)}
           </Typography>
           <Typography color='background.paper' align="center" variant="h7" component="div" sx={{ flexGrow: 1 }}>
             Please pay at the counter
