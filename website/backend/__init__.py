@@ -28,4 +28,12 @@ def create_app():
             return {"error": "Wrong username or password"}, 401
         res = {"token": token}
         return dumps(res)
+        
+        
+        
+        
+    @app.errorhandler(Exception)
+    def default_error_handler(e):
+        code = 500
+        return {"error": "Server ran into an error!"}, 500
     return app

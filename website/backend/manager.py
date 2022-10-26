@@ -1,3 +1,4 @@
+from email.mime import image
 from operator import truediv
 from staff import Staff
 from menu_item import MenuItem
@@ -15,20 +16,21 @@ class Manager(Staff):
         if self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} already exists")
         else:
+            c = Category(name)
             cur = conn.cursor()
             try:
                 # cur.execute("""select count * from category""")
                 # display = cur.fetchone()[0]
-                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, 0]) # need to change to default order at end
+                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, c.display_order]) # need to change to default order at end
             except Exception as err:
                 conn.rollback()
                 raise Exception("Inserting new category failed")
             conn.commit()
             # cat_id = cur.lastrowid
-            c = Category(name)
             
             self.restaurant.categories.append(c)
             return c
+            
 
 
     def remove_category(self, name):
@@ -49,16 +51,91 @@ class Manager(Staff):
                 return True
         # check if exception needs to be thrown if no category was found
         return False
-
-    def add_menu_item(self, name, desc, ingredients, cost, category: str, tags = None, img = None):
-        if self.restaurant.menu_contains(name):
-            raise Exception(f"Menu item with name {name} already exists")
+        
+    def update_categories_display_order(self, category_display_orders):
+        cur = conn.cursor()
+    
+        for category in category_display_orders:
+            cur.execute("""select name from category where id = %s""", [category["id"]])
+            cat_name = cur.fetchone()[0]
+            cur.execute("""update category set display_order = %s where id = %s""", [category["positionId"], category["id"]])
+            if cur.rowcount == 1:
+                for cat in self.restaurant.categories:
+                    if cat.name == cat_name:
+                        cat.display_order = category["positionId"]
+            else:
+                raise Exception("Display order update failed")
+        
+        conn.commit()
+    
+    def update_menu_items_display_order(self, menu_item_display_orders):
+        cur = conn.cursor()
+    
+        for item in menu_item_display_orders:
+            cur.execute("""select name from menu_item where id = %s""", [item["id"]])
+            item_name = cur.fetchone()[0]
+            cur.execute("""update menu_item set display_order = %s where id = %s""", [item["positionId"], item["id"]])
+            if cur.rowcount == 1:
+                for menu_item in self.restaurant.menu_items:
+                    if menu_item.name == item_name:
+                        menu_item.display_order = item["positionId"]
+            else:
+                raise Exception("Display order update failed")
+                
+                    
+        conn.commit()
+    
+    def edit_menu_item(self, oldname, name, category, desc, ingredients, cost, show, tags = None, img = None):
+        if not self.restaurant.menu_contains(oldname):
+            raise Exception(f"Menu item with name {oldname} does not exist")
         else:
             cur = conn.cursor()
             try:
                 cur.execute("select id from category where name = %s", [category])
                 cat_id = cur.fetchone()[0]
-                cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values (%s, %s, %s, %s, %s, %s, %s, %s);", [name, desc, ingredients, cost, 0, cat_id, img, False]) # need to change to default order at end
+                cur.execute("""update menu_item set name = %s, category = %s, description = %s, ingredients = %s, cost = %s, visible = %s, image = %s where name = %s""", [name, cat_id, desc, ingredients, cost, show, img, oldname])
+            except Exception as err:
+                conn.rollback()
+                raise Exception("Updating menu item failed")
+            conn.commit()
+        
+            if tags != None:
+                cur.execute("delete from menu_item_tags where menu_item = (select id from menu_item where name = %s)", [name])
+                for tag in tags.keys():
+                    if tags[tag]:
+                        try:
+                            cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = %s));", [name, tag])
+                        except Exception as err:
+                            conn.rollback()
+                            raise Exception("Inserting tag failed")
+                        
+            for item in self.restaurant.menu_items:
+
+                if item.name == oldname:
+                    item.name = name
+                    #find category object please
+                    item.category = self.restaurant.find_category(category)
+                    item.desc = desc
+                    item.ingredients = ingredients
+                    item.cost = cost 
+                    item.tags = tags
+                    item.visible = show
+                    item.img = img
+                    return item
+
+
+    def add_menu_item(self, name, desc, ingredients, cost, category: str, tags = None, img = None):
+    
+        if self.restaurant.menu_contains(name):
+            raise Exception(f"Menu item with name {name} already exists")
+        else:
+            #find category object please
+            m = MenuItem(name, desc, ingredients, cost, self.restaurant.find_category(category), tags, img)
+            cur = conn.cursor()
+            try:
+                cur.execute("select id from category where name = %s", [category])
+                cat_id = cur.fetchone()[0]
+                cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values (%s, %s, %s, %s, %s, %s, %s, %s);", [name, desc, ingredients, cost, m.display_order, cat_id, img, False]) # need to change to default order at end
             except Exception as err:
                 conn.rollback()
                 raise Exception("Inserting new menu item failed")
@@ -103,8 +180,6 @@ class Manager(Staff):
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
             conn.commit()
-
-            m = MenuItem(name, desc, ingredients, cost, Category(category), tags, img)
             self.restaurant.menu_items.append(m)
             return m
                 

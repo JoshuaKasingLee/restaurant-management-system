@@ -249,3 +249,9 @@ class Restaurant:
                 if order.status == OrderStatus.ORDERED or order.status == OrderStatus.COOKING:
                     orders_list.append(order.to_JSON())
         return sorted(orders_list, key=lambda d: d['time_ordered'])
+        
+    
+    def find_category(self, name):
+        for cat in self.categories:
+            if cat.name == name:
+                return cat 

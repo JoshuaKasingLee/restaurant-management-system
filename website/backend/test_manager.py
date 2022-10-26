@@ -460,9 +460,100 @@ def test_choose_table_amt_negative():
         m.choose_table_amt(-3)
         
 
-
-
+def test_update_categories_display_order():
+    r = Restaurant("Kelly's Kitchen")
+    m = Manager("tomiscool", r)
+    r.manager = m
+    cur = conn.cursor()
+    cur.execute("delete from category") 
+    m.add_category("Sashimi")
+    m.add_category("Jap")
+    m.add_category("Nice")
+    m.add_category("Yum")
     
     
+    cur.execute("""select id from category where name = %s""", ["Sashimi"])
+    id = cur.fetchone()[0]
+    cur.execute("""select id from category where name = %s""", ["Yum"])
+    other_id = cur.fetchone()[0]
+
+    m.update_categories_display_order([
+    {"id": id, "positionId": 20}, {"id": other_id, "positionId": 30}
+    ])
+    
+    for cat in r.categories:
+        if cat.name == "Sashimi":
+            assert(cat.display_order == 20)
+        elif cat.name == "Yum":
+            assert(cat.display_order == 30)
+    cur.execute("delete from category")  
+    conn.commit()
+
+def test_update_menu_items_display_order():
+    r = Restaurant("Kelly's Kitchen")
+    m = Manager("tomiscool", r)
+    r.manager = m
+    cur = conn.cursor()
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    m.add_category("Japanese")
+    m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
+    m.add_menu_item("Yum", "Nice", "super super", "1", "Japanese")
+    
+    
+    cur.execute("""select id from menu_item where name = %s""", ["Sashimi"])
+    id = cur.fetchone()[0]
+    cur.execute("""select id from menu_item where name = %s""", ["Yum"])
+    other_id = cur.fetchone()[0]
+
+    m.update_menu_items_display_order([
+    {"id": id, "positionId": 20}, {"id": other_id, "positionId": 30}
+    ])
+    
+    for i in r.menu_items:
+        if i.name == "Sashimi":
+            assert(i.display_order == 20)
+        elif i.name == "Yum":
+            assert(i.display_order == 30)
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
+
+def test_edit_menu_item():
+    cur = conn.cursor()
+    cur.execute("delete from menu_item_tags")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    
+    r1 = Restaurant("Nobu")
+    m1 = Manager("password", r1)
+    m1.add_category("Tasty")
+    m1.add_category("Japanese")
+    
+    
+    item = m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese", {"vegetarian": True, "vegan": False, "gluten free": True, "nut free": False, "dairy free": False, "chef recommended": False})
+
+    
+    assert(item.tags == {"vegetarian": True, "vegan": False, "gluten free": True, "nut free": False, "dairy free": False, "chef recommended": False})
+    
+    item = m1.edit_menu_item("Sashimi", "Awesome", "Tasty", "Sugoi", "just fish and rice", "1.50", True, {"vegetarian": True, "vegan": True, "nut free": True, "dairy free": True}, "big image of sushi")
+
+    
+    assert(item.name == "Awesome")
+    assert(item.category.name == "Tasty")
+    assert(item.desc == "Sugoi")
+    assert(item.ingredients == "just fish and rice")
+    assert(item.cost == "1.50")
+    assert(item.tags == {"vegetarian": True, "vegan": True, "nut free": True, "dairy free": True})
+    assert(item.visible == True)
+    assert(item.img == "big image of sushi")  
+    
+    
+    cur.execute("delete from menu_item_tags")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    conn.commit()
+    
+
 
 pytest.main()

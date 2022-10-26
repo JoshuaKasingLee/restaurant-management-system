@@ -86,3 +86,49 @@ def remove_menu_item(ItemName):
     restaurant.manager.remove_menu_item(ItemName)
     res = restaurant.category_to_JSON(category)
     return res
+    
+    
+@manager_routes.route('/categories', methods=['PUT'])
+def edit_categories_display_order():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    try:
+        restaurant.manager.update_categories_display_order(data["categories"])
+    except:
+        return {"error": "Display order update failed"}, 401
+    return {}
+    
+@manager_routes.route('/items', methods=['PUT'])
+def edit_menu_items_display_order():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    
+    try:
+        restaurant.manager.update_menu_items_display_order(data["items"])
+    except:
+        return {"error": "Display order update failed"}, 401
+    return {}
+
+@manager_routes.route('/items/<path:ItemName>', methods=['PUT'])
+def edit_menu_item(ItemName):
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    try:
+        restaurant.manager.edit_menu_item(ItemName, data["newName"], data["category"], data["description"], data["ingredients"], data["cost"], data["show"], data["tags"], data["img"])
+    except:
+        return {"error": "Editing menu item failed"}, 401
+    res = restaurant.menu_to_JSON()
+    return res
+    

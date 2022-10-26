@@ -2,8 +2,10 @@
 from init_db import conn
 from helper import TagNames
 
+
 class MenuItem:
     # assume tags will be in format:
+    curr_max_display_order = 0
     # “tags”: {“vegetarian”: bool, “vegan”: bool, “gluten free”: bool, “nut free”: bool, “dairy free”: bool, “chef recommended”: bool} 
     def __init__(self, name, desc, ingredients, cost, category, tags = None, img = 'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg', visible = False, display_order = 0):
         self.name = name
@@ -16,7 +18,13 @@ class MenuItem:
         self.tags = tags
         self.img = img
         self.visible = visible
-        self.display_order = display_order
+        if (display_order == 0):
+            MenuItem.curr_max_display_order += 1
+            self.display_order = MenuItem.curr_max_display_order
+        else:
+            self.display_order = display_order
+            if (display_order > MenuItem.curr_max_display_order): 
+                MenuItem.curr_max_display_order = display_order
     
     # def add_tags(self, tags):
     #     cur = conn.cursor()
