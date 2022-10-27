@@ -16,7 +16,7 @@ from order import Order
 class Restaurant:
     def __init__(self, name):
         self.name = name
-        self.pic = "sunnies.jpg"
+        self.pic = "https://media.istockphoto.com/vectors/sushi-logo-vector-id1257720422?k=20&m=1257720422&s=612x612&w=0&h=uryvlA7FalZfJeXcK2OkChqEfVxV0GX3FxvZP_J4tl0="
         self.tables = []
         self.categories = []
         self.menu_items = []

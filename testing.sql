@@ -49,7 +49,7 @@ CREATE TABLE menu_item (
   cost float NOT null check (cost > 0),
   display_order int NOT null,
   category int NOT null,
-  image varchar(200),
+  image varchar(1000),
   visible bool NOT null,
   PRIMARY KEY (id),
   FOREIGN KEY (category) REFERENCES category(id)
