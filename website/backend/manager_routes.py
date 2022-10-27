@@ -74,8 +74,8 @@ def add_menu_item():
     res = restaurant.category_to_JSON(category)
     return res
 
-@manager_routes.route('/items/<path:ItemName>', methods=['DELETE'])
-def remove_menu_item(ItemName):
+@manager_routes.route('/items/<path:ItemId>', methods=['DELETE'])
+def remove_menu_item(ItemId):
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
     valid = restaurant.manager_validate(token)
@@ -83,7 +83,7 @@ def remove_menu_item(ItemName):
         return {"error": "Unable to validate"}, 401
     data = request.get_json()
     category = data["category"]
-    restaurant.manager.remove_menu_item(ItemName)
+    restaurant.manager.remove_menu_item(ItemId)
     res = restaurant.category_to_JSON(category)
     return res
     
@@ -117,8 +117,8 @@ def edit_menu_items_display_order():
         return {"error": "Display order update failed"}, 401
     return {}
 
-@manager_routes.route('/items/<path:ItemName>', methods=['PUT'])
-def edit_menu_item(ItemName):
+@manager_routes.route('/items/<path:ItemId>', methods=['PUT'])
+def edit_menu_item(ItemId):
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
     valid = restaurant.manager_validate(token)
@@ -126,7 +126,7 @@ def edit_menu_item(ItemName):
         return {"error": "Unable to validate"}, 401
     data = request.get_json()
     try:
-        restaurant.manager.edit_menu_item(ItemName, data["newName"], data["category"], data["description"], data["ingredients"], data["cost"], data["show"], data["tags"], data["img"])
+        restaurant.manager.edit_menu_item(ItemId, data["newName"], data["category"], data["description"], data["ingredients"], data["cost"], data["show"], data["tags"], data["img"])
     except:
         return {"error": "Editing menu item failed"}, 401
     res = restaurant.menu_to_JSON()
@@ -146,3 +146,20 @@ def category_edit(CategoryId):
     except:
         return {"error": "Editing category visibility failed"}, 401
     return {}
+    
+    
+@manager_routes.route('/categories/<path:CategoryId>', methods=['DELETE'])
+def category_delete(CategoryId):
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.manager_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    try:
+        restaurant.manager.remove_category(CategoryId, data["type"])
+    except:
+        return {"error": "Unable to delete category"}, 401
+    return restaurant.menu_to_JSON()
+            
+    

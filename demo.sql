@@ -97,10 +97,12 @@ INSERT INTO leaderboard_entry(id, email, score, time_played) values (1, 'monkey@
 
 INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
 
-INSERT INTO category(name, visible, display_order) values ('Sashimi', TRUE, 1);
+
+INSERT INTO category(name, visible, display_order) values ('Unassigned', FALSE, 1);
 INSERT INTO category(name, visible, display_order) values ('Noodle', TRUE, 2);
 INSERT INTO category(name, visible, display_order) values ('Rice bowl', TRUE, 3);
 INSERT INTO category(name, visible, display_order) values ('Dessert', TRUE, 4);
+INSERT INTO category(name, visible, display_order) values ('Sashimi', TRUE, 5);
 
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Ahi', 'Tuna (raw)', 'Tuna', 5, 1, (SELECT id from category WHERE name = 'Sashimi'), 'https://www.japan-guide.com/g8/2044_maguro.jpg', TRUE);
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Aji', 'Spanish Mackerel (raw)', 'Mackerel', 6, 2, (SELECT id from category WHERE name = 'Sashimi'), 'https://www.japan-guide.com/g9/2044_sake.jpg', TRUE);

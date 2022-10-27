@@ -51,8 +51,12 @@ class MenuItem:
         # tags = []
         # for tag in self.tags:
         #     tags.append(tag.to_JSON())
-
+        cur = conn.cursor()
+        cur.execute("select id from menu_item where name = %s", [self.name])
+        item_id = cur.fetchone()[0]
+        
         return {
+            "id": item_id,
             "name": self.name,
             "description": self.desc,
             "ingredients": self.ingredients,

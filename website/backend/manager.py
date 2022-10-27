@@ -33,11 +33,50 @@ class Manager(Staff):
             
 
 
-    def remove_category(self, name):
-        if not self.restaurant.category_exists(name):
-            raise Exception(f"Category with name {name} does not exist")
+    def remove_category(self, cat_id, type):
 
         cur = conn.cursor()
+        
+        cur.execute("select name from category where id = %s", [cat_id])
+        name = cur.fetchone()[0]
+        if not self.restaurant.category_exists(name):
+            raise Exception(f"Category with name {name} does not exist")
+        if type == "removeItems":
+            #delete tags first
+            cur.execute("select id from menu_item where category = %s", [cat_id])
+            menu_ids = cur.fetchall()
+            for row in menu_ids:
+                try:
+                    cur.execute("delete from menu_item_tags where menu_item = %s", [row[0]])
+                except:
+                    conn.rollback()
+                    raise Exception("Deleting related menu item tags failed")
+        
+            try:
+                cur.execute("delete from menu_item where category = %s", [cat_id])
+            except:
+                conn.rollback()
+                raise Exception("Deleting menu items from category failed")
+            
+            to_remove = []
+            for item in self.restaurant.menu_items:
+                if item.category.name == name:
+                    to_remove.append(item)
+            
+            for item in to_remove:
+                self.restaurant.menu_items.remove(item)
+                    
+            
+        elif type == "keepItems":
+            try:
+                cur.execute("update menu_item set category = (select id from category where name = %s)", ["Unassigned"])
+            except:
+                conn.rollback()
+                raise Exception("Moving menu items to Unassigned category failed")
+            for item in self.restaurant.menu_items:
+                if item.category.name == name:
+                    item.category = self.restaurant.find_category("Unassigned")
+
         try:
             cur.execute("""DELETE FROM category where name = %s""", [name])
         except Exception as err:
@@ -85,11 +124,14 @@ class Manager(Staff):
                     
         conn.commit()
     
-    def edit_menu_item(self, oldname, name, category, desc, ingredients, cost, show, tags = None, img = None):
+    def edit_menu_item(self, id, name, category, desc, ingredients, cost, show, tags = None, img = None):
+    
+        cur = conn.cursor()
+        cur.execute("select name from menu_item where id = %s", [id])
+        oldname = cur.fetchone()[0]
         if not self.restaurant.menu_contains(oldname):
             raise Exception(f"Menu item with name {oldname} does not exist")
         else:
-            cur = conn.cursor()
             try:
                 cur.execute("select id from category where name = %s", [category])
                 cat_id = cur.fetchone()[0]
@@ -184,11 +226,14 @@ class Manager(Staff):
             return m
                 
 
-    def remove_menu_item(self, name):
+    def remove_menu_item(self, id):
+        cur = conn.cursor()
+        cur.execute("select name from menu_item where id = %s", [id])
+        name = cur.fetchone()[0]
+        
         if not self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} does not exist")
 
-        cur = conn.cursor()
         try:
             cur.execute("select id from menu_item where name = %s", [name])
             item_id = cur.fetchone()[0]

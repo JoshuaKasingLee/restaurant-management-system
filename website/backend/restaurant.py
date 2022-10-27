@@ -180,13 +180,17 @@ class Restaurant:
     
     # converts a category to JSON
     def category_to_JSON(self, category_name):
+        cur = conn.cursor()
         for category in self.categories:
             if category.name == category_name:
+                cur.execute("select id from category where name = %s", [category_name])
+                cat_id = cur.fetchone()[0]
                 item_list = []
                 for menu_item in self.menu_items:
                     if menu_item.category.name == category.name:
                         item_list.append(menu_item.to_JSON())
                 return {
+                    "id": cat_id,
                     "name": category.name,
                     "visible": category.visible,
                     "display_order": category.display_order,
