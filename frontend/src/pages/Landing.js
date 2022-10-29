@@ -5,6 +5,8 @@ import Header from '../components/customer/Header';
 
 /* Landing Page */
 function Landing () {
+  localStorage.clear();
+  
   return (
     <>
       <Header title={"Admin"}/>

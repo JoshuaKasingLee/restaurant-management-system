@@ -59,6 +59,7 @@ function TableForm ({ submit }) {
               value={table}
               label="Table"
               onChange={e => setTable(e.target.value)}
+              sx= {{ maxHeight: 224 }}
             >
               {getTableContent(numTables)}
             </Select>
