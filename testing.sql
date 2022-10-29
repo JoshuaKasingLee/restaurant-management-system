@@ -49,7 +49,7 @@ CREATE TABLE menu_item (
   cost float NOT null check (cost > 0),
   display_order int NOT null,
   category int NOT null,
-  image varchar(200),
+  image varchar(1000),
   visible bool NOT null,
   PRIMARY KEY (id),
   FOREIGN KEY (category) REFERENCES category(id)
@@ -57,8 +57,10 @@ CREATE TABLE menu_item (
 
 CREATE TABLE leaderboard_entry (
   id serial NOT null,
-  email varchar(100) unique NOT null CHECK(email LIKE '%@%'),
+  name varchar(100) NOT null,
+  email varchar(100) NOT null CHECK(email LIKE '%@%'),
   score int NOT null,
+  ts TIMESTAMP,
   PRIMARY KEY (id)
 );
 
@@ -91,3 +93,5 @@ INSERT INTO tag(name) values ('gluten free');
 INSERT INTO tag(name) values ('nut free');
 INSERT INTO tag(name) values ('dairy free');
 INSERT INTO tag(name) values ('chef recommended');
+
+INSERT INTO category(name, visible, display_order) values ('Unassigned', FALSE, 1);

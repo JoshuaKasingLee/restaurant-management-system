@@ -16,7 +16,7 @@ from order import Order
 class Restaurant:
     def __init__(self, name):
         self.name = name
-        self.pic = "sunnies.jpg"
+        self.pic = "https://media.istockphoto.com/vectors/sushi-logo-vector-id1257720422?k=20&m=1257720422&s=612x612&w=0&h=uryvlA7FalZfJeXcK2OkChqEfVxV0GX3FxvZP_J4tl0="
         self.tables = []
         self.categories = []
         self.menu_items = []
@@ -180,13 +180,17 @@ class Restaurant:
     
     # converts a category to JSON
     def category_to_JSON(self, category_name):
+        cur = conn.cursor()
         for category in self.categories:
             if category.name == category_name:
+                cur.execute("select id from category where name = %s", [category_name])
+                cat_id = cur.fetchone()[0]
                 item_list = []
                 for menu_item in self.menu_items:
                     if menu_item.category.name == category.name:
                         item_list.append(menu_item.to_JSON())
                 return {
+                    "id": cat_id,
                     "name": category.name,
                     "visible": category.visible,
                     "display_order": category.display_order,
@@ -249,3 +253,9 @@ class Restaurant:
                 if order.status == OrderStatus.ORDERED or order.status == OrderStatus.COOKING:
                     orders_list.append(order.to_JSON())
         return sorted(orders_list, key=lambda d: d['time_ordered'])
+        
+    
+    def find_category(self, name):
+        for cat in self.categories:
+            if cat.name == name:
+                return cat 

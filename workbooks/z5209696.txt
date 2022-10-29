@@ -26,3 +26,10 @@ as well as other functionalities such as customers choosing tables. I also compl
 Week 5 
 Cyrus, Kelly and I finished the last few user stories for Sprint 1 and as a team, tested connecting the frontend to the routes we made and debugged any errors we found. We also split the user stories again for Sprint 2 and completed the retrospective together
 as a team. I began thinking about how to complete my assigned user stories which mainly involves the 'menu editor' functionality (from the manager side).
+
+Week 6
+Mainly took a break from the assignment however started thinking about how to do the functions I was allocated for sprint 2. 
+
+Week 7 
+Kelly and I discussed that we needed to change some routes to path based on id and not name. I fixed some bugs related to display-order and implemented those functions and changing routes to pass in Id instead of name in the URL.
+I also discussed with James about the routes again to confirm and make changes to them if they were not what he wanted. I finished user stories related to Sprint 2 allocated to me. 
