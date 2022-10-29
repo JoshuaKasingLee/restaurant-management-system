@@ -84,6 +84,20 @@ def toggle_assistance():
                 return {"error": "Assistance request failed"}, 401
     return {}
 
+@customer_routes.route('/assistance', methods=['GET'])
+def get_assistance_boolean():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    args = request.args
+    table = args.get("table")
+    for t in restaurant.tables:
+        if t.number == int(table):
+            return {"request": t.needs_assistance }
+    return {"error": f"Cannot find table number {table}"}, 401
+
 
 @customer_routes.route('/bill', methods=['POST'])
 def get_bill():
