@@ -192,7 +192,7 @@ def test_get_restaurant_info():
     password_obj = res_data["passwords"]
     assert(rest_obj["name"] == "cool")
     assert(rest_obj["tables"] == 2)
-    assert(rest_obj["image"] == "sunnies.jpg")
+    assert(rest_obj["image"] == "https://media.istockphoto.com/vectors/sushi-logo-vector-id1257720422?k=20&m=1257720422&s=612x612&w=0&h=uryvlA7FalZfJeXcK2OkChqEfVxV0GX3FxvZP_J4tl0=")
     assert(password_obj["kitchen"] == "kellyscool")
     assert(password_obj["wait"] == "bobiscool")
     assert(password_obj["manager"] == "tomiscool")
