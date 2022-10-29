@@ -48,7 +48,11 @@ def add_category():
         return {"error": "Unable to validate"}, 401
     data = request.get_json()
     cat_name = data["name"]
-    cat = restaurant.manager.add_category(cat_name)
+    try:
+        cat = restaurant.manager.add_category(cat_name)
+    except:
+        return {"error": f"Category {cat_name} cannot be added, as a category with that name already exists"}, 401
+        # need to check this can't be some other error
     return {
         "name": cat.name,
         "show": cat.visible,
@@ -70,7 +74,11 @@ def add_menu_item():
     category = data["category"]
     tags = data["tags"]
     img = data["img"]
-    restaurant.manager.add_menu_item(name, desc, ingredients, cost, category, tags, img)
+    try:
+        restaurant.manager.add_menu_item(name, desc, ingredients, cost, category, tags, img)
+    except:
+        return {"error": f"Menu item {name} cannot be added, as a menu item with that name already exists"}, 401
+        # need to check this can't be some other error
     res = restaurant.category_to_JSON(category)
     return res
 
@@ -83,7 +91,10 @@ def remove_menu_item(ItemId):
         return {"error": "Unable to validate"}, 401
     data = request.get_json()
     category = data["category"]
-    restaurant.manager.remove_menu_item(ItemId)
+    try:
+        restaurant.manager.remove_menu_item(ItemId)
+    except:
+        return {"error": "Unable to delete menu item"}, 401
     res = restaurant.category_to_JSON(category)
     return res
     

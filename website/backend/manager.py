@@ -19,19 +19,14 @@ class Manager(Staff):
             c = Category(name)
             cur = conn.cursor()
             try:
-                # cur.execute("""select count * from category""")
-                # display = cur.fetchone()[0]
                 cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, c.display_order]) # need to change to default order at end
             except Exception as err:
                 conn.rollback()
                 raise Exception("Inserting new category failed")
             conn.commit()
-            # cat_id = cur.lastrowid
             
             self.restaurant.categories.append(c)
             return c
-            
-
 
     def remove_category(self, cat_id, type):
 
