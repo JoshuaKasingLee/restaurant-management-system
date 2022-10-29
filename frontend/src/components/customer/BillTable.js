@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 const columns = [
   { id: 'name', label: 'Dish', minWidth: 100 },
-//   { id: 'quantity', label: 'Quantity', minWidth: 160, align: 'right'},
+  { id: 'quantity', label: 'Quantity', minWidth: 160, align: 'center'},
   {
     id: 'cost',
     label: 'Cost',
@@ -20,38 +20,23 @@ const columns = [
   },
 ];
 
-function BillTable() {
+function BillTable({ orderItems }) {
   const [order, setOrder] = React.useState([]);
 
   React.useEffect(() => {
-    const getOrder = async () => {
-      const response = await fetch(`http://localhost:5000/customer/order?table=${localStorage.getItem('table')}`, {  
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.setItem('order', JSON.stringify(data));
-        let content = [];
-        for (let i=0; i < data.orderItems.length; i++) {
-          content.push(
-            { 
-              name: data.orderItems[i].name,
-            //   quantity: 
-              cost: data.orderItems[i].cost,
-            }
-          );
-          setOrder( content );
+    localStorage.setItem('order', JSON.stringify(orderItems));
+    let content = [];
+    for (let i=0; i < orderItems.length; i++) {
+      content.push(
+        { 
+          name: orderItems[i].name,
+          quantity: orderItems[i].quantity,
+          cost: orderItems[i].cost,
         }
-      } else {
-        alert(await data.error);
-      }
-    };
-    getOrder();
-  }, []);
+      );
+      setOrder( content );
+    }
+  }, [orderItems]);
 
   return (
     <Paper sx={{ width: '30%', overflow: 'hidden' }}>

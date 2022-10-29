@@ -1,15 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { Box, Tab, Tabs, Typography } from '@mui/material';
+
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
-import MenuCategory from '../../components/customer/MenuCategory';
-import Chip from '@mui/material/Chip';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
+import MenuCategory from '../../components/customer/menu/MenuCategory';
+import MenuSort from '../../components/customer/menu/MenuSort';
+import MenuFilter from '../../components/customer/menu/MenuFilter';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,6 +45,8 @@ function Menu() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("");
   const [menu, setMenu] = React.useState({'categories': []}); 
+  const [sort, setSort] = React.useState({ value: 'none', label: 'None' });
+  const [filters, setFilters] = React.useState([]);
 
   const handleChange = (event, newValue, newLabel) => {
     setValue(newValue);
@@ -68,7 +67,7 @@ function Menu() {
       if (response.ok) {
         // console.log(data);
         localStorage.setItem('menu', JSON.stringify(data));
-        setMenu( menu => (data) );
+        setMenu( data );
       } else {
         alert(await data.error);
       }
@@ -76,7 +75,7 @@ function Menu() {
     getMenu();
   }, []);
 
-  const getCategoriesTabs = menu => {
+  const getCategoriesTabs = () => {
     let content = [];
     for (let i = 0; i < menu.categories.length; i++) {
       content.push(<Tab key={i} label={menu.categories[i].name} {...a11yProps(i)} />);
@@ -84,55 +83,26 @@ function Menu() {
     return content;
   };
 
-  const getCategoriesTabPanels = (menu, filters) => {
+  const getCategoriesTabPanels = () => {
     let content = [];
     for (let i = 0; i < menu.categories.length; i++) {
       content.push(
         <TabPanel  key={i} value={value} index={i}>
           <Typography variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategory category={menu.categories[value]} filters={filters}/>
+          <MenuCategory category={menu.categories[value]} filters={filters} sort={sort}/>
         </TabPanel>
       );
     }
     return content;
   };
 
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: "Chef's Recommendation", icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 1, label: 'Vegetarian', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 2, label: 'Vegan', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 3, label: 'Gluten Free', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 4, label: 'Nut Free', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 5, label: 'Dairy Free', icon: TagFacesIcon, selected: 'outlined default' },
-  ]);
-  const [filters, setFilters] = React.useState([]);
-
-  const handleClick = (data) => () => {
-    let newChipData = [...chipData];
-    let newSelected = ((data.selected === 'filled primary') ? 'outlined default' : 'filled primary');
-    newChipData[data.key] = { key: data.key, label: data.label, icon: data.icon, selected: newSelected };
-    setChipData(newChipData);
-    if (newSelected === 'filled primary') setFilters( state => ([...state, data.label]) );
-    else setFilters( filters => filters.filter(state => state !== data.label) );
-  };
-
   return (
     <>
       <Header title={"Menu"} />
-      <Stack position='fixed' right='0' direction="row" spacing={1} sx={{ mt: '10px', mr: '25px' }}>
-        {chipData.map((data) => (
-            <Stack key={data.key}>
-              <Chip 
-                variant={data.selected.split(' ')[0]} 
-                color={data.selected.split(' ')[1]} 
-                size="small"
-                icon={<data.icon/>}
-                label={data.label}
-                onClick={handleClick(data)}
-              />
-            </Stack>
-        ))}
-      </Stack>
+      <Box display='flex' alignItems='flex-end' flexDirection="column" position='fixed' right='0' spacing={1} sx={{ mt: '10px', mr: '25px' }}>
+        <MenuFilter submit = { filters => { setFilters(filters) }} />
+        <MenuSort submit = { sort => { setSort(sort) }} />
+      </Box>
       <Box
         sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
       >
@@ -144,9 +114,9 @@ function Menu() {
           aria-label="Vertical tabs example"
           sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
         >
-          {getCategoriesTabs(menu)}
+          {getCategoriesTabs()}
         </Tabs>
-        {getCategoriesTabPanels(menu, filters)}
+        {getCategoriesTabPanels()}
       </Box>
       <Footer initialValue={"menu"}/>
     </ >

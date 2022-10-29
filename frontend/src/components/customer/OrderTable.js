@@ -109,7 +109,13 @@ function OrderTable() {
         alert(await data.error);
       }
     };
-    getOrder();
+    
+    const intervalID = setInterval(getOrder, 1000)
+
+    return (() => {
+      clearInterval(intervalID)
+    })
+
   }, []);
 
   return (

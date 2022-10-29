@@ -32,8 +32,39 @@ function Header({title}) {
   //   getRestaurantInfo();
   // }, []);
 
+  const handleChange = () => {
+    setSelected( selected => !selected );
+  };
+
   React.useEffect(() => {
-    localStorage.setItem('assistance', selected)
+    localStorage.setItem('assistance', selected);
+    if (selected !== null) {
+      const geAssistance = async () => {
+        const response = await fetch(`http://localhost:5000/customer/assistance`, {  
+          method: 'PUT',
+          mode: 'cors',
+          headers: {
+          'Content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify(
+            { 
+              table: localStorage.getItem("table"),
+              //request: selected,
+            }
+          )
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem('assistance', selected);
+          // console.log(localStorage.getItem('assistance'));
+        } else {
+          alert(await data.error);
+        }
+      };
+      geAssistance();
+    }
   }, [selected]);
 
   return (
@@ -51,9 +82,7 @@ function Header({title}) {
           value="check"
           selected={selected}
           color="primary"
-          onChange={() => {
-            setSelected( selected => !selected );
-          }}
+          onChange={handleChange}
           >
             <RoomServiceRoundedIcon fontSize="large" />
           </ToggleButton>}
