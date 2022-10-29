@@ -57,8 +57,10 @@ CREATE TABLE menu_item (
 
 CREATE TABLE leaderboard_entry (
   id serial NOT null,
-  email varchar(100) unique NOT null CHECK(email LIKE '%@%'),
+  name varchar(100) NOT null,
+  email varchar(100) NOT null CHECK(email LIKE '%@%'),
   score int NOT null,
+  ts TIMESTAMP,
   PRIMARY KEY (id)
 );
 
