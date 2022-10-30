@@ -64,42 +64,33 @@ function Header({title}) {
         }
       };
       setAssistance();
+      
+      if (selected === true) {
+        const getAssistance = async () => {
+          const response = await fetch(`http://localhost:5000/customer/assistance?table=${localStorage.getItem('table')}`, {  
+            method: 'GET',
+            headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            localStorage.setItem('assistance', data.request);
+            setSelected(data.request);
+            // console.log(data.request);
+          } else {
+            alert(await data.error);
+          }
+        };
+        const intervalID = setInterval(getAssistance, 1000)
+  
+        return (() => {
+          clearInterval(intervalID)
+        })
+      }
     }
   }, [selected]);
-
-  // React.useEffect(() => {
-  //   localStorage.setItem('assistance', selected);
-  //   if (selected !== null) {
-  //     const getAssistance = async () => {
-  //       const response = await fetch(`http://localhost:5000/customer/assistance?table=${localStorage.getItem('table')}`, {  
-  //         method: 'GET',
-  //         headers: {
-  //         'Content-type': 'application/json',
-  //         'Authorization': `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //         body: JSON.stringify(
-  //           { 
-  //             table: localStorage.getItem("table"),
-  //             //request: selected,
-  //           }
-  //         )
-  //       });
-  //       const data = await response.json();
-  //       if (response.ok) {
-  //         localStorage.setItem('assistance', selected);
-  //         // console.log(localStorage.getItem('assistance'));
-  //       } else {
-  //         alert(await data.error);
-  //       }
-  //     };
-  //     const intervalID = setInterval(getAssistance, 1000)
-
-  //     return (() => {
-  //       clearInterval(intervalID)
-  //     })
-  //   }
-
-  // }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
