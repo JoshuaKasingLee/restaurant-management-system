@@ -44,9 +44,12 @@ def order_dishes():
     quantity = data ["quantity"]
     for t in restaurant.tables:
         if t.number == int(table):
-            t.order_dishes(menu_item, quantity)
+            try:
+                t.order_dishes(menu_item, quantity)
+            except:
+                return {"error": f"Ordering menu item {menu_item} failed"}, 401
             return {}
-    raise Exception("Cannot find table")
+    return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/order', methods=['GET'])
 def view_orders():
@@ -62,7 +65,7 @@ def view_orders():
         if t.number == int(table):
             orders = t.view_orders()
             return orders
-    raise Exception("Cannot find table")
+    return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/assistance', methods=['PUT'])
 def toggle_assistance():
@@ -75,8 +78,25 @@ def toggle_assistance():
     table = data["table"]
     for t in restaurant.tables:
         if t.number == int(table):
-            t.toggle_assistance()
+            try:
+                t.toggle_assistance()
+            except:
+                return {"error": "Assistance request failed"}, 401
     return {}
+
+@customer_routes.route('/assistance', methods=['GET'])
+def get_assistance_boolean():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    args = request.args
+    table = args.get("table")
+    for t in restaurant.tables:
+        if t.number == int(table):
+            return {"request": t.needs_assistance }
+    return {"error": f"Cannot find table number {table}"}, 401
 
 
 @customer_routes.route('/bill', methods=['POST'])
@@ -93,6 +113,9 @@ def get_bill():
     for t in restaurant.tables:
         if t.number == int(table):
             res = t.get_bill(type, num_split)
-            t.clear_table()
+            try:
+                t.clear_table()
+            except:
+                return {"error": f"Clearing table {table} failed"}, 401
             return res
-    raise Exception("Cannot find table")
+    return {"error": f"Cannot find table number {table}"}, 401
