@@ -20,6 +20,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
 import CloseIcon from '@mui/icons-material/Close';
+import PaymentToggleButton from './PaymentToggleButton';
 
 const columns = [
   { id: 'image', label: '', minWidth: 160 },
@@ -184,8 +185,9 @@ function OrderTable() {
             </BootstrapDialogTitle>
             <DialogContent dividers>
               <Typography gutterBottom>
-                We hope you enjoyed you're meal. Would you like to pay now?
+                We hope you enjoyed you're meal. How would you like to pay?
               </Typography>
+              <PaymentToggleButton submit = { type => localStorage.setItem('paymentType', type) }/>
             </DialogContent>
             <DialogActions>
               <Button autoFocus component={Link} to={'/customer/bill'}>

@@ -7,7 +7,7 @@ import BillTable from '../../components/customer/BillTable';
 
 function Bill() {
   const [total, setTotal] = React.useState(0);
-  // const [charge, setCharge] = React.useState(0);
+  const [charge, setCharge] = React.useState([]);
   const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
@@ -23,8 +23,8 @@ function Bill() {
         body: JSON.stringify(
           { 
             table: localStorage.getItem('table'),
-            type: 'together',
-            numSplit: 4,
+            type: localStorage.getItem('paymentType'),
+            numSplit: localStorage.getItem('numSplit'),
             dishes: {
               person1: [],
               person2: [],
@@ -37,9 +37,9 @@ function Bill() {
       const data = await response.json();
       if (response.ok) {
         // localStorage.setItem('charge', data.charge[0]);
-        // setCharge( data.charge[0] );
+        setCharge( data.charge );
         setTotal( data.total );
-        console.log(data.total);
+        console.log(data.charge);
         setOrderItems( data.order_items );
       } else {
         alert(await data.error);
@@ -57,6 +57,11 @@ function Bill() {
         </Typography>
         <BillTable orderItems={orderItems} />
         <Box alignItems='end' sx={{ px: '16px', py: '8px', bgcolor: 'text.secondary', borderRadius: '24px' }}>
+          {localStorage.getItem('paymentType') === 'equal' &&
+            <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+              Charge/pp: ${charge[0].toFixed(2)}
+            </Typography>
+          }
           <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Total Charge: ${total.toFixed(2)}
           </Typography>

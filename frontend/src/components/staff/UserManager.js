@@ -105,7 +105,13 @@ export default function NewItem() {
           value={tables}
           label="Table"
           onChange={e => setTables(e.target.value)}
-          sx= {{ maxHeight: 224 }}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 224
+              },
+            },
+          }}
         >
           {getTableContent(numTables)}
         </Select>

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Box, Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
   IconButton, ImageList, ImageListItem, ImageListItemBar, Slide, Typography } from '@mui/material';
 import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
+import QuantityButtonGroup from '../QuantityButtonGroup';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -102,20 +103,6 @@ function MenuCategory({category, filters, sort}) {
     setQuantity( state => ({ 
       ...state, 
       [index]: 1
-    }));
-  };
-
-  const handleSubtract = (index) => () => {
-    setQuantity( state => ({ 
-      ...state, 
-      [index]: (Math.max(1, state[index] - 1))
-    }));
-  };
-
-  const handleAdd = (index) => () => {
-    setQuantity( state => ({ 
-      ...state, 
-      [index]: (state[index] + 1)
     }));
   };
   
@@ -219,23 +206,12 @@ function MenuCategory({category, filters, sort}) {
                   <Typography gutterBottom>
                     Cost: ${item.cost.toFixed(2)}
                   </Typography>
-                  <ButtonGroup variant="outlined" aria-label="outlined button group">
-                    <Button sx={{ width: 50 }} onClick={handleSubtract(index)}>
-                      <Typography variant="h4">
-                        -
-                      </Typography>
-                    </Button>
-                    <Box display="flex" sx={{ border: 1, width: 50, textAlign: 'center' }} justifyContent="center" alignItems="center">
-                      <Typography variant="h4">
-                        {JSON.stringify(quantity[index])}
-                      </Typography>
-                    </Box>
-                    <Button sx={{ width: 50 }} onClick={handleAdd(index)}>
-                      <Typography variant="h4">
-                        +
-                      </Typography>
-                    </Button>
-                </ButtonGroup>
+                  <QuantityButtonGroup 
+                    initial={1}
+                    min={1}
+                    max={4} 
+                    submit = { quantity => setQuantity( state => ({ ...state, [index]: quantity})) } 
+                  />
                 </Grid>
               </Grid>
             </DialogContent>

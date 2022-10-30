@@ -112,7 +112,7 @@ def get_bill():
     num_split = data["numSplit"]
     for t in restaurant.tables:
         if t.number == int(table):
-            res = t.get_bill(type, num_split)
+            res = t.get_bill(type, int(num_split))
             try:
                 t.clear_table()
             except:
