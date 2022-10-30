@@ -60,7 +60,7 @@ CREATE TABLE leaderboard_entry (
   name varchar(100) NOT null,
   email varchar(100) NOT null CHECK(email LIKE '%@%'),
   score int NOT null,
-  ts TIMESTAMP,
+  time_played TIMESTAMP,
   PRIMARY KEY (id)
 );
 
@@ -94,7 +94,7 @@ INSERT INTO tag(name) values ('nut free');
 INSERT INTO tag(name) values ('dairy free');
 INSERT INTO tag(name) values ('chef recommended');
 
-INSERT INTO leaderboard_entry(name, email, score, ts) values ('monk', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monk', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
 
 INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
 

@@ -119,3 +119,26 @@ def get_bill():
                 return {"error": f"Clearing table {table} failed"}, 401
             return res
     return {"error": f"Cannot find table number {table}"}, 401
+
+@customer_routes.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    # bearer = request.headers['Authorization']
+    # token = bearer.split()[1]
+    # valid = restaurant.customer_validate(token)
+    # if (valid == False):
+    #     return {"error": "Unable to validate"}, 401
+    return restaurant.get_leaderboard()
+
+@customer_routes.route('/leaderboard', methods=['POST'])
+def add_leaderboard_entry():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    name = data["name"]
+    email = data["email"]
+    score = data["score"]
+    restaurant.add_leaderboard_entry(name, email, score)
+    return {}
