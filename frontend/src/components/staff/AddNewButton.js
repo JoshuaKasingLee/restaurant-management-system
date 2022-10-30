@@ -2,9 +2,11 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import NewCategoryDialog from './NewCategoryDialog';
+import NewItemDialog from './NewItemDialog';
 import { Link } from 'react-router-dom';
 
-export default function AddNewButton() {
+export default function AddNewButton({updateMenu}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -12,6 +14,18 @@ export default function AddNewButton() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const [openNewCategory, setOpenNewCategory] = React.useState(false);
+
+  const handleCloseNewCategory = () => {
+    setOpenNewCategory(false);
+  };
+
+  const [openNewItem, setOpenNewItem] = React.useState(false);
+
+  const handleCloseNewItem = () => {
+    setOpenNewItem(false);
   };
 
   return (
@@ -29,9 +43,22 @@ export default function AddNewButton() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Category</MenuItem>
-        <MenuItem onClick={handleClose} component={Link} to={'/staff/manager/item/new'}>Food Item</MenuItem>
+        <MenuItem onClick={() => {handleClose(); setOpenNewCategory(true);}}>Category</MenuItem>
+        <MenuItem onClick={() => {handleClose(); setOpenNewItem(true);}}>Food Item</MenuItem>
       </Menu>
+      <NewCategoryDialog
+        open={openNewCategory}
+        handleClose={handleCloseNewCategory}
+        updateMenu={updateMenu}
+      />
+      <NewItemDialog
+        open={openNewItem}
+        handleClose={handleCloseNewItem}
+        updateMenu={updateMenu}
+      />
     </ >
   );
 }
+
+
+

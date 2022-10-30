@@ -33,4 +33,4 @@ conn = psycopg2.connect(
     # password="mypassword",
     # host="myrestaurant.cmza9ty67rf0.ap-northeast-1.rds.amazonaws.com",
     # port="5432"
-    )
+)

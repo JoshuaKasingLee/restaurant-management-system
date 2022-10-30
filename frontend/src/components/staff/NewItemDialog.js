@@ -1,20 +1,21 @@
 import * as React from 'react';
 import { Box, Button, TextField, Typography, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
-import Dropdown from '../../components/staff/Dropdown';
-import Checkboxes from '../../components/staff/Checkboxes';
-import { useNavigate } from 'react-router-dom';
+import Dropdown from './Dropdown';
+import Checkboxes from './Checkboxes';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
-export default function NewItem() {
+export default function NewItemDialog({open, updateMenu, handleClose}) {
     
     const [name, setName] = React.useState('');
     const [category, setCategory] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [ingredients, setIngredients] = React.useState('');
-    const [tags, setTags] = React.useState('');
+    const [tags, setTags] = React.useState([]);
     const [cost, setCost] = React.useState(0.0);
     const [image, setImage] = React.useState('https://assets.stickpng.com/images/58889577bc2fc2ef3a1860be.png');
-
-    const navigate = useNavigate();
 
     const setCostWrapper = (value) => {
         setCost(parseFloat(value))
@@ -48,19 +49,25 @@ export default function NewItem() {
         });
         const data = await response.json();
         if (response.ok) {
-            navigate('/staff/manager/')
+            updateMenu();
+            handleClose();
         } else {
           alert(await data.error);
         }
     } 
 
+    // React.useEffect(() => {console.log("CAT", category)})
+
     return (
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth='md'>
+        <DialogTitle>Edit Item</DialogTitle>
+        <DialogContent>
         <Box maxWidth="md" m="auto" component="form"
-            sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', p: 10 }} >
-            <Typography variant="h5">New Item</Typography>
+            sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', p: 5 }} >
             <TextField
                 required
                 label="Title"
+                value={name}
                 onChange={e => setName(e.target.value)}
             />
             <FormControl fullWidth sx={{ m: 1 }} required>
@@ -70,6 +77,7 @@ export default function NewItem() {
                     onChange={e => setCostWrapper(e.target.value)}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     label="Cost"
+                    value={cost}
                     type="number"
                     min="0"
                     step=".01"
@@ -77,6 +85,7 @@ export default function NewItem() {
             </FormControl>
             <TextField
                 label="Description"
+                value={description}
                 multiline
                 required
                 rows={3}
@@ -84,22 +93,26 @@ export default function NewItem() {
             />
             <TextField
                 label="Ingredients"
+                value={ingredients}
                 multiline
                 required
                 rows={3}
                 onChange={e => setIngredients(e.target.value)}
             />
-            <Dropdown update={setCategory}/>
-            <Checkboxes update={setTags}/>
+            <Dropdown update={setCategory} category={category}/>
+            <Checkboxes update={setTags} tags={tags}/>
             <TextField
                 required
                 label="Image Link"
+                value={image}
                 onChange={e => setImage(e.target.value)}
             />
-            <div>
-                <Button variant="contained" onClick={addNewItem}>Add</Button>
-                <Button sx={{marginLeft: 2}} onClick={() => navigate('/staff/manager/')}>Cancel</Button>
-            </div>
         </Box>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={addNewItem}>Save</Button>
+        </DialogActions>
+        </Dialog>
     )
 }
