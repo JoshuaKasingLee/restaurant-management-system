@@ -118,10 +118,7 @@ def get_bill():
             except:
                 return {"error": f"Clearing table {table} failed"}, 401
             return res
-<<<<<<< HEAD
     return {"error": f"Cannot find table number {table}"}, 401
-=======
-    raise Exception("Cannot find table")
 
 @customer_routes.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
@@ -145,4 +142,3 @@ def add_leaderboard_entry():
     score = data["score"]
     restaurant.add_leaderboard_entry(name, email, score)
     return {}
->>>>>>> 68fd4f2 (adding leaderboard functionality)
