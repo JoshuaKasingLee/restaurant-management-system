@@ -138,6 +138,8 @@ class Table:
                 "cost": quantity * item_cost
             })
 
+        receipt = sorted(receipt, key = lambda k : k['name'])
+
         if (type == 'together'):
             return {
                 "total": self.get_total_cost(),
