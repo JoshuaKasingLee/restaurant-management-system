@@ -6,3 +6,12 @@ export function nextOrderStatus(status) {
         default:            return null;
     }
 };
+
+export const ALL_TAGS_LIST = [
+    'vegetarian',
+    'vegan',
+    'gluten free',
+    'nut free',
+    'dairy free',
+    'chef recommended'
+  ];
