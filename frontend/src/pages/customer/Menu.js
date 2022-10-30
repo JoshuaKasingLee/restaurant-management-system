@@ -98,7 +98,7 @@ function Menu() {
 
   return (
     <>
-      <Header title={"Menu"} />
+      <Header image={localStorage.getItem('restaurantImage')} title={"Menu"} />
       <Box display='flex' alignItems='flex-end' flexDirection="column" position='fixed' right='0' spacing={1} sx={{ mt: '10px', mr: '25px' }}>
         <MenuFilter submit = { filters => { setFilters(filters) }} />
         <MenuSort submit = { sort => { setSort(sort) }} />

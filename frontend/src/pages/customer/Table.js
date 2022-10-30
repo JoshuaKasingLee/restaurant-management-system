@@ -6,7 +6,7 @@ import Footer from '../../components/customer/Footer';
 function Table () {  
 	return (
     <>
-      <Header title={"Table Selection"}/>
+      <Header image={localStorage.getItem('restaurantImage')} title={"Table Selection"}/>
       <TableForm submit = {async (table) => {
         const response = await fetch('http://localhost:5000/customer/table', {
           method: 'POST',

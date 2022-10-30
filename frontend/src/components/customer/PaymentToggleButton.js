@@ -1,29 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Typography from '@mui/material/Typography';
+import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
+import BalanceRoundedIcon from '@mui/icons-material/BalanceRounded';
+import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
 import QuantityButtonGroup from './QuantityButtonGroup';
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '& .MuiToggleButtonGroup-grouped': {
-    margin: theme.spacing(0.5),
-    border: 0,
-    '&.Mui-disabled': {
-      border: 0,
-    },
-    '&:not(:first-of-type)': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    '&:first-of-type': {
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));
 
 function PaymentToggleButton({ submit }) {
   const [type, setType] = React.useState('together');  
@@ -39,36 +19,27 @@ function PaymentToggleButton({ submit }) {
   }, []);
 
   return (
-    <div>
-      <Paper
-        elevation={0}
-        sx={{
-          display: 'flex',
-          border: (theme) => `1px solid ${theme.palette.divider}`,
-          justifyContent: 'space-between'
-        }}
+    <>
+      <ToggleButtonGroup
+        size="large"
+        value={type}
+        exclusive
+        onChange={handlePaymentType}
+        aria-label="payment method"
       >
-        <StyledToggleButtonGroup
-          size="large"
-          value={type}
-          exclusive
-          onChange={handlePaymentType}
-          aria-label="payment method"
-        >
-          <ToggleButton value="together" aria-label="pay together">
-            <FormatAlignLeftIcon />
-            Pay together
-          </ToggleButton>
-          <ToggleButton value="equal" aria-label="split equally">
-            <FormatAlignCenterIcon />
-            Split equally
-          </ToggleButton>
-          <ToggleButton value="dish" aria-label="split by dish">
-            <FormatAlignRightIcon />
-            Split by dish
-          </ToggleButton>
-        </StyledToggleButtonGroup>
-      </Paper>
+        <ToggleButton color="primary" value="together" aria-label="pay together">
+          <GroupsRoundedIcon />
+          Pay together
+        </ToggleButton>
+        <ToggleButton color="primary" value="equal" aria-label="split equally">
+          <BalanceRoundedIcon />
+          Split equally
+        </ToggleButton>
+        <ToggleButton color="primary" value="dish" aria-label="split by dish">
+          <RestaurantRoundedIcon />
+          Split by dish
+        </ToggleButton>
+      </ToggleButtonGroup>
       <br />
       { type !== 'together' && 
         <div>
@@ -83,7 +54,7 @@ function PaymentToggleButton({ submit }) {
           />
         </ div>
       }
-    </div>
+    </ >
   );
 }
 

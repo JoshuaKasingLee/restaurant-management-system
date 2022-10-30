@@ -26,7 +26,7 @@ function Game() {
   };
   return (
     <>
-      <Header title={"Game"} />
+      <Header image={localStorage.getItem('restaurantImage')} title={"Game"} />
       <div className="Game">
         <style>
           {`

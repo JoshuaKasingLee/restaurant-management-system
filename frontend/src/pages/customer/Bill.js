@@ -50,7 +50,7 @@ function Bill() {
 
   return (
     <>
-      <Header title={"Bill"} />
+      <Header image={localStorage.getItem('restaurantImage')} title={"Bill"} />
       <Box height='72vh' sx={{ mt: '20px', display: "flex", flexDirection: 'column', justifyContent: "space-between", alignItems: "center"}}>
         <Typography align='center' variant="h3">
           Thank you for dining with us!
