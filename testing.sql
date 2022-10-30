@@ -60,7 +60,7 @@ CREATE TABLE leaderboard_entry (
   name varchar(100) NOT null,
   email varchar(100) NOT null CHECK(email LIKE '%@%'),
   score int NOT null,
-  ts TIMESTAMP,
+  time_played TIMESTAMP,
   PRIMARY KEY (id)
 );
 
