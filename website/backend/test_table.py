@@ -156,13 +156,13 @@ def test_get_bill_together():
         "total": expected_cost,
         "charge": [expected_cost, 0, 0, 0],
         "order_items": [{
-            "name": "Escargot",
-            "quantity": 3,
-            "cost": 20.80*3
-        }, {
             "name": "Croissant",
             "quantity": 1,
             "cost": 6
+        }, {
+            "name": "Escargot",
+            "quantity": 3,
+            "cost": 20.80*3
         }, {
             "name": "Steak",
             "quantity": 2,
@@ -198,13 +198,13 @@ def test_get_bill_equal_split():
         "total": expected_cost,
         "charge": [expected_cost / 3, expected_cost / 3, expected_cost / 3, 0],
         "order_items": [{
-            "name": "Escargot",
-            "quantity": 3,
-            "cost": 20.80*3
-        }, {
             "name": "Croissant",
             "quantity": 1,
             "cost": 6
+        }, {
+            "name": "Escargot",
+            "quantity": 3,
+            "cost": 20.80*3
         }, {
             "name": "Steak",
             "quantity": 2,

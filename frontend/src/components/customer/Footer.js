@@ -17,14 +17,14 @@ function Footer({initialValue, title}) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, position: 'fixed', bottom: 10 }}>
-      <Box width="160px" alignItems='end' sx={{ mx: '10px', bgcolor: 'text.secondary', borderRadius: '16px' }}>
+    <Box sx={{ position: 'fixed', bottom: 10 }}>
+      {title !== 'Table Selection' && <Box width="160px" alignItems='end' sx={{ mx: '10px', bgcolor: 'text.secondary', borderRadius: '16px' }}>
         <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
         Table {localStorage.getItem('table')}
         </Typography>
-      </Box> 
-      {title !== 'Bill'
-      ? (<BottomNavigation 
+      </Box>} 
+      {title !== 'Table Selection' && title !== 'Bill'
+      ? (<BottomNavigation  
         sx={{ position: 'fixed', display:'flex', justifyContent:'space-between', bottom: 0, left: 180, right: 0 }}  
         elevation={3} 
         value={value} 

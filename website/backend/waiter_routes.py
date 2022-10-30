@@ -60,7 +60,10 @@ def resolve_assistance_request():
 
     data = request.get_json()
     table = data["table"]
-    wait_staff.resolve_assistance_request(table)
+    try:
+        wait_staff.resolve_assistance_request(table)
+    except:
+        return {"error": "Unrequesting assistance failed"}, 401
     res = wait_staff.get_assistance_requests()
     return {
         "tables": res

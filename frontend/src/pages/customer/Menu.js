@@ -104,7 +104,7 @@ function Menu() {
         <MenuSort submit = { sort => { setSort(sort) }} />
       </Box>
       <Box
-        sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
+        sx={{ height: '78vh', bgcolor: 'background.paper', display: 'flex' }}
       >
         <Tabs
           orientation="vertical"

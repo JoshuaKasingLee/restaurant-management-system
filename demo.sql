@@ -60,7 +60,7 @@ CREATE TABLE leaderboard_entry (
   name varchar(100) NOT null,
   email varchar(100) NOT null CHECK(email LIKE '%@%'),
   score int NOT null,
-  ts TIMESTAMP,
+  time_played TIMESTAMP,
   PRIMARY KEY (id)
 );
 
@@ -94,16 +94,16 @@ INSERT INTO tag(name) values ('nut free');
 INSERT INTO tag(name) values ('dairy free');
 INSERT INTO tag(name) values ('chef recommended');
 
-INSERT INTO leaderboard_entry(name, email, score, ts) values ('monk', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monk', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
 
 INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
 
 
-INSERT INTO category(name, visible, display_order) values ('Unassigned', FALSE, 1);
+INSERT INTO category(name, visible, display_order) values ('Sashimi', FALSE, 1);
 INSERT INTO category(name, visible, display_order) values ('Noodle', TRUE, 2);
 INSERT INTO category(name, visible, display_order) values ('Rice bowl', TRUE, 3);
 INSERT INTO category(name, visible, display_order) values ('Dessert', TRUE, 4);
-INSERT INTO category(name, visible, display_order) values ('Sashimi', TRUE, 5);
+INSERT INTO category(name, visible, display_order) values ('Unassigned', TRUE, 5);
 
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Ahi', 'Tuna (raw)', 'Tuna', 5, 1, (SELECT id from category WHERE name = 'Sashimi'), 'https://www.japan-guide.com/g8/2044_maguro.jpg', TRUE);
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Aji', 'Spanish Mackerel (raw)', 'Mackerel', 6, 2, (SELECT id from category WHERE name = 'Sashimi'), 'https://www.japan-guide.com/g9/2044_sake.jpg', TRUE);

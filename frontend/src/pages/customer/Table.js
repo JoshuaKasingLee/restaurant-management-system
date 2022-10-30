@@ -1,10 +1,9 @@
 import * as React from 'react';
 import TableForm from '../../components/customer/TableForm';
 import Header from '../../components/customer/Header';
+import Footer from '../../components/customer/Footer';
 
-function Table () {
-  localStorage.clear();
-  
+function Table () {  
 	return (
     <>
       <Header title={"Table Selection"}/>
@@ -28,6 +27,7 @@ function Table () {
         }
       }} 
       />
+      <Footer title = 'Table Selection' />
     </ >
 	);
 }

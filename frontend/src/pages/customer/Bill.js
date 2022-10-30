@@ -39,6 +39,7 @@ function Bill() {
         // localStorage.setItem('charge', data.charge[0]);
         // setCharge( data.charge[0] );
         setTotal( data.total );
+        console.log(data.total);
         setOrderItems( data.order_items );
       } else {
         alert(await data.error);

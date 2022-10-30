@@ -1,3 +1,4 @@
+from operator import truediv
 from re import L
 from manager import Manager
 from wait_staff import WaitStaff
@@ -6,9 +7,11 @@ from table import Table
 from menu_item import MenuItem
 from tag import Tag
 from category import Category
+from leaderboard_entry import LeaderboardEntry
 from helper import OrderStatus
 from init_db import conn
 from uuid import uuid4
+from datetime import datetime
 import json
 
 from order import Order
@@ -87,6 +90,11 @@ class Restaurant:
                     break
             
             self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
+
+        cur.execute("select name, email, score, time_played from leaderboard_entry")
+        result = cur.fetchall()
+        for cat in result:
+            self.leaderboard.append(LeaderboardEntry(cat[0], cat[1], cat[2], cat[3]))
             
             
     # menu editor helper function
@@ -258,4 +266,48 @@ class Restaurant:
     def find_category(self, name):
         for cat in self.categories:
             if cat.name == name:
-                return cat 
+                return cat
+
+    def add_leaderboard_entry(self, name, email, score, time_played = datetime.now()):
+        entry = LeaderboardEntry(name, email, score, time_played)
+        cur = conn.cursor()
+        try:
+            cur.execute("""INSERT INTO leaderboard_entry(name, email, score, time_played) values (%s, %s, %s, %s)""", [name, email, score, time_played])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Unable to add entry")
+        conn.commit()
+        self.leaderboard.append(entry)
+        return entry
+    
+    def clear_leaderboard(self):
+        cur = conn.cursor()
+        success = True
+        try:
+            cur.execute("""DELETE FROM leaderboard_entry""")
+        except Exception as err:
+            conn.rollback()
+            success = False
+            raise Exception("Unable to delete from leaderboard entry")
+        conn.commit()
+
+        if (success == True):
+            self.leaderboard.clear()
+
+
+    def get_leaderboard(self):
+        toReturn = []
+        # print(sorted(self.leaderboard, key=lambda x: x.score))
+        position = 1
+        for entry in sorted(self.leaderboard, key=lambda x: x.score, reverse=True):
+            toReturn.append({
+                "position": position,
+                "name": entry.name,
+                "email": entry.email,
+                "score": entry.score,
+                "time_played": entry.time_played.strftime("%Y-%m-%d %H:%M:%S")
+            })
+            position += 1
+        return {
+            "players": toReturn
+        }
