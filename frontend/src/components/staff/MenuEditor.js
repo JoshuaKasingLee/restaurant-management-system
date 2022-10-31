@@ -4,8 +4,11 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import MenuCategoryEditor from './MenuCategoryEditor';
+import MenuItemList from './MenuItemList';
 import AddNewButton from './AddNewButton';
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
+import EditCategoryDialog from './EditCategoryDialog';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,11 +49,6 @@ function MenuEditor() {
   const [menu, setMenu] = React.useState({'categories': []});
   const [trigger, setTrigger] = React.useState(false);
 
-  const handleChange = (event, newValue, newLabel) => {
-    setValue(newValue);
-    setLabel(newLabel);
-  };
-
   React.useEffect(() => {
     const getMenu = async () => {
       await new Promise(response => setTimeout(response, 1000));
@@ -77,10 +75,42 @@ function MenuEditor() {
   const getCategoriesTabs = menu => {
     let content = [];
     for (let i = 0; i < menu.categories.length; i++) {
-      content.push(<Tab key={i} label={menu.categories[i].name} {...a11yProps(i)} />);
+      if (menu.categories[i].name == "Unassigned") {
+        content.push(<Tab
+          key={i}
+          label={menu.categories[i].name}
+          {...a11yProps(i)}/>
+        );
+      } else {
+        content.push(<Tab
+          key={i}
+          label={menu.categories[i].name}
+          icon={<EditIcon fontSize="small" onClick={() => handleOpenEditCategory(i)}/>}
+          iconPosition="end"
+          {...a11yProps(i)}/>
+        );
+      }
     }
     return content;
   };
+
+  const [openEditCategory, setOpenEditCategory] = React.useState(false);
+  const [category, setCategory] = React.useState(null);
+
+  const handleOpenEditCategory = (key) => {
+    console.log(key)
+    setCategory(menu.categories[key]);
+    setOpenEditCategory(true);
+  }
+
+  const handleCloseEditCategory = () => {
+    setOpenEditCategory(false);
+  };
+
+  const handleChange = (e, value, label) => {
+    setValue(value);
+    setLabel(label);
+  }
 
   const getCategoriesTabPanels = menu => {
     let content = [];
@@ -88,7 +118,7 @@ function MenuEditor() {
       content.push(
         <TabPanel  key={i} value={value} index={i}>
           <Typography component='span' variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategoryEditor category={menu.categories[value]} updateMenu={setTrigger}/>
+          <MenuItemList category={menu.categories[value]} updateMenu={setTrigger}/>
         </TabPanel>
       );
     }
@@ -105,7 +135,7 @@ function MenuEditor() {
           position: 'fixed',
           right: '40px',
         }}>
-        <AddNewButton />
+        <AddNewButton updateMenu={setTrigger}/>
       </Box>
       <Box
         sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
@@ -122,6 +152,13 @@ function MenuEditor() {
         </Tabs>
         {getCategoriesTabPanels(menu)}
       </Box>
+      { category &&
+        <EditCategoryDialog
+        open={openEditCategory}
+        category={category}
+        handleClose={handleCloseEditCategory}
+        updateMenu={setTrigger}/>
+      }
     </ >
   );
 }
