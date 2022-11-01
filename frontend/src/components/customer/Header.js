@@ -30,7 +30,8 @@ function Header({image, title}) {
             },
             body: JSON.stringify(
               { 
-                table: localStorage.getItem("table")
+                table: localStorage.getItem("table"),
+                // request: selected
               }
             )
           });
@@ -61,13 +62,15 @@ function Header({image, title}) {
         //     }
         //   };
         //   const intervalID = setInterval(getAssistance, 1000)
-  
+
         //   return (() => {
         //     clearInterval(intervalID)
         //   })
         // }
       }
     }
+    console.log(selected + title + ' effect');
+    console.log(localStorage.getItem('assistance') + title + ' local');
   }, [title, selected]);
 
   return (
@@ -87,8 +90,6 @@ function Header({image, title}) {
           color="primary"
           onChange={handleChange}
           >
-            {/* {console.log(selected + title + ' effect')}
-            {console.log(localStorage.getItem('assistance') + title + ' local')} */}
             <RoomServiceRoundedIcon fontSize="large" />
           </ToggleButton>}
         </Toolbar>

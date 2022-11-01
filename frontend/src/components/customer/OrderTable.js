@@ -1,24 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import Slide from '@mui/material/Slide';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
+  IconButton, Paper, Slide, Stack, Table, TableBody, TableHead, 
+  TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { PropTypes } from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import PaymentToggleButton from './PaymentToggleButton';
 
