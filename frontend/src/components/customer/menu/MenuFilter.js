@@ -21,10 +21,8 @@ function MenuFilter({ submit }) {
     newChipData[data.key] = { key: data.key, label: data.label, icon: data.icon, selected: newSelected };
     setChipData(newChipData);
     if (newSelected === 'filled primary') {
-      // setFilters( state => ([...state, data.label].sort()) );
       submit( state => ([...state, data.label].sort()) );
     } else {
-      // setFilters( filters => filters.filter(state => state !== data.label) );
       submit( filters => filters.filter(state => state !== data.label) );
     }
   };

@@ -22,7 +22,7 @@ function MenuSort({ submit }) {
 
   const handleClose = (option) => {
     setOpen(null);
-    setSort(option);
+    if (option !== null) setSort(option);
     submit(option);
   };
 
