@@ -94,4 +94,4 @@ INSERT INTO tag(name) values ('nut free');
 INSERT INTO tag(name) values ('dairy free');
 INSERT INTO tag(name) values ('chef recommended');
 
-INSERT INTO category(name, visible, display_order) values ('Unassigned', FALSE, 1);
+-- INSERT INTO category(name, visible, display_order) values ('Unassigned', FALSE, 1);

@@ -16,15 +16,29 @@ class Manager(Staff):
         if self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} already exists")
         else:
+            #bug is when for unassigned you should just ignore stuff and add it in
             c = Category(name)
             cur = conn.cursor()
-            try:
-                cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, c.display_order]) # need to change to default order at end
-            except Exception as err:
-                conn.rollback()
-                raise Exception("Inserting new category failed")
-            conn.commit()
-            
+            if name != "Unassigned":
+                unassigned = self.restaurant.find_category('Unassigned')
+                try:
+                    cur.execute("update category set display_order = %s where name = 'Unassigned'", [c.display_order])
+                    cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, unassigned.display_order]) # need to change to default order at end
+                except Exception as err:
+                    conn.rollback()
+                    raise Exception("Inserting new category failed")
+                conn.commit()
+                old_unassigned_display_order = unassigned.display_order
+                unassigned.display_order = c.display_order
+                c.display_order = old_unassigned_display_order
+            else:
+                try:
+                    cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, c.display_order]) # need to change to default order at end
+                except Exception as err:
+                    conn.rollback()
+                    raise Exception("Inserting new category failed")
+                conn.commit()
+
             self.restaurant.categories.append(c)
             return c
 

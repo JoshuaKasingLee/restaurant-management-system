@@ -22,25 +22,24 @@ def test_add_categories():
     cur.execute("delete from category")
 
     r1 = Restaurant("Nobu")
-    r2 = Restaurant("Maccas")
     m1 = Manager("password", r1)
-    m2 = Manager("mmmmmm", r2)
 
-    cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 0)
-    m1.add_category("Japanese")
+    m1.add_category("Unassigned")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 1)
-
-    assert(r1.category_exists("Japanese") == True)
-    assert(r2.category_exists("Japanese") == False)
-
-    m2.add_category("Burgers")
+    m1.add_category("Japanese")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 2)
 
-    assert(r1.category_exists("Burgers") == False)
-    assert(r2.category_exists("Burgers") == True)
+    assert(r1.category_exists("Japanese") == True)
+
+
+    m1.add_category("Burgers")
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 3)
+
+    assert(r1.category_exists("Burgers") == True)
+
 
     cur.execute("delete from category")
     conn.commit()
@@ -51,12 +50,12 @@ def test_add_duplicate_categories():
 
     r = Restaurant("Maccas")
     m = Manager("password", r)
-
-    cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 0)
-    m.add_category("Burgers")
+    m.add_category("Unassigned")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 1)
+    m.add_category("Burgers")
+    cur.execute("select * from category")
+    assert(len(cur.fetchall()) == 2)
 
     assert(r.category_exists("Burgers") == True)
     with pytest.raises(Exception):
@@ -73,21 +72,21 @@ def test_remove_categories_no_menu_items():
 
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
-
+    m.add_category("Unassigned")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 0)
+    assert(len(cur.fetchall()) == 1)
     m.add_category("Japanese")
     m.add_category("Burgers")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 2)
-    assert(len(r.categories) == 2)
+    assert(len(cur.fetchall()) == 3)
+    assert(len(r.categories) == 3)
     
     cur.execute("select id from category where name = %s", ["Japanese"])
     j_id = cur.fetchone()[0]
     m.remove_category(j_id, "removeItems")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 1)
-    assert(len(r.categories) == 1)
+    assert(len(cur.fetchall()) == 2)
+    assert(len(r.categories) == 2)
 
     assert(r.category_exists("Burgers") == True)
     assert(r.category_exists("Japanese") == False)
@@ -95,8 +94,8 @@ def test_remove_categories_no_menu_items():
     b_id = cur.fetchone()[0]
     m.remove_category(b_id, "removeItems")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 0)
-    assert(len(r.categories) == 0)
+    assert(len(cur.fetchall()) == 1)
+    assert(len(r.categories) == 1)
 
     cur.execute("delete from category")
     conn.commit()
@@ -108,14 +107,14 @@ def test_remove_categories_removeItems():
 
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
-
+    m.add_category("Unassigned")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 0)
+    assert(len(cur.fetchall()) == 1)
     m.add_category("Japanese")
     m.add_category("Burgers")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 2)
-    assert(len(r.categories) == 2)
+    assert(len(cur.fetchall()) == 3)
+    assert(len(r.categories) == 3)
     
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
     m.add_menu_item("Golden fish", "Shiny", "Block of gold", "1000", "Japanese")
@@ -127,8 +126,8 @@ def test_remove_categories_removeItems():
     j_id = cur.fetchone()[0]
     m.remove_category(j_id, "removeItems")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 1)
-    assert(len(r.categories) == 1)
+    assert(len(cur.fetchall()) == 2)
+    assert(len(r.categories) == 2)
     
     assert(len(r.menu_items) == 2)
 
@@ -138,8 +137,8 @@ def test_remove_categories_removeItems():
     b_id = cur.fetchone()[0]
     m.remove_category(b_id, "removeItems")
     cur.execute("select * from category")
-    assert(len(cur.fetchall()) == 0)
-    assert(len(r.categories) == 0)
+    assert(len(cur.fetchall()) == 1)
+    assert(len(r.categories) == 1)
     assert(len(r.menu_items) == 0)
     
     cur.execute("delete from menu_item")
@@ -200,10 +199,8 @@ def test_add_menu_items():
     cur.execute("delete from menu_item")
 
     r1 = Restaurant("Nobu")
-    r2 = Restaurant("Maccas")
     m1 = Manager("password", r1)
-    m2 = Manager("mmmmmm", r2)
-
+    m1.add_category("Unassigned")
     jap = m1.add_category("Japanese")
 
     cur.execute("select * from menu_item")
@@ -213,15 +210,13 @@ def test_add_menu_items():
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 1)
     assert(r1.menu_contains("Sashimi") == True)
-    assert(r2.menu_contains("Sashimi") == False)
 
-    burgers = m2.add_category("Burgers")
-    m2.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", "Burgers")
+    burgers = m1.add_category("Burgers")
+    m1.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", "Burgers")
 
     cur.execute("select * from menu_item")
     assert(len(cur.fetchall()) == 2)
-    assert(r1.menu_contains("Cheeseburger") == False)
-    assert(r2.menu_contains("Cheeseburger") == True)
+    assert(r1.menu_contains("Cheeseburger") == True)
 
     cur.execute("delete from menu_item")
     cur.execute("delete from category")
@@ -234,7 +229,7 @@ def test_add_duplicate_menu_items():
 
     r = Restaurant("Maccas")
     m = Manager("password", r)
-
+    m.add_category("Unassigned")
     burgers = m.add_category("Burgers")
     m.add_menu_item("Cheeseburger", "Beef & cheese", "Beef, cheese, bread", "18.2", "Burgers")
     cur.execute("select * from menu_item")
@@ -258,7 +253,7 @@ def test_add_menu_item_with_no_tags():
 
     r1 = Restaurant("Nobu")
     m1 = Manager("password", r1)
-
+    m1.add_category("Unassigned")
     jap = m1.add_category("Japanese")
 
     cur.execute("select * from menu_item")
@@ -292,7 +287,7 @@ def test_add_menu_item_with_tags():
 
     r1 = Restaurant("Nobu")
     m1 = Manager("password", r1)
-
+    m1.add_category("Unassigned")
     jap = m1.add_category("Japanese")
 
     cur.execute("select * from menu_item")
@@ -326,7 +321,7 @@ def test_add_menu_item_with_all_tags():
 
     r1 = Restaurant("Nobu")
     m1 = Manager("password", r1)
-
+    m1.add_category("Unassigned")
     jap = m1.add_category("Japanese")
 
     item = m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese", {"vegetarian": True, "vegan": True, "gluten free": True, "nut free": True, "dairy free": True, "chef recommended": True})
@@ -344,7 +339,7 @@ def test_add_menu_item_with_all_tags():
     cur.execute("delete from category")
     conn.commit()
 
-# remove menu items
+# # remove menu items
 
 def test_remove_menu_items():
     cur = conn.cursor()
@@ -353,6 +348,7 @@ def test_remove_menu_items():
 
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
+    m.add_category("Unassigned")
     jap = m.add_category("Japanese")
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
     m.add_menu_item("Udon", "Very yummy", "Noodles, miso, beef", "10.99", "Japanese")
@@ -385,6 +381,7 @@ def test_remove_nonexistent_menu_items():
 
     r = Restaurant("Kelly's Kitchen")
     m = Manager("kellyscool", r)
+    m.add_category("Unassigned")
     jap = m.add_category("Japanese")
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
     cur.execute("select * from menu_item")
@@ -544,6 +541,7 @@ def test_update_categories_display_order():
     r.manager = m
     cur = conn.cursor()
     cur.execute("delete from category") 
+    m.add_category("Unassigned")
     m.add_category("Sashimi")
     m.add_category("Jap")
     m.add_category("Nice")
@@ -574,6 +572,7 @@ def test_update_menu_items_display_order():
     cur = conn.cursor()
     cur.execute("delete from menu_item")
     cur.execute("delete from category")
+    m.add_category("Unassigned")
     m.add_category("Japanese")
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
     m.add_menu_item("Yum", "Nice", "super super", "1", "Japanese")
@@ -605,6 +604,7 @@ def test_edit_menu_item():
     
     r1 = Restaurant("Nobu")
     m1 = Manager("password", r1)
+    m1.add_category("Unassigned")
     m1.add_category("Tasty")
     m1.add_category("Japanese")
     
@@ -640,14 +640,15 @@ def test_category_edit():
     
     r1 = Restaurant("Nobu")
     m1 = Manager("password", r1)
+    m1.add_category("Unassigned")
     m1.add_category("Tasty")
     m1.add_category("Yummers")
     
     cur.execute("select id from category where name = %s", ["Tasty"])
     id = cur.fetchone()[0]
     m1.category_edit(id, True, "Bob")
-    assert(m1.restaurant.categories[0].visible)
-    assert(m1.restaurant.categories[0].name == "Bob")
+    assert(m1.restaurant.categories[1].visible)
+    assert(m1.restaurant.categories[1].name == "Bob")
     cur.execute("delete from category")
     conn.commit()
     

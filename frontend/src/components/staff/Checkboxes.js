@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
+import { ALL_TAGS_LIST } from '../../utilities/constants';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -19,28 +20,16 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'vegetarian',
-  'vegan',
-  'gluten free',
-  'nut free',
-  'dairy free',
-  'chef recommended'
-];
-
-export default function MultipleSelectCheckmarks({update}) {
-  const [tag, setTag] = React.useState([]);
+export default function Checkboxes({update, tags}) {
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setTag(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-    update(tag);
+    update(typeof value === 'string' ? value.split(',') : value);
   };
+
+  // React.useEffect(() => {console.log("INSIDE TAGS", tags)});
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -49,15 +38,15 @@ export default function MultipleSelectCheckmarks({update}) {
         <Select
           labelId="demo-multiple-checkbox-label"
           multiple
-          value={tag}
+          value={tags}
           onChange={handleChange}
           input={<OutlinedInput label="Tag" />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {ALL_TAGS_LIST.map((name) => (
             <MenuItem key={name} value={name}>
-              <Checkbox checked={tag.indexOf(name) > -1} />
+              <Checkbox checked={tags && (tags.indexOf(name) > -1)} />
               <ListItemText primary={name} />
             </MenuItem>
           ))}

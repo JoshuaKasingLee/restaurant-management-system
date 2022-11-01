@@ -20,7 +20,6 @@ import Login from './pages/staff/Login';
 import Kitchen from './pages/staff/Kitchen';
 import Wait from './pages/staff/Wait';
 import Manager from './pages/staff/Manager';
-import NewItem from './pages/staff/NewItem';
 
 function App () {
   return (
@@ -37,7 +36,6 @@ function App () {
           <Route exact path='/staff/kitchen' element={<Kitchen />} />
           <Route exact path='/staff/wait' element={<Wait />} />
           <Route exact path='/staff/manager' element={<Manager />} />
-          <Route exact path='/staff/manager/item/new' element={<NewItem />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
