@@ -11,6 +11,7 @@ function Bill() {
   const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
+    // localStorage.removeItem('assistance');
     const getBill = async () => {
       const response = await fetch('http://localhost:5000/customer/bill', {
         method: 'POST',
@@ -46,6 +47,7 @@ function Bill() {
       }
     }
     getBill();
+    // localStorage.clear();
   }, []);
 
   return (

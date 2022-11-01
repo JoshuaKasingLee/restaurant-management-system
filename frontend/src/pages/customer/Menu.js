@@ -54,6 +54,8 @@ function Menu() {
   };
 
   React.useEffect(() => {
+    // if (localStorage.getItem('assistance') === null)
+    //   localStorage.setItem('assistance', false);
     const getMenu = async () => {
       await new Promise(response => setTimeout(response, 1000));
       const response = await fetch(`http://localhost:5000/customer/menu`, {  

@@ -91,10 +91,10 @@ class Restaurant:
             
             self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
 
-        cur.execute("select name, email, score, time_played from leaderboard_entry")
-        result = cur.fetchall()
-        for cat in result:
-            self.leaderboard.append(LeaderboardEntry(cat[0], cat[1], cat[2], cat[3]))
+        # cur.execute("select name, email, score, time_played from leaderboard_entry")
+        # result = cur.fetchall()
+        # for cat in result:
+        #     self.leaderboard.append(LeaderboardEntry(cat[0], cat[1], cat[2], cat[3]))
             
             
     # menu editor helper function
