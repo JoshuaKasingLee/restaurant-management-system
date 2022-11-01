@@ -93,27 +93,25 @@ class Table:
 
     # request assistance
 
-    def toggle_assistance(self):
+    def request_assistance(self):
         cur = conn.cursor()
+        try:
+            cur.execute("update tables set needs_assistance = %s where num = %s", [True, self.number])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Requesting assistance failed")
+        conn.commit()
+        self.needs_assistance = True
 
-        if (self.needs_assistance):
-            try:
-                cur.execute("update tables set needs_assistance = %s where num = %s", [False, self.number])
-            except Exception as err:
-                conn.rollback()
-                raise Exception("Unrequesting assistance failed")
-            conn.commit()
-
-            self.needs_assistance = False
-        else:
-            try:
-                cur.execute("update tables set needs_assistance = %s where num = %s", [True, self.number])
-            except Exception as err:
-                conn.rollback()
-                raise Exception("Requesting assistance failed")
-            conn.commit()
-            self.needs_assistance = True
-
+    def unrequest_assistance(self):
+        cur = conn.cursor()
+        try:
+            cur.execute("update tables set needs_assistance = %s where num = %s", [False, self.number])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Unrequesting assistance failed")
+        conn.commit()
+        self.needs_assistance = False
 
     # request the (split) bill
 
