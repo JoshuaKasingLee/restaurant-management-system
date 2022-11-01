@@ -77,25 +77,48 @@ function Menu() {
     getMenu();
   }, []);
 
-  const getCategoriesTabs = () => {
+  const getContent = () => {
     let content = [];
     for (let i = 0; i < menu.categories.length; i++) {
-      content.push(<Tab key={i} label={menu.categories[i].name} {...a11yProps(i)} />);
+      content.push({ 
+        order: menu.categories[i].display_order,
+        title: menu.categories[i].name
+      });
     }
     return content;
+  }
+
+  const getCategoriesTabs = () => {
+    let renderedContent = [];
+    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    for (let i = 0; i < sortedContent.length; i++) {
+      if(sortedContent[i].title !== 'Unassigned') {
+        renderedContent.push(<Tab key={i} label={sortedContent[i].title} {...a11yProps(i)} />);
+      }
+    }
+    return renderedContent;
   };
 
   const getCategoriesTabPanels = () => {
-    let content = [];
-    for (let i = 0; i < menu.categories.length; i++) {
-      content.push(
-        <TabPanel  key={i} value={value} index={i}>
-          <Typography variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategory category={menu.categories[value]} filters={filters} sort={sort}/>
-        </TabPanel>
-      );
+    let renderedContent = [];
+    let content = getContent();
+    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    for (let i = 0; i < sortedContent.length; i++) {
+      if(sortedContent[i].title !== 'Unassigned') {
+        renderedContent.push(
+          <TabPanel  key={i} value={value} index={i}>
+            <Typography variant="h3" >{sortedContent[value].title}</Typography>
+            <MenuCategory 
+              category={menu.categories[content.findIndex(obj => 
+                obj.order === sortedContent[value].order)]} 
+              filters={filters} 
+              sort={sort}
+            />
+          </TabPanel>
+        );
+      }
     }
-    return content;
+    return renderedContent;
   };
 
   return (

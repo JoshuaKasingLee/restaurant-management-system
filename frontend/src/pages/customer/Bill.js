@@ -7,7 +7,7 @@ import BillTable from '../../components/customer/BillTable';
 
 function Bill() {
   const [total, setTotal] = React.useState(0);
-  const [charge, setCharge] = React.useState([]);
+  const [charge, setCharge] = React.useState(new Array(4).fill(0));
   const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
@@ -36,10 +36,8 @@ function Bill() {
       });
       const data = await response.json();
       if (response.ok) {
-        // localStorage.setItem('charge', data.charge[0]);
-        setCharge( data.charge );
         setTotal( data.total );
-        console.log(data.charge);
+        setCharge( data.charge );
         setOrderItems( data.order_items );
       } else {
         alert(await data.error);

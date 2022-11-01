@@ -18,7 +18,7 @@ function Header({image, title}) {
 
   React.useEffect(() => {
     if (selected !== null) {
-      if (title === 'Menu' || title === 'Order' || title === 'Game') {
+      if (title === 'Menu' || title === 'Orderlist' || title === 'Game') {
         const setAssistance = async () => {
           const response = await fetch(`http://localhost:5000/customer/assistance`, {  
             method: 'PUT',
@@ -31,7 +31,7 @@ function Header({image, title}) {
             body: JSON.stringify(
               { 
                 table: localStorage.getItem("table"),
-                // request: selected
+                request: selected
               }
             )
           });
@@ -42,35 +42,34 @@ function Header({image, title}) {
           }
         };
         setAssistance();
-        
-        // if (selected === true) {
-        //   const getAssistance = async () => {
-        //     const response = await fetch(`http://localhost:5000/customer/assistance?table=${localStorage.getItem('table')}`, {  
-        //       method: 'GET',
-        //       headers: {
-        //       'Content-type': 'application/json',
-        //       'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        //       },
-        //     });
-        //     const data = await response.json();
-        //     if (response.ok) {
-        //       localStorage.setItem('assistance', data.request);
-        //       setSelected(data.request);
-        //       // console.log(data.request);
-        //     } else {
-        //       alert(await data.error);
-        //     }
-        //   };
-        //   const intervalID = setInterval(getAssistance, 1000)
+        // console.log(selected + title + ' effect');
+        // console.log(localStorage.getItem('assistance') + title + ' local');
+        if (selected === true) {
+          const getAssistance = async () => {
+            const response = await fetch(`http://localhost:5000/customer/assistance?table=${localStorage.getItem('table')}`, {  
+              method: 'GET',
+              headers: {
+              'Content-type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              },
+            });
+            const data = await response.json();
+            if (response.ok) {
+              localStorage.setItem('assistance', data.request);
+              setSelected(data.request);
+              // console.log(data.request);
+            } else {
+              alert(await data.error);
+            }
+          };
+          const intervalID = setInterval(getAssistance, 1000)
 
-        //   return (() => {
-        //     clearInterval(intervalID)
-        //   })
-        // }
+          return (() => {
+            clearInterval(intervalID)
+          })
+        }
       }
     }
-    console.log(selected + title + ' effect');
-    console.log(localStorage.getItem('assistance') + title + ' local');
   }, [title, selected]);
 
   return (
