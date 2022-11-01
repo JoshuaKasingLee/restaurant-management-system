@@ -32,11 +32,11 @@ def test_get_assistance_requests():
     result = wait.get_assistance_requests()
     assert(result == [])
 
-    t1.toggle_assistance()
+    t1.request_assistance()
     result = wait.get_assistance_requests()
     assert(result == [{"table": 1}])
 
-    t2.toggle_assistance()
+    t2.request_assistance()
     result = wait.get_assistance_requests()
     assert(result == [{"table": 1}, {"table": 2}])
 
@@ -64,9 +64,9 @@ def test_resolve_assistance_requests():
 
     restaurant.populate()
     t1 = restaurant.tables[0]
-    t1.toggle_assistance()
+    t1.request_assistance()
     t2 = restaurant.tables[1]
-    t2.toggle_assistance()
+    t2.request_assistance()
 
     cur.execute("select needs_assistance from tables where num = %s", ['1'])
     assert(cur.fetchone()[0] == True)
@@ -98,8 +98,8 @@ def test_resolve_assistance_requests():
 
     # repeat again in case
 
-    t1.toggle_assistance()
-    t2.toggle_assistance()
+    t1.request_assistance()
+    t2.request_assistance()
 
     cur.execute("select needs_assistance from tables where num = %s", ['1'])
     assert(cur.fetchone()[0] == True)

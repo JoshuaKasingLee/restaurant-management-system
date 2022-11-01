@@ -279,17 +279,17 @@ def test_request_assistance():
     assert(cur.fetchone()[0] == False)
     assert(not table.needs_assistance)
 
-    table.toggle_assistance()
+    table.request_assistance()
     cur.execute("select needs_assistance from tables where num = %s", ['1'])
     assert(cur.fetchone()[0] == True)
     assert(table.needs_assistance)
 
-    table.toggle_assistance()
+    table.unrequest_assistance()
     cur.execute("select needs_assistance from tables where num = %s", ['1'])
     assert(cur.fetchone()[0] == False)
     assert(not table.needs_assistance)
 
-    table.toggle_assistance()
+    table.request_assistance()
     cur.execute("select needs_assistance from tables where num = %s", ['1'])
     assert(cur.fetchone()[0] == True)
     assert(table.needs_assistance)

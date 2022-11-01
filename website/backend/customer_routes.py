@@ -76,12 +76,19 @@ def toggle_assistance():
         return {"error": "Unable to validate"}, 401
     data = request.get_json()
     table = data["table"]
+    assistance_required = data["request"]
     for t in restaurant.tables:
         if t.number == int(table):
-            try:
-                t.toggle_assistance()
-            except:
-                return {"error": "Assistance request failed"}, 401
+            if assistance_required:
+                try:
+                    t.request_assistance()
+                except:
+                    return {"error": "Assistance request failed"}, 401
+            else:
+                try:
+                    t.unrequest_assistance()
+                except:
+                    return {"error": "Assistance unrequest failed"}, 401
     return {}
 
 @customer_routes.route('/assistance', methods=['GET'])
