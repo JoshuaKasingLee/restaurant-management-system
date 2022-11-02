@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 /* Table Form Component */
 
@@ -50,6 +51,9 @@ function TableForm ({ submit }) {
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
 			<Stack spacing={2}>
+        <Typography variant="h4" >
+          Please select a table number:
+        </Typography>
         <Box sx={{ minWidth: 120 }}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Table</InputLabel>
@@ -71,8 +75,12 @@ function TableForm ({ submit }) {
             </Select>
           </FormControl>
         </Box>
-				<Button component={Link} to={'/customer/menu'} variant="contained" onClick={onSubmit}>Confirm</Button>
-			</Stack>
+        {table !== '' &&
+          <Button component={Link} to={'/customer/menu'} variant="contained" onClick={onSubmit}>
+            Confirm
+          </Button>
+        }
+      </Stack>
 		</Box>
   )
 }

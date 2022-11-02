@@ -22,7 +22,7 @@ function PauseDialog(props) {
       }}
     >
       <DialogTitle textAlign='center'>
-        <Typography variant='h2' color='background.paper' >
+        <Typography component='div' variant='h2' color='background.paper' >
           Game Paused
         </Typography>
       </DialogTitle>
