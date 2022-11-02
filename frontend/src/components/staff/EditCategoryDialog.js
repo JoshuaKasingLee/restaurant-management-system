@@ -15,6 +15,16 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
   // React.useEffect(() => {console.log("name", name)})
   // React.useEffect(() => {console.log("category.title", category.title)},[category])
 
+  const [disabled, setDisabled] = React.useState(true);
+
+  React.useEffect(() => {
+    if (name.length <= 100 && name.length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [name])
+
   async function editCategory() {
     const response = await fetch(`http://localhost:5000/manager/categories/${category.id}`, {  
         method: 'PUT',
@@ -84,7 +94,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
       <DialogActions>
         <Button onClick={() => {setOpenDOD(true);}}>Delete</Button>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={editCategory}>Save</Button>
+        <Button onClick={editCategory} disabled={disabled}>Save</Button>
       </DialogActions>
     </Dialog>
     
