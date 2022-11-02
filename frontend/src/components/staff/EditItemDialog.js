@@ -22,6 +22,33 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
     //     setCost(parseFloat(value))
     // }
 
+    const [disabled, setDisabled] = React.useState(false);
+
+    React.useEffect(() => {
+      if (!(name.length <= 100 && name.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(description.length <= 200 && description.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(ingredients.length <= 250 && ingredients.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(cost > 0)) {
+        setDisabled(true);
+        return;
+      }
+      
+      setDisabled(false);
+
+    }, [name, ingredients, description, cost, category])
+
     const editItem = async () => {
         const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
           method: 'PUT',
@@ -152,7 +179,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         <DialogActions>
             <Button sx={{marginLeft: 2}} onClick={deleteItem}>Delete</Button>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={editItem}>Save</Button>
+            <Button onClick={editItem} disabled={disabled}>Save</Button>
         </DialogActions>
         </Dialog>
     )
