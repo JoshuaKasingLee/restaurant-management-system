@@ -22,6 +22,38 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
     //     setCost(parseFloat(value));
     // }
 
+    const [disabled, setDisabled] = React.useState(true);
+
+    React.useEffect(() => {
+      if (!(name.length <= 100 && name.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(description.length <= 200 && description.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(ingredients.length <= 250 && ingredients.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(cost > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(category.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+      
+      setDisabled(false);
+
+    }, [name, ingredients, description, cost, category])
+
     const addNewItem = async () => {
         const response = await fetch('http://localhost:5000/manager/items', {
           method: 'POST',
@@ -139,7 +171,7 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
         </DialogContent>
         <DialogActions>
             <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button onClick={addNewItem}>Save</Button>
+            <Button onClick={addNewItem} disabled={disabled}>Save</Button>
         </DialogActions>
         </Dialog>
     )
