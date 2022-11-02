@@ -52,7 +52,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         });
         const data = await response.json();
         if (response.ok) {
-            updateMenu();
+            updateMenu(true);
             handleClose();
         } else {
           alert(await data.error);
@@ -74,7 +74,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         });
         const data = await response.json();
         if (response.ok) {
-            updateMenu();
+            updateMenu(true);
             handleClose();
         } else {
           alert(await data.error);

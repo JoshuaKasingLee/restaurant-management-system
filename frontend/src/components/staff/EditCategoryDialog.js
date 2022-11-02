@@ -9,8 +9,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function EditCategoryDialog({open, category, handleClose, updateMenu}) {
 
-  const [name, setName] = React.useState(category.name);
+  const [name, setName] = React.useState(category.title);
   const [show, setShow] = React.useState(category.visible);
+
+  // React.useEffect(() => {console.log("name", name)})
+  // React.useEffect(() => {console.log("category.title", category.title)},[category])
 
   async function editCategory() {
     const response = await fetch(`http://localhost:5000/manager/categories/${category.id}`, {  
@@ -26,7 +29,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
     });
     const data = await response.json();
     if (response.ok) {
-      updateMenu();
+      updateMenu(true);
       handleClose();
     } else {
       alert(await data.error);
@@ -34,7 +37,6 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
   }
 
   const [openDeleteOptionsDialog, setOpenDOD] = React.useState(false);
-  const [deleteType, setDeleteType] = React.useState('');
 
   async function deleteCategory(deleteType) {
     const response = await fetch(`http://localhost:5000/manager/categories/${category.id}`, {  
@@ -49,7 +51,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
     });
     const data = await response.json();
     if (response.ok) {
-      updateMenu();
+      updateMenu(true);
       handleClose();
     } else {
       alert(await data.error);

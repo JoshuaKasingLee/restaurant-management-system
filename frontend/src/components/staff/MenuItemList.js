@@ -28,10 +28,12 @@ export default function MenuItemList({category, updateMenu}) {
           cost: category.menu_items[i].cost,
           description: category.menu_items[i].description,
           ingredients: category.menu_items[i].ingredients,
+          order: category.menu_items[i].display_order,
           tags: tagList, //"Chef's Reccomendation"
           actualTags: actualTags
         }
       );
+      content.sort( (a, b) => a.order < b.order ? -1 : 1 );
       setCategoryItems( categoryItems => content );
     }
     // console.log(content);

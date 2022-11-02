@@ -24,7 +24,7 @@
     });
     const data = await response.json();
     if (response.ok) {
-      updateMenu();
+      updateMenu(true);
       handleClose();
     } else {
       alert(await data.error);
