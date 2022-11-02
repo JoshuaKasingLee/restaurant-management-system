@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import ReorderIcon from '@mui/icons-material/Reorder';
+// import ReorderIcon from '@mui/icons-material/Reorder';
 import { List, ListItem } from '@mui/material';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
@@ -66,7 +66,7 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
     const draggableCategory = categories[source.index];
     newCategories.splice(source.index, 1);
     newCategories.splice(destination.index, 0, draggableCategory);
-    console.log(newCategories);
+    // console.log(newCategories);
 
     setCategories(newCategories);
   }
@@ -74,8 +74,8 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
   React.useEffect(() => {
     let content = [];
     for (let i=0; i < categoriesProps.length; i++) {
-      if (categoriesProps.length == 0) continue;
-      if (categoriesProps[i].name == "Unassigned") {
+      if (categoriesProps.length === 0) continue;
+      if (categoriesProps[i].name === "Unassigned") {
         setUnassigned({
           id: categoriesProps[i].id,
           positionId: categoriesProps[i].display_order,
@@ -110,7 +110,11 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
                 {...provided.droppableProps}
               >
                 {categories.map((category, index) => (
-                  <Draggable draggableId={`draggable-${category.id}`} index={index} key={`key-${category.id}`}>
+                  <Draggable 
+                    draggableId={`draggable-${category.id}`} 
+                    index={index} 
+                    key={`key-${category.id}`}
+                  >
                   {(provided) => (
                     <ListItem
                       {...provided.draggableProps}
@@ -130,8 +134,8 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
         </DragDropContext>
       </DialogContent>
       <DialogActions>
-        <Button onClick={reorderCategories}>Save</Button>
         <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={reorderCategories}>Save</Button>
       </DialogActions>
     </Dialog>
   </>)

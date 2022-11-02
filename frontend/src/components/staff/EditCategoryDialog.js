@@ -12,7 +12,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
   const [name, setName] = React.useState(category.title);
   const [show, setShow] = React.useState(category.visible);
 
-  // React.useEffect(() => {console.log("name", name)}, [name])
+  // React.useEffect(() => {console.log("name", name)})
   // React.useEffect(() => {console.log("category.title", category.title)},[category])
 
   async function editCategory() {

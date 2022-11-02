@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import ReorderIcon from '@mui/icons-material/Reorder';
+// import ReorderIcon from '@mui/icons-material/Reorder';
 import { List, ListItem } from '@mui/material';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
@@ -72,7 +72,7 @@ export default function ReorderItemDialog({open, itemsProps, handleClose, update
   React.useEffect(() => {
     let content = [];
     for (let i=0; i < itemsProps.length; i++) {
-      if (itemsProps.length == 0) continue;
+      if (itemsProps.length === 0) continue;
       content.push({ 
         id: itemsProps[i].id,
         positionId: itemsProps[i].display_order,
@@ -100,7 +100,11 @@ export default function ReorderItemDialog({open, itemsProps, handleClose, update
                 {...provided.droppableProps}
               >
                 {items.map((item, index) => (
-                  <Draggable draggableId={`draggable-${item.id}`} index={index} key={`key-${item.id}`}>
+                  <Draggable 
+                    draggableId={`draggable-${item.id}`} 
+                    index={index} 
+                    key={`key-${item.id}`}
+                  >
                   {(provided) => (
                     <ListItem
                       {...provided.draggableProps}
@@ -120,8 +124,8 @@ export default function ReorderItemDialog({open, itemsProps, handleClose, update
         </DragDropContext>
       </DialogContent>
       <DialogActions>
-        <Button onClick={reorderItems}>Save</Button>
         <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={reorderItems}>Save</Button>
       </DialogActions>
     </Dialog>
   </>)
