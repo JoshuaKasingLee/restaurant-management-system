@@ -10,7 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 export default function EditCategoryDialog({open, category, handleClose, updateMenu}) {
 
   const [name, setName] = React.useState(category.title);
-  const [show, setShow] = React.useState(category.visible);
+  // const [show, setShow] = React.useState(category.visible);
 
   // React.useEffect(() => {console.log("name", name)})
   // React.useEffect(() => {console.log("category.title", category.title)},[category])
@@ -24,7 +24,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
         },
         body: JSON.stringify({
             name: name,
-            show: show
+            // show: show
         })
     });
     const data = await response.json();

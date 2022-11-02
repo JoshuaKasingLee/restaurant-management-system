@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, TextField, Typography, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
+import { Box, Button, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
 import Dropdown from './Dropdown';
 import Checkboxes from './Checkboxes';
 import Dialog from '@mui/material/Dialog';

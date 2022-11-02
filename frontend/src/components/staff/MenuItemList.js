@@ -10,7 +10,7 @@ export default function MenuItemList({category, updateMenu}) {
   React.useEffect(() => {
     let content = [];
     for (let i=0; i < category.menu_items.length; i++) {
-      if (category.menu_items.length == 0) continue;
+      if (category.menu_items.length === 0) continue;
       let tagList = [];
       if (category.menu_items[i].tags.vegetarian) tagList.push('Vegetarian');
       if (category.menu_items[i].tags.vegan) tagList.push('Vegan');
