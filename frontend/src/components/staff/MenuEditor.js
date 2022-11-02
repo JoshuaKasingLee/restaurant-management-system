@@ -98,7 +98,7 @@ function MenuEditor() {
   const [category, setCategory] = React.useState(null);
 
   const handleOpenEditCategory = (key) => {
-    console.log(key)
+    // console.log(key)
     setCategory(menu.categories[key]);
     setOpenEditCategory(true);
   }

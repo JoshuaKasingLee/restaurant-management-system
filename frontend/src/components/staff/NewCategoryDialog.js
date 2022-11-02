@@ -43,8 +43,10 @@
       required
       margin="dense"
       id="newCategory"
+      label="Category Name"
       fullWidth
       variant="standard"
+      helperText="Max 100 characters"
       onChange={e => setName(e.target.value)}
     />
     </DialogContent>

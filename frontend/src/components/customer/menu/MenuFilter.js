@@ -1,5 +1,6 @@
 import * as React from 'react';
 import TagFacesIcon from '@mui/icons-material/TagFaces';
+import GradeRoundedIcon from '@mui/icons-material/GradeRounded';
 import { Chip, Stack } from '@mui/material';
 
 // ----------------------------------------------------------------------
@@ -7,7 +8,7 @@ import { Chip, Stack } from '@mui/material';
 function MenuFilter({ submit }) {
   // const [filters, setFilters] = React.useState([]);
   const [chipData, setChipData] = React.useState([
-    { key: 0, label: "Chef's Recommendation", icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 0, label: "Chef's Recommendation", icon: GradeRoundedIcon, selected: 'outlined default' },
     { key: 1, label: 'Vegetarian', icon: TagFacesIcon, selected: 'outlined default' },
     { key: 2, label: 'Vegan', icon: TagFacesIcon, selected: 'outlined default' },
     { key: 3, label: 'Gluten Free', icon: TagFacesIcon, selected: 'outlined default' },

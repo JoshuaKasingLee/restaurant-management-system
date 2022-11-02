@@ -74,6 +74,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
           id="newCategory"
           value={name}
           fullWidth
+          helperText="Max 100 characters"
           onChange={e => setName(e.target.value)}
         />
         

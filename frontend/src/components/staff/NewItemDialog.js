@@ -6,6 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
 
 export default function NewItemDialog({open, updateMenu, handleClose}) {
     
@@ -14,12 +15,12 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
     const [description, setDescription] = React.useState('');
     const [ingredients, setIngredients] = React.useState('');
     const [tags, setTags] = React.useState([]);
-    const [cost, setCost] = React.useState(0.0);
-    const [image, setImage] = React.useState('https://assets.stickpng.com/images/58889577bc2fc2ef3a1860be.png');
-
-    const setCostWrapper = (value) => {
-        setCost(parseFloat(value))
-    }
+    const [cost, setCost] = React.useState('');
+    const [image, setImage] = React.useState('https://backend.grindcitymedia.com/wp-content/uploads/2020/03/no-image-availabe.png');
+    
+    // const setCostWrapper = (value) => {
+    //     setCost(parseFloat(value));
+    // }
 
     const addNewItem = async () => {
         const response = await fetch('http://localhost:5000/manager/items', {
@@ -43,24 +44,38 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
                 "dairy free": tags.includes("dairy free"),
                 "chef recommended": tags.includes("chef recommended"),
             },
-            cost: cost,
+            cost: parseFloat(cost),
             img: image
             })
         });
         const data = await response.json();
         if (response.ok) {
             updateMenu();
-            handleClose();
+            handleCloseDialog();
         } else {
           alert(await data.error);
         }
     } 
 
     // React.useEffect(() => {console.log("CAT", category)})
+    const handleChangeImage = (event) => {
+        setImage(URL.createObjectURL(event.target.files[0]));
+    }
+
+    const handleCloseDialog = () => {
+        setName('');
+        setCategory('');
+        setDescription('');
+        setIngredients('');
+        setTags([]);
+        setCost('');
+        setImage('https://backend.grindcitymedia.com/wp-content/uploads/2020/03/no-image-availabe.png');
+        handleClose();
+    }
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth='md'>
-        <DialogTitle>Edit Item</DialogTitle>
+        <Dialog open={open} onClose={handleCloseDialog} fullWidth maxWidth='md'>
+        <DialogTitle>New Item</DialogTitle>
         <DialogContent>
         <Box maxWidth="md" m="auto" component="form"
             sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', p: 5 }} >
@@ -68,13 +83,14 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
                 required
                 label="Title"
                 value={name}
+                helperText="Max 100 characters"
                 onChange={e => setName(e.target.value)}
             />
-            <FormControl fullWidth sx={{ m: 1 }} required>
+            <FormControl fullWidth sx={{ ml: 0 }} required>
                 <InputLabel htmlFor="outlined-adornment-amount">Cost</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-amount"
-                    onChange={e => setCostWrapper(e.target.value)}
+                    onChange={e => setCost(e.target.value)}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     label="Cost"
                     value={cost}
@@ -89,6 +105,7 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
                 multiline
                 required
                 rows={3}
+                helperText="Max 200 characters"
                 onChange={e => setDescription(e.target.value)}
             />
             <TextField
@@ -97,10 +114,21 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
                 multiline
                 required
                 rows={3}
+                helperText="Max 250 characters"
                 onChange={e => setIngredients(e.target.value)}
             />
             <Dropdown update={setCategory} category={category}/>
             <Checkboxes update={setTags} tags={tags}/>
+            <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
+                Upload Image
+                <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
+            </Button>
+            <Box sx={{ width: '200px' }}>
+                <img 
+                src={image}
+                alt="img"
+                /> 
+            </Box> 
             <TextField
                 required
                 label="Image Link"
@@ -110,7 +138,7 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
         </Box>
         </DialogContent>
         <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
             <Button onClick={addNewItem}>Save</Button>
         </DialogActions>
         </Dialog>
