@@ -75,11 +75,9 @@ function TableForm ({ submit }) {
             </Select>
           </FormControl>
         </Box>
-        {table !== '' &&
-          <Button component={Link} to={'/customer/menu'} variant="contained" onClick={onSubmit}>
-            Confirm
-          </Button>
-        }
+        <Button component={Link} to={'/customer/menu'} variant="contained" onClick={onSubmit} disabled={table === ''}>
+          Confirm
+        </Button>
       </Stack>
 		</Box>
   )
