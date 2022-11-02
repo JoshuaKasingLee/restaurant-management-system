@@ -33,3 +33,4 @@ Mainly took a break from the assignment however started thinking about how to do
 Week 7 
 Kelly and I discussed that we needed to change some routes to path based on id and not name. I fixed some bugs related to display-order and implemented those functions and changing routes to pass in Id instead of name in the URL.
 I also discussed with James about the routes again to confirm and make changes to them if they were not what he wanted. I finished user stories related to Sprint 2 allocated to me. 
+
