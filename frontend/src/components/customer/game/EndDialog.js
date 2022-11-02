@@ -74,5 +74,5 @@ export default EndDialog;
 EndDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  score: PropTypes.string.isRequired
+  score: PropTypes.number.isRequired
 };
