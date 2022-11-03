@@ -14,6 +14,22 @@ export default function NewItem() {
   const [mPass, setMPass] = React.useState('');
   const [trigger, setTrigger] = React.useState(false);
 
+  const [disabled, setDisabled] = React.useState(false);
+
+  React.useEffect(() => {
+    let p = [kPass, wPass, mPass];
+    for (let i = 0; i < p.length; i++) {
+      let numPat = /[0-9]/;
+      const upperPat = /[A-Z]/;
+      if (!(p[i].length >= 10 && p[i].length <= 100 && numPat.test(p[i]) && upperPat.test(p[i]))) {
+        setDisabled(true);
+        return;
+      } else {
+        setDisabled(false);
+      }
+    }
+  }, [kPass, wPass, mPass])
+
   React.useEffect(() => {  
     const getFields = async () => {
       const response = await fetch(`http://localhost:5000/manager/users`, {  
@@ -105,7 +121,13 @@ export default function NewItem() {
           value={tables}
           label="Table"
           onChange={e => setTables(e.target.value)}
-          sx= {{ maxHeight: 224 }}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 224
+              },
+            },
+          }}
         >
           {getTableContent(numTables)}
         </Select>
@@ -156,7 +178,7 @@ export default function NewItem() {
       onChange={e => setMPass(e.target.value)}
       /> */}
       <div>
-        <Button variant="contained" onClick={updateInfo}>Save</Button>
+        <Button variant="contained" onClick={updateInfo} disabled={disabled}>Save</Button>
         <Button variant="outlined" sx={{marginLeft: 2}} onClick={() => setTrigger(true)}>Reset</Button>
       </div>
     </Box>

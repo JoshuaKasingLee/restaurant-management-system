@@ -7,7 +7,7 @@ import BillTable from '../../components/customer/BillTable';
 
 function Bill() {
   const [total, setTotal] = React.useState(0);
-  // const [charge, setCharge] = React.useState(0);
+  const [charge, setCharge] = React.useState(new Array(4).fill(0));
   const [orderItems, setOrderItems] = React.useState([]);
 
   React.useEffect(() => {
@@ -23,8 +23,8 @@ function Bill() {
         body: JSON.stringify(
           { 
             table: localStorage.getItem('table'),
-            type: 'together',
-            numSplit: 4,
+            type: localStorage.getItem('paymentType'),
+            numSplit: localStorage.getItem('numSplit'),
             dishes: {
               person1: [],
               person2: [],
@@ -36,27 +36,31 @@ function Bill() {
       });
       const data = await response.json();
       if (response.ok) {
-        // localStorage.setItem('charge', data.charge[0]);
-        // setCharge( data.charge[0] );
         setTotal( data.total );
-        console.log(data.total);
+        setCharge( data.charge );
         setOrderItems( data.order_items );
       } else {
         alert(await data.error);
       }
     }
     getBill();
+    // localStorage.clear();
   }, []);
 
   return (
     <>
-      <Header title={"Bill"} />
+      <Header image={localStorage.getItem('restaurantImage')} title={"Bill"} />
       <Box height='72vh' sx={{ mt: '20px', display: "flex", flexDirection: 'column', justifyContent: "space-between", alignItems: "center"}}>
         <Typography align='center' variant="h3">
           Thank you for dining with us!
         </Typography>
         <BillTable orderItems={orderItems} />
         <Box alignItems='end' sx={{ px: '16px', py: '8px', bgcolor: 'text.secondary', borderRadius: '24px' }}>
+          {localStorage.getItem('paymentType') === 'equal' &&
+            <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+              Charge/pp: ${charge[0].toFixed(2)}
+            </Typography>
+          }
           <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Total Charge: ${total.toFixed(2)}
           </Typography>

@@ -10,6 +10,15 @@
   export default function NewCategoryDialog({open, handleClose, updateMenu}) {
 
   const [name, setName] = React.useState('');
+  const [disabled, setDisabled] = React.useState(true);
+
+  React.useEffect(() => {
+    if (name.length <= 100 && name.length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [name])
 
   async function createNewCategory() {
     const response = await fetch(`http://localhost:5000/manager/categories`, {  
@@ -24,7 +33,7 @@
     });
     const data = await response.json();
     if (response.ok) {
-      updateMenu();
+      updateMenu(true);
       handleClose();
     } else {
       alert(await data.error);
@@ -43,14 +52,16 @@
       required
       margin="dense"
       id="newCategory"
+      label="Category Name"
       fullWidth
       variant="standard"
+      helperText="Max 100 characters"
       onChange={e => setName(e.target.value)}
     />
     </DialogContent>
     <DialogActions>
     <Button onClick={handleClose}>Cancel</Button>
-    <Button onClick={createNewCategory}>Create</Button>
+    <Button onClick={createNewCategory} disabled={disabled}>Create</Button>
     </DialogActions>
     </Dialog>
   )

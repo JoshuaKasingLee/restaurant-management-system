@@ -7,8 +7,9 @@ import Box from '@mui/material/Box';
 import MenuItemList from './MenuItemList';
 import AddNewButton from './AddNewButton';
 import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
+// import IconButton from '@mui/material/IconButton';
 import EditCategoryDialog from './EditCategoryDialog';
+import ReorderButton from './ReorderButton';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,34 +73,76 @@ function MenuEditor() {
     setTrigger(false);
   }, [trigger]);
 
-  const getCategoriesTabs = menu => {
+  const getContent = () => {
     let content = [];
     for (let i = 0; i < menu.categories.length; i++) {
-      if (menu.categories[i].name == "Unassigned") {
-        content.push(<Tab
-          key={i}
-          label={menu.categories[i].name}
-          {...a11yProps(i)}/>
-        );
-      } else {
-        content.push(<Tab
-          key={i}
-          label={menu.categories[i].name}
-          icon={<EditIcon fontSize="small" onClick={() => handleOpenEditCategory(i)}/>}
-          iconPosition="end"
-          {...a11yProps(i)}/>
-        );
-      }
+      content.push({ 
+        order: menu.categories[i].display_order,
+        title: menu.categories[i].name,
+        id: menu.categories[i].id,
+        visible: menu.categories[i].visible
+      });
     }
     return content;
+  }
+
+  const getSortedContent = () => {
+    return getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+  }
+
+  const getCategoriesTabs = () => {
+    let renderedContent = [];
+    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    for (let i = 0; i < sortedContent.length; i++) {
+      if(sortedContent[i].title === 'Unassigned') {
+        renderedContent.push(<Tab
+          key={i}
+          label={sortedContent[i].title}
+          {...a11yProps(i)} />);
+      } else {
+        renderedContent.push(<Tab
+          key={i}
+          label={sortedContent[i].title}
+          icon={<EditIcon fontSize="small" onClick={() => {handleOpenEditCategory(i)}}/>}
+          iconPosition="end"
+          {...a11yProps(i)} />);
+      }
+    }
+    return renderedContent;
+  };
+
+  // React.useEffect(() => {console.log("check value", value)}, [value])
+
+  const getCategoriesTabPanels = () => {
+    let renderedContent = [];
+    let content = getContent();
+    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    for (let i = 0; i < sortedContent.length; i++) {
+      renderedContent.push(
+        <TabPanel  key={i} value={value} index={i}>
+          <Typography variant="h3" >{sortedContent[value].title}</Typography>
+          <MenuItemList 
+            category={menu.categories[content.findIndex(obj => 
+              obj.order === sortedContent[value].order)]} 
+            updateMenu={setTrigger}
+          />
+          <EditCategoryDialog
+            open={openEditCategory}
+            category={content[content.findIndex(obj => 
+              obj.order === sortedContent[value].order)]} 
+            handleClose={handleCloseEditCategory}
+            updateMenu={setTrigger}
+          />
+        </TabPanel>
+      );
+    }
+    return renderedContent;
   };
 
   const [openEditCategory, setOpenEditCategory] = React.useState(false);
-  const [category, setCategory] = React.useState(null);
+  // const [category, setCategory] = React.useState(null);
 
-  const handleOpenEditCategory = (key) => {
-    console.log(key)
-    setCategory(menu.categories[key]);
+  const  handleOpenEditCategory = (i) => {
     setOpenEditCategory(true);
   }
 
@@ -112,21 +155,6 @@ function MenuEditor() {
     setLabel(label);
   }
 
-  const getCategoriesTabPanels = menu => {
-    let content = [];
-    for (let i = 0; i < menu.categories.length; i++) {
-      content.push(
-        <TabPanel  key={i} value={value} index={i}>
-          <Typography component='span' variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuItemList category={menu.categories[value]} updateMenu={setTrigger}/>
-        </TabPanel>
-      );
-    }
-    return content;
-  };
-
-  
-
   return (
     <>
       <Box
@@ -135,7 +163,12 @@ function MenuEditor() {
           position: 'fixed',
           right: '40px',
         }}>
-        <AddNewButton updateMenu={setTrigger}/>
+        { menu.categories.length > 0 && <>
+          <ReorderButton categories={menu.categories}
+          items={menu.categories.filter(c => c.display_order === getSortedContent()[value].order)[0].menu_items}
+          updateMenu={setTrigger}/>
+          <AddNewButton updateMenu={setTrigger}/>
+        </>}
       </Box>
       <Box
         sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
@@ -152,13 +185,13 @@ function MenuEditor() {
         </Tabs>
         {getCategoriesTabPanels(menu)}
       </Box>
-      { category &&
+      {/* { category &&
         <EditCategoryDialog
         open={openEditCategory}
         category={category}
         handleClose={handleCloseEditCategory}
         updateMenu={setTrigger}/>
-      }
+      } */}
     </ >
   );
 }

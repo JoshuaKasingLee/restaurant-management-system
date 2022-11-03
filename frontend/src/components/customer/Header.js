@@ -8,89 +8,69 @@ import RoomServiceRoundedIcon from '@mui/icons-material/RoomServiceRounded';
 
 const drawerWidth = 50;
 
-function Header({title}) {
+function Header({image, title}) {
   const [selected, setSelected] = React.useState(JSON.parse(localStorage.getItem('assistance')));
-  const [name, setName] = React.useState('');
-  const [image, setImage] = React.useState('');  
-
-  React.useEffect(() => {
-    const getRestaurantInfo = async () => {
-      const response = await fetch(`http://localhost:5000/restaurant`, {  
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json'
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setName(data.name);
-        setImage(data.image);
-      } else {
-        alert(await data.error);
-      }
-    };
-    getRestaurantInfo();
-  }, []);
 
   const handleChange = () => {
+    localStorage.setItem('assistance', !selected);
     setSelected( selected => !selected );
   };
 
   React.useEffect(() => {
-    localStorage.setItem('assistance', selected);
     if (selected !== null) {
-      const setAssistance = async () => {
-        const response = await fetch(`http://localhost:5000/customer/assistance`, {  
-          method: 'PUT',
-          mode: 'cors',
-          headers: {
-          'Content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-          body: JSON.stringify(
-            { 
-              table: localStorage.getItem("table"),
-              //request: selected,
-            }
-          )
-        });
-        const data = await response.json();
-        if (response.ok) {
-          localStorage.setItem('assistance', selected);
-          // console.log(localStorage.getItem('assistance'));
-        } else {
-          alert(await data.error);
-        }
-      };
-      setAssistance();
-      
-      if (selected === true) {
-        const getAssistance = async () => {
-          const response = await fetch(`http://localhost:5000/customer/assistance?table=${localStorage.getItem('table')}`, {  
-            method: 'GET',
+      if (title === 'Menu' || title === 'Orderlist' || title === 'Game') {
+        const setAssistance = async () => {
+          const response = await fetch(`http://localhost:5000/customer/assistance`, {  
+            method: 'PUT',
+            mode: 'cors',
             headers: {
             'Content-type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
+            body: JSON.stringify(
+              { 
+                table: localStorage.getItem("table"),
+                request: selected
+              }
+            )
           });
           const data = await response.json();
           if (response.ok) {
-            localStorage.setItem('assistance', data.request);
-            setSelected(data.request);
-            // console.log(data.request);
           } else {
             alert(await data.error);
           }
         };
-        const intervalID = setInterval(getAssistance, 1000)
-  
-        return (() => {
-          clearInterval(intervalID)
-        })
+        setAssistance();
+        // console.log(selected + title + ' effect');
+        // console.log(localStorage.getItem('assistance') + title + ' local');
+        if (selected === true) {
+          const getAssistance = async () => {
+            const response = await fetch(`http://localhost:5000/customer/assistance?table=${localStorage.getItem('table')}`, {  
+              method: 'GET',
+              headers: {
+              'Content-type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              },
+            });
+            const data = await response.json();
+            if (response.ok) {
+              localStorage.setItem('assistance', data.request);
+              setSelected(data.request);
+              // console.log(data.request);
+            } else {
+              alert(await data.error);
+            }
+          };
+          const intervalID = setInterval(getAssistance, 1000)
+
+          return (() => {
+            clearInterval(intervalID)
+          })
+        }
       }
     }
-  }, [selected]);
+  }, [title, selected]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -101,7 +81,7 @@ function Header({title}) {
             <img src={image} alt="Logo" height="125px" width="125px"/>
           </Box>
           <Typography variant="h1" component="div" sx={{ flexGrow: 1, ml: `${drawerWidth}px` }}>
-          {name} - {title}
+          {title}
           </Typography>
           {title !== 'Table Selection' && title !== 'Admin' && title !== 'Bill' && <ToggleButton
           value="check"

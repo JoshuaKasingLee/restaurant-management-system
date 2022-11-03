@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Box, Button, TextField, Typography, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
+import { Box, Button, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
 import Dropdown from './Dropdown';
 import Checkboxes from './Checkboxes';
-import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
 
 export default function EditItemDialog({open, item, categoryName, updateMenu, handleClose}) {
     
@@ -18,9 +18,36 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
     const [cost, setCost] = React.useState(item.cost);
     const [image, setImage] = React.useState(item.img);
 
-    const setCostWrapper = (value) => {
-        setCost(parseFloat(value))
-    }
+    // const setCostWrapper = (value) => {
+    //     setCost(parseFloat(value))
+    // }
+
+    const [disabled, setDisabled] = React.useState(false);
+
+    React.useEffect(() => {
+      if (!(name.length <= 100 && name.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(description.length <= 200 && description.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(ingredients.length <= 250 && ingredients.length > 0)) {
+        setDisabled(true);
+        return;
+      }
+
+      if (!(cost > 0)) {
+        setDisabled(true);
+        return;
+      }
+      
+      setDisabled(false);
+
+    }, [name, ingredients, description, cost, category])
 
     const editItem = async () => {
         const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
@@ -44,14 +71,14 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
                 "dairy free": tags.includes("dairy free"),
                 "chef recommended": tags.includes("chef recommended"),
             },
-            cost: cost,
+            cost: parseFloat(cost),
             img: image,
             show: true //TODO: change
             })
         });
         const data = await response.json();
         if (response.ok) {
-            updateMenu();
+            updateMenu(true);
             handleClose();
         } else {
           alert(await data.error);
@@ -73,7 +100,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         });
         const data = await response.json();
         if (response.ok) {
-            updateMenu();
+            updateMenu(true);
             handleClose();
         } else {
           alert(await data.error);
@@ -81,6 +108,9 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
     }
 
     // React.useEffect(() => {console.log("CAT", category)})
+    const handleChangeImage = (event) => {
+        setImage(URL.createObjectURL(event.target.files[0]))
+    }
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth='md'>
@@ -92,13 +122,14 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
                 required
                 label="Title"
                 value={name}
+                helperText="Max 100 characters"
                 onChange={e => setName(e.target.value)}
             />
-            <FormControl fullWidth sx={{ m: 1 }} required>
+            <FormControl fullWidth sx={{ m: 0 }} required>
                 <InputLabel htmlFor="outlined-adornment-amount">Cost</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-amount"
-                    onChange={e => setCostWrapper(e.target.value)}
+                    onChange={e => setCost(e.target.value)}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     label="Cost"
                     value={cost}
@@ -113,6 +144,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
                 multiline
                 required
                 rows={3}
+                helperText="Max 200 characters"
                 onChange={e => setDescription(e.target.value)}
             />
             <TextField
@@ -121,10 +153,21 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
                 multiline
                 required
                 rows={3}
+                helperText="Max 250 characters"
                 onChange={e => setIngredients(e.target.value)}
             />
             <Dropdown update={setCategory} category={category}/>
             <Checkboxes update={setTags} tags={tags}/>
+            <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
+                Upload Image
+                <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
+            </Button>
+            <Box sx={{ width: '200px' }}>
+                <img 
+                src={image}
+                alt="img"
+                /> 
+            </Box> 
             <TextField
                 required
                 label="Image Link"
@@ -136,7 +179,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         <DialogActions>
             <Button sx={{marginLeft: 2}} onClick={deleteItem}>Delete</Button>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={editItem}>Save</Button>
+            <Button onClick={editItem} disabled={disabled}>Save</Button>
         </DialogActions>
         </Dialog>
     )

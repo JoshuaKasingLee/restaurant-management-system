@@ -9,8 +9,21 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function EditCategoryDialog({open, category, handleClose, updateMenu}) {
 
-  const [name, setName] = React.useState(category.name);
+  const [name, setName] = React.useState(category.title);
   const [show, setShow] = React.useState(category.visible);
+
+  // React.useEffect(() => {console.log("name", name)})
+  // React.useEffect(() => {console.log("category.title", category.title)},[category])
+
+  const [disabled, setDisabled] = React.useState(true);
+
+  React.useEffect(() => {
+    if (name.length <= 100 && name.length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [name])
 
   async function editCategory() {
     const response = await fetch(`http://localhost:5000/manager/categories/${category.id}`, {  
@@ -26,7 +39,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
     });
     const data = await response.json();
     if (response.ok) {
-      updateMenu();
+      updateMenu(true);
       handleClose();
     } else {
       alert(await data.error);
@@ -34,7 +47,6 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
   }
 
   const [openDeleteOptionsDialog, setOpenDOD] = React.useState(false);
-  const [deleteType, setDeleteType] = React.useState('');
 
   async function deleteCategory(deleteType) {
     const response = await fetch(`http://localhost:5000/manager/categories/${category.id}`, {  
@@ -49,7 +61,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
     });
     const data = await response.json();
     if (response.ok) {
-      updateMenu();
+      updateMenu(true);
       handleClose();
     } else {
       alert(await data.error);
@@ -74,6 +86,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
           id="newCategory"
           value={name}
           fullWidth
+          helperText="Max 100 characters"
           onChange={e => setName(e.target.value)}
         />
         
@@ -81,7 +94,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
       <DialogActions>
         <Button onClick={() => {setOpenDOD(true);}}>Delete</Button>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={editCategory}>Save</Button>
+        <Button onClick={editCategory} disabled={disabled}>Save</Button>
       </DialogActions>
     </Dialog>
     

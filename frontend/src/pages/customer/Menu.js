@@ -54,6 +54,8 @@ function Menu() {
   };
 
   React.useEffect(() => {
+    // if (localStorage.getItem('assistance') === null)
+    //   localStorage.setItem('assistance', false);
     const getMenu = async () => {
       await new Promise(response => setTimeout(response, 1000));
       const response = await fetch(`http://localhost:5000/customer/menu`, {  
@@ -75,30 +77,53 @@ function Menu() {
     getMenu();
   }, []);
 
-  const getCategoriesTabs = () => {
+  const getContent = () => {
     let content = [];
     for (let i = 0; i < menu.categories.length; i++) {
-      content.push(<Tab key={i} label={menu.categories[i].name} {...a11yProps(i)} />);
+      content.push({ 
+        order: menu.categories[i].display_order,
+        title: menu.categories[i].name
+      });
     }
     return content;
+  }
+
+  const getCategoriesTabs = () => {
+    let renderedContent = [];
+    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    for (let i = 0; i < sortedContent.length; i++) {
+      if(sortedContent[i].title !== 'Unassigned') {
+        renderedContent.push(<Tab key={i} label={sortedContent[i].title} {...a11yProps(i)} />);
+      }
+    }
+    return renderedContent;
   };
 
   const getCategoriesTabPanels = () => {
-    let content = [];
-    for (let i = 0; i < menu.categories.length; i++) {
-      content.push(
-        <TabPanel  key={i} value={value} index={i}>
-          <Typography variant="h3" >{menu.categories[value].name}</Typography>
-          <MenuCategory category={menu.categories[value]} filters={filters} sort={sort}/>
-        </TabPanel>
-      );
+    let renderedContent = [];
+    let content = getContent();
+    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    for (let i = 0; i < sortedContent.length; i++) {
+      if(sortedContent[i].title !== 'Unassigned') {
+        renderedContent.push(
+          <TabPanel  key={i} value={value} index={i}>
+            <Typography variant="h3" >{sortedContent[value].title}</Typography>
+            <MenuCategory 
+              category={menu.categories[content.findIndex(obj => 
+                obj.order === sortedContent[value].order)]} 
+              filters={filters} 
+              sort={sort}
+            />
+          </TabPanel>
+        );
+      }
     }
-    return content;
+    return renderedContent;
   };
 
   return (
     <>
-      <Header title={"Menu"} />
+      <Header image={localStorage.getItem('restaurantImage')} title={"Menu"} />
       <Box display='flex' alignItems='flex-end' flexDirection="column" position='fixed' right='0' spacing={1} sx={{ mt: '10px', mr: '25px' }}>
         <MenuFilter submit = { filters => { setFilters(filters) }} />
         <MenuSort submit = { sort => { setSort(sort) }} />

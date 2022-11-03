@@ -22,8 +22,14 @@ function MenuSort({ submit }) {
 
   const handleClose = (option) => {
     setOpen(null);
-    setSort(option);
-    submit(option);
+    console.log(option);
+    
+    if (option.value === 'none' || option.value === 'priceDesc' || option.value === 'priceAsc') {
+      setSort(option);
+      submit(option);
+    } else {
+      submit(sort);
+    }
   };
 
   return (

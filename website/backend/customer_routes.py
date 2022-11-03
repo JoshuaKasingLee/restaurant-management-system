@@ -119,7 +119,7 @@ def get_bill():
     num_split = data["numSplit"]
     for t in restaurant.tables:
         if t.number == int(table):
-            res = t.get_bill(type, num_split)
+            res = t.get_bill(type, int(num_split))
             try:
                 t.clear_table()
             except:
@@ -129,11 +129,11 @@ def get_bill():
 
 @customer_routes.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # valid = restaurant.customer_validate(token)
-    # if (valid == False):
-    #     return {"error": "Unable to validate"}, 401
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     return restaurant.get_leaderboard()
 
 @customer_routes.route('/leaderboard', methods=['POST'])

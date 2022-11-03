@@ -33,8 +33,8 @@ export default function Checkboxes({update, tags}) {
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth required>
-        <InputLabel>Tag</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel>Tags</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           multiple

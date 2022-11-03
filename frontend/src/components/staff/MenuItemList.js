@@ -10,7 +10,7 @@ export default function MenuItemList({category, updateMenu}) {
   React.useEffect(() => {
     let content = [];
     for (let i=0; i < category.menu_items.length; i++) {
-      if (category.menu_items.length == 0) continue;
+      if (category.menu_items.length === 0) continue;
       let tagList = [];
       if (category.menu_items[i].tags.vegetarian) tagList.push('Vegetarian');
       if (category.menu_items[i].tags.vegan) tagList.push('Vegan');
@@ -28,10 +28,12 @@ export default function MenuItemList({category, updateMenu}) {
           cost: category.menu_items[i].cost,
           description: category.menu_items[i].description,
           ingredients: category.menu_items[i].ingredients,
+          order: category.menu_items[i].display_order,
           tags: tagList, //"Chef's Reccomendation"
           actualTags: actualTags
         }
       );
+      content.sort( (a, b) => a.order < b.order ? -1 : 1 );
       setCategoryItems( categoryItems => content );
     }
     // console.log(content);
