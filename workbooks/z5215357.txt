@@ -24,7 +24,8 @@ I started working on the testing and code for user stories 5.3 & 5.4.
 I wrote about each of the 5 types of users of our system, and created a diagram to demonstrate the user flows in the proposal.
 
 Week 4
-This week I completed the object-based functions and backend testing for all my assigned user stories in sprint 1.
+This week I completed the object-based functions and backend testing for all my assigned user stories in sprint 1,
+including ability to order food and request and display the bill, and adding/deleting menu items to the menu.
 I had trouble figuring out how to test database inserts/deletions, but we brainstormed the issue as a group and
 decided to create multiple databases, an empty one for testing and pre-filled data for demo purposes.
 
