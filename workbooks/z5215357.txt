@@ -22,3 +22,29 @@ I ran into issues with the database, so Josh helped me to troubleshoot and get i
 I created boilerplate constructors for all of our objects.
 I started working on the testing and code for user stories 5.3 & 5.4.
 I wrote about each of the 5 types of users of our system, and created a diagram to demonstrate the user flows in the proposal.
+
+Week 4
+This week I completed the object-based functions and backend testing for all my assigned user stories in sprint 1.
+I had trouble figuring out how to test database inserts/deletions, but we brainstormed the issue as a group and
+decided to create multiple databases, an empty one for testing and pre-filled data for demo purposes.
+
+Week 5
+I finished my routes for my sprint 1 user stories. Unfortunately, we ran many bugs as this was the first time we
+were trying to connect the front and backend, which delayed our process a bit, but we worked together as a team and
+still managed to finish everything we planned before the demo. However, from this, I learnt a lot about the importance
+of not only testing our backend objects, but also testing our routes using swagger inspector or similar software to
+ensure that they were compatible with what front-end were expecting. 
+
+The backend team also assigned which user stories we would be working on for Sprint 2 and 3, where I was assigned
+to do remaining stories from (4) Table Services and (8) Budgeting Solutions.
+
+Week 6
+Since I knew my next few weeks would be busy, I completed majority of my Sprint 2 user stories this week. Luckily I 
+learnt a lot from the issues  I faced in Sprint 1, so I was able to resolve these bugs my myself. Since some of the routes
+for this sprint had not been planned yet, I also created and documented these routes and communicated with the frontend
+team to ensure they were happy with them too.
+
+Week 7
+I discussed with Jannet and Josh some of the routes details that needed to change, such as adding a route to get the
+current assistance boolean, and changing some fields from name references to ids. I made these changes, and then tidied
+some of my code for Sprint 2 to improve software quality.
