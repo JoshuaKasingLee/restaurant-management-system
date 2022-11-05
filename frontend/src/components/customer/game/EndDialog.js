@@ -15,12 +15,6 @@ function EndDialog(props) {
   return (
     <Dialog 
       open={open}
-      PaperProps={{
-        style: {
-          // backgroundColor: 'transparent',
-          // boxShadow: 'none',
-        },
-      }}
     >
       <DialogTitle textAlign='center'>
         <Typography component='div' variant='h2' >

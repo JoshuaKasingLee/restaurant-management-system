@@ -49,12 +49,13 @@ function TableForm ({ submit }) {
   };
   
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="80vh">
 			<Stack spacing={2}>
-        <Typography variant="h4" >
-          Please select a table number:
-        </Typography>
-        <Box sx={{ minWidth: 120 }}>
+        <Box sx={{ width: '370px'}}>
+          <Typography variant="h4" textAlign="center">
+            Please select a table number:
+          </Typography>
+          <br/>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Table</InputLabel>
             <Select
@@ -75,7 +76,7 @@ function TableForm ({ submit }) {
             </Select>
           </FormControl>
         </Box>
-        <Button component={Link} to={'/customer/menu'} variant="contained" onClick={onSubmit} disabled={table === ''}>
+        <Button component={Link} to={'/customer/tab'} variant="contained" onClick={onSubmit} disabled={table === ''}>
           Confirm
         </Button>
       </Stack>

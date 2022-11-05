@@ -23,7 +23,7 @@ function Footer({initialValue, title}) {
         Table {localStorage.getItem('table')}
         </Typography>
       </Box>} 
-      {title !== 'Table Selection' && title !== 'Bill'
+      {title !== 'Table Selection' && title !== 'Budget Allocation' && title !== 'Bill'
       ? (<BottomNavigation  
         sx={{ position: 'fixed', display:'flex', justifyContent:'space-between', bottom: 0, left: 180, right: 0 }}  
         elevation={3} 

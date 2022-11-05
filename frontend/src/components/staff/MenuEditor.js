@@ -178,7 +178,9 @@ function MenuEditor() {
           value={value}
           label={label}
           onChange={handleChange}
-          aria-label="Vertical tabs example"
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="Vertical tabs for menu categories"
           sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
         >
           {getCategoriesTabs(menu)}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
   IconButton, ImageList, ImageListItem, ImageListItemBar, Slide, Typography } from '@mui/material';
 import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import InfoIcon from '@mui/icons-material/Info';
@@ -52,6 +52,7 @@ function MenuCategory({category, filters, sort}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
   const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
+  const [withinBudget, setWithinBudget] = React.useState(true);
 
   React.useEffect(() => {
     let content = [];
@@ -95,7 +96,7 @@ function MenuCategory({category, filters, sort}) {
     }));
   };
 
-  const handleClose = (index) => () => {
+  const handleClose = (index) => () => {  
     setOpen( state => ({ 
       ...state, 
       [index]: false
@@ -104,10 +105,11 @@ function MenuCategory({category, filters, sort}) {
       ...state, 
       [index]: 1
     }));
+    setWithinBudget(true);
   };
-  
+
   const handleOrder = (item, index) => async () => {
-    const response = await fetch('http://localhost:5000/customer/order', {
+    const response = await fetch('http://localhost:5000/customer/checkorder', {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -123,20 +125,43 @@ function MenuCategory({category, filters, sort}) {
         }
       )
     });
-    const data = await response;
+    const data = await response.json();
     if (response.ok) {
-      setOpen( state => ({ 
-        ...state, 
-        [index]: false
-      }));
-      setQuantity( state => ({ 
-        ...state, 
-        [index]: 1
-      }));
+      setWithinBudget(data.withinBudget);
+      if(data.withinBudget) {
+        const response1 = await fetch('http://localhost:5000/customer/order', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+          'Content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify(
+            { 
+              table: localStorage.getItem("table"),
+              menuItem: item.title,
+              quantity: quantity[index]
+            }
+          )
+        });
+        const data1 = await response1;
+        if (response1.ok) {
+          setOpen( state => ({ 
+            ...state, 
+            [index]: false
+          }));
+          setQuantity( state => ({ 
+            ...state, 
+            [index]: 1
+          }));
+        } else {
+          alert(await data1.error);
+        }
+      }
     } else {
       alert(await data.error);
     }
-
   };
 
   return (
@@ -178,7 +203,7 @@ function MenuCategory({category, filters, sort}) {
             fullWidth={true}
             maxWidth='sm'
           >
-            <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose(index)}>
+            <BootstrapDialogTitle onClose={handleClose(index)}>
               {item.title}
             </BootstrapDialogTitle>
             <DialogContent dividers sx={{ flexGrow: 1 }}>
@@ -216,8 +241,14 @@ function MenuCategory({category, filters, sort}) {
               </Grid>
             </DialogContent>
             <DialogActions>
+              <Button onClick={handleClose(index)}>Cancel</Button>
               <Button onClick={handleOrder(item, index)}>Order</Button>
             </DialogActions>
+            {!withinBudget && 
+              <Alert severity="warning">
+                You will exceed you budget with this order. Increase your budget to order more.
+              </Alert>
+            }
           </Dialog>
         </div>
       ))}
