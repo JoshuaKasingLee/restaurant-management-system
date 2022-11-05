@@ -155,16 +155,19 @@ class Table:
 
         receipt = sorted(receipt, key = lambda k : k['name'])
 
-        if (type == 'together'):
-            return {
-                "total": self.get_total_cost(),
-                "charge": [self.get_total_cost(), 0, 0, 0],
-                "order_items": receipt
-            }
+        charge_array = self.get_charge_array(type, num_split)
+        return {
+            "total": self.get_total_cost(),
+            "charge": charge_array,
+            "order_items": receipt
+        }
 
-        if (type == 'equal'):
+    def get_charge_array(self, type: str, num_split: int = 0):
+        charge_array = []
+        if (type == 'together'):
+            charge_array = [self.get_total_cost(), 0, 0, 0]
+        elif (type == 'equal'):
             cost_pp = self.get_total_cost() / num_split
-            charge_array = []
             i = 0
             while i < 4:
                 if i < num_split:
@@ -172,15 +175,11 @@ class Table:
                 else:
                     charge_array.append(0)
                 i += 1
+        else:
+            raise Exception("Request bill type does not exist")
 
-            return {
-                "total": self.get_total_cost(),
-                "charge": charge_array,
-                "order_items": receipt
-            }
+        return charge_array
 
-        if (type == 'dish'):
-            return self.get_order_quantities()
 
     def get_order_quantities(self) -> dict:
         receipt = {}
