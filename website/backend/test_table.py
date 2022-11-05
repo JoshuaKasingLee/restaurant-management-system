@@ -300,14 +300,50 @@ def test_request_assistance():
 # setting budgets
 
 def test_set_budget():
+    cur = conn.cursor()
+    cur.execute("delete from tables")
     table = Table(7)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (7, null, False, True)")
+
+    cur.execute("select budget from tables where num = %s", ['7'])
+    assert(cur.fetchone()[0] == None)
+    assert(table.budget == None)
+
     table.set_budget(100.50)
+    cur.execute("select budget from tables where num = %s", ['7'])
+    assert(cur.fetchone()[0] == 100.50)
     assert(table.budget == 100.50)
 
-def test_set_budget_none():
-    table = Table(13)
+    table.set_budget(80.88)
+    cur.execute("select budget from tables where num = %s", ['7'])
+    assert(cur.fetchone()[0] == 80.88)
+    assert(table.budget == 80.88)
+
     table.set_budget()
+    cur.execute("select budget from tables where num = %s", ['7'])
+    assert(cur.fetchone()[0] == None)
     assert(table.budget == None)
+
+    cur.execute("delete from tables")
+    conn.commit()
+
+def test_set_budget_none():
+    cur = conn.cursor()
+    cur.execute("delete from tables")
+    table = Table(13)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (13, null, False, True)")
+
+    cur.execute("select budget from tables where num = %s", ['13'])
+    assert(cur.fetchone()[0] == None)
+    assert(table.budget == None)
+
+    table.set_budget()
+    cur.execute("select budget from tables where num = %s", ['13'])
+    assert(cur.fetchone()[0] == None)
+    assert(table.budget == None)
+
+    cur.execute("delete from tables")
+    conn.commit()
 
 def test_update_order_status():
     restaurant = Restaurant("Catalina")

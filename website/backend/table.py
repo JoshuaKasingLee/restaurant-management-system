@@ -177,6 +177,13 @@ class Table:
     # budgeting solution functions
 
     def set_budget(self, budget = None):
+        cur = conn.cursor()
+        try:
+            cur.execute("update tables set budget = %s where num = %s", [budget, self.number])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Setting budget failed")
+        conn.commit()
         self.budget = budget
         # check whether we need to validate here > 0
 

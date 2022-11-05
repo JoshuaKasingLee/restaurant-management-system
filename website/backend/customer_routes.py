@@ -21,6 +21,39 @@ def choose_table():
     res = {"token": tok}
     return res
 
+@customer_routes.route('/budget', methods=['get'])
+def get_budget():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    args = request.args
+    table = args.get("table")
+    for t in restaurant.tables:
+        if t.number == int(table):
+            return {"budget": t.budget }
+    return {"error": f"Cannot find table number {table}"}, 401
+
+@customer_routes.route('/budget', methods=['PUT'])
+def set_budget():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    table = data["table"]
+    budget = data["budget"]
+    for t in restaurant.tables:
+        if t.number == int(table):
+            try:
+                t.set_budget(budget)
+            except:
+                return {"error": f"Setting budget failed"}, 401
+            return {}
+    return {"error": f"Cannot find table number {table}"}, 401
+
 @customer_routes.route('/menu', methods=['GET'])
 def display_menu():
     bearer = request.headers['Authorization']
