@@ -24,6 +24,23 @@ class Table:
 
     # order menu items
 
+    def check_order_budget(self, menu_item_name: str, quantity: int):
+        if quantity > 0:
+            cur = conn.cursor()
+            try:
+                # need to check row count instead
+                cur.execute("select cost from menu_item where name = %s", [menu_item_name])
+            except Exception as err:
+                conn.rollback()
+                raise Exception("Menu item could not be found")
+            total_cost = cur.fetchone()[0] * quantity
+            current_spend = self.get_total_cost()
+            pending_spend = total_cost + current_spend
+            if self.budget != None and pending_spend > self.budget:
+                return False
+            else:
+                return True
+
     def order_dishes(self, menu_item_name, quantity: int):
         if quantity > 0:
             cur = conn.cursor()

@@ -23,6 +23,82 @@ m3 = MenuItem("Steak", "Medium rare", "Beef, red wine jus", 48.50, french)
 
 # order menu items
 
+def test_check_order_no_budget():
+    cur = conn.cursor()
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+
+    table = Table(1)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+    
+    assert(table.check_order_budget("Escargot", 1) == True)
+    assert(table.check_order_budget("Escargot", 1000) == True)
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+    conn.commit()
+
+
+def test_check_order_with_budget():
+    cur = conn.cursor()
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+
+    table = Table(1, 100)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+
+    assert(table.check_order_budget("Escargot", 1) == True)
+    assert(table.check_order_budget("Escargot", 4) == True)
+    assert(table.check_order_budget("Escargot", 5) == False)
+    assert(table.check_order_budget("Escargot", 1000) == False)
+
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+    conn.commit()
+
+def test_check_and_order():
+    cur = conn.cursor()
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+
+    table = Table(1, 100)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+
+    times_ordered = 0
+    while (table.check_order_budget("Escargot", 1)):
+        table.order_dishes("Escargot", 1)
+        times_ordered += 1
+
+    assert(times_ordered == 4)
+
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+    conn.commit()
+
+
 def test_order_dish():
     cur = conn.cursor()
     cur.execute("delete from orders")
