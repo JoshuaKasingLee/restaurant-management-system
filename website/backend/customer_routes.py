@@ -64,6 +64,22 @@ def display_menu():
     res = restaurant.menu_to_JSON()
     return res
 
+@customer_routes.route('/checkorder', methods=['POST'])
+def check_order_within_budget():
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
+    data = request.get_json()
+    table = data["table"]
+    menu_item = data["menuItem"]
+    quantity = data ["quantity"]
+    for t in restaurant.tables:
+        if t.number == int(table):
+            return {"withinBudget": t.check_order_budget(menu_item, quantity)}
+    return {"error": f"Cannot find table number {table}"}, 401
+
 @customer_routes.route('/order', methods=['POST'])
 def order_dishes():
     bearer = request.headers['Authorization']
