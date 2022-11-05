@@ -4,6 +4,7 @@ from datetime import datetime
 from helper import OrderStatus
 from category import Category
 from menu_item import MenuItem
+from helper import get_dish_cost
 
 import json
 
@@ -138,7 +139,7 @@ class Table:
             cost += order.menu_item.cost
         return cost
 
-    def get_bill(self, type: str, num_split: int = 0):
+    def get_bill(self, type: str, num_split: int = 0, dishes: dict = {}):
         cur = conn.cursor()
 
         receipt = []
@@ -154,18 +155,19 @@ class Table:
             })
 
         receipt = sorted(receipt, key = lambda k : k['name'])
+        charge_array = self.get_charge_array(type, num_split, dishes)
 
-        charge_array = self.get_charge_array(type, num_split)
         return {
             "total": self.get_total_cost(),
             "charge": charge_array,
             "order_items": receipt
         }
 
-    def get_charge_array(self, type: str, num_split: int = 0):
+    def get_charge_array(self, type: str, num_split: int = 0, dishes: dict = {}):
         charge_array = []
         if (type == 'together'):
             charge_array = [self.get_total_cost(), 0, 0, 0]
+
         elif (type == 'equal'):
             cost_pp = self.get_total_cost() / num_split
             i = 0
@@ -175,6 +177,27 @@ class Table:
                 else:
                     charge_array.append(0)
                 i += 1
+
+        elif (type == 'dish'):
+            dishes_split = self.get_dishes_split(dishes)
+            p1 = 0
+            p2 = 0
+            p3 = 0
+            p4 = 0
+            for orderId in dishes["person1"]:
+                dish_cost = get_dish_cost(orderId)
+                p1 += dish_cost / dishes_split[orderId]
+            for orderId in dishes["person2"]:
+                dish_cost = get_dish_cost(orderId)
+                p2 += dish_cost / dishes_split[orderId]
+            for orderId in dishes["person3"]:
+                dish_cost = get_dish_cost(orderId)
+                p3 += dish_cost / dishes_split[orderId]
+            for orderId in dishes["person4"]:
+                dish_cost = get_dish_cost(orderId)
+                p4 += dish_cost / dishes_split[orderId]
+            charge_array = [p1, p2, p3, p4]
+
         else:
             raise Exception("Request bill type does not exist")
 
@@ -189,6 +212,31 @@ class Table:
             else:
                 receipt[order.menu_item.name] = 1
         return receipt
+
+    def get_dishes_split(self, dishes: dict) -> dict:
+        dishes_split = {}
+        for orderId in dishes["person1"]:
+            if orderId in dishes_split:
+                dishes_split[orderId] += 1
+            else:
+                dishes_split[orderId] = 1
+        for orderId in dishes["person2"]:
+            if orderId in dishes_split:
+                dishes_split[orderId] += 1
+            else:
+                dishes_split[orderId] = 1
+        for orderId in dishes["person3"]:
+            if orderId in dishes_split:
+                dishes_split[orderId] += 1
+            else:
+                dishes_split[orderId] = 1
+        for orderId in dishes["person4"]:
+            if orderId in dishes_split:
+                dishes_split[orderId] += 1
+            else:
+                dishes_split[orderId] = 1
+        return dishes_split
+
 
     # budgeting solution functions
 

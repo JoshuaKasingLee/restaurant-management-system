@@ -292,6 +292,76 @@ def test_get_bill_equal_split():
     cur.execute("delete from category")
     cur.close()
 
+def test_get_dishes_split_helper():
+    table = Table(1)
+    dishes = {"person1": [1, 2], "person2": [2, 3], "person3": [4], "person4": []}
+    expected = {1: 1, 2: 2, 3: 1, 4: 1}
+    assert(table.get_dishes_split(dishes) == expected)
+
+def test_get_bill_split_by_dishes():
+    cur = conn.cursor()
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('French', TRUE, 1);")
+    cur.execute("select id from category where name = %s", ['French'])
+    cat_id = cur.fetchall()[0]
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Croissant', 'Filled with almond praline cream', 'Flour, almonds, butter', 6, 1, %s, TRUE);", [cat_id])
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, visible) values ('Steak', 'Medium rare', 'Beef, red wine jus', 48.50, 1, %s, TRUE);", [cat_id])
+
+    table = Table(1)
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+    
+    table.order_dishes("Escargot", 1)
+    cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
+    dish1_id = cur.fetchone()[0]
+
+    table.order_dishes("Croissant", 1)
+    cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
+    dish2_id = cur.fetchone()[0]
+
+    table.order_dishes("Steak", 1)
+    cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
+    dish3_id = cur.fetchone()[0]
+
+    dishes = {
+        "person1": [dish1_id, dish3_id],
+        "person2": [dish3_id, dish2_id],
+        "person3": [dish3_id],
+        "person4": []
+    }
+    expected_cost = 20.80+6+48.50
+    expected_p1 = 20.80 + 48.5/3
+    expected_p2 = 6 + 48.5/3
+    expected_p3 = 48.5/3
+
+    assert(table.get_bill('dish', 3, dishes) == {
+        "total": expected_cost,
+        "charge": [expected_p1, expected_p2, expected_p3, 0],
+        "order_items": [{
+            "name": "Croissant",
+            "quantity": 1,
+            "cost": 6
+        }, {
+            "name": "Escargot",
+            "quantity": 1,
+            "cost": 20.80
+        }, {
+            "name": "Steak",
+            "quantity": 1,
+            "cost": 48.50
+        }]
+    })
+
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+    conn.commit()
+
 # clearing table
 
 def test_clear_table():
