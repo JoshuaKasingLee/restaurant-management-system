@@ -82,11 +82,11 @@ def check_order_within_budget():
 
 @customer_routes.route('/order', methods=['POST'])
 def order_dishes():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # valid = restaurant.customer_validate(token)
-    # if (valid == False):
-    #     return {"error": "Unable to validate"}, 401
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     table = data["table"]
     menu_item = data["menuItem"]
@@ -102,11 +102,11 @@ def order_dishes():
 
 @customer_routes.route('/order', methods=['GET'])
 def view_orders():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # valid = restaurant.customer_validate(token)
-    # if (valid == False):
-    #     return {"error": "Unable to validate"}, 401
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     args = request.args
     table = args.get("table")
     orders = {}
@@ -142,11 +142,11 @@ def toggle_assistance():
 
 @customer_routes.route('/assistance', methods=['GET'])
 def get_assistance_boolean():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # valid = restaurant.customer_validate(token)
-    # if (valid == False):
-    #     return {"error": "Unable to validate"}, 401
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     args = request.args
     table = args.get("table")
     for t in restaurant.tables:
@@ -157,11 +157,11 @@ def get_assistance_boolean():
 
 @customer_routes.route('/bill', methods=['POST'])
 def get_bill():
-    # bearer = request.headers['Authorization']
-    # token = bearer.split()[1]
-    # valid = restaurant.customer_validate(token)
-    # if (valid == False):
-    #     return {"error": "Unable to validate"}, 401
+    bearer = request.headers['Authorization']
+    token = bearer.split()[1]
+    valid = restaurant.customer_validate(token)
+    if (valid == False):
+        return {"error": "Unable to validate"}, 401
     data = request.get_json()
     table = data["table"]
     type = data["type"]
