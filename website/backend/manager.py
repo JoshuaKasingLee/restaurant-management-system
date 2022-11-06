@@ -88,10 +88,10 @@ class Manager(Staff):
             raise Exception("Deleting category failed")
         conn.commit()
         
-        for cat in self.restaurant.categories:
-            if cat.name == name:
-                self.restaurant.categories.remove(cat)
-                return True
+        cat = self.restaurant.find_category(name)
+        if cat != None:
+            self.restaurant.categories.remove(cat)
+            return True
         # check if exception needs to be thrown if no category was found
         return False
         
@@ -103,9 +103,9 @@ class Manager(Staff):
             cat_name = cur.fetchone()[0]
             cur.execute("""update category set display_order = %s where id = %s""", [category["positionId"], category["id"]])
             if cur.rowcount == 1:
-                for cat in self.restaurant.categories:
-                    if cat.name == cat_name:
-                        cat.display_order = category["positionId"]
+                cat = self.restaurant.find_category(cat_name)
+                if cat != None:
+                    cat.display_order = category["positionId"]
             else:
                 raise Exception("Display order update failed")
         
@@ -119,9 +119,9 @@ class Manager(Staff):
             item_name = cur.fetchone()[0]
             cur.execute("""update menu_item set display_order = %s where id = %s""", [item["positionId"], item["id"]])
             if cur.rowcount == 1:
-                for menu_item in self.restaurant.menu_items:
-                    if menu_item.name == item_name:
-                        menu_item.display_order = item["positionId"]
+                menu_item = self.restaurant.find_menu_item(item_name)
+                if menu_item != None:
+                    menu_item.display_order = item["positionId"]
             else:
                 raise Exception("Display order update failed")
                 
@@ -247,10 +247,10 @@ class Manager(Staff):
             raise Exception("Deleting menuitem failed")
         conn.commit()
 
-        for item in self.restaurant.menu_items:
-            if item.name == name:
-                self.restaurant.menu_items.remove(item)
-                return True
+        item = self.restaurant.find_menu_item(name)
+        if item != None:
+            self.restaurant.menu_items.remove(item)
+            return True
         return False
 
 
@@ -306,15 +306,14 @@ class Manager(Staff):
         cur.execute("""select name from category where id = %s""", [cat_id])
         name = cur.fetchone()[0]
         if not self.restaurant.category_exists(name):
-            
             raise Exception(f"Category with name {name} does not exist")
 
         cur.execute("""update category set visible = %s, name = %s where id = %s""", [show, new_name, cat_id])
         if (cur.rowcount == 1): 
-            for cat in self.restaurant.categories:
-                if cat.name == name:
-                    cat.visible = show
-                    cat.name = new_name
+            cat = self.restaurant.find_category(name)
+            if cat != None:
+                cat.visible = show
+                cat.name = new_name
         else:
             raise Exception("Unable to update category visibility")
         conn.commit()

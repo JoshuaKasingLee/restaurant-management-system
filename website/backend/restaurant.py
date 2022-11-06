@@ -253,6 +253,19 @@ class Restaurant:
         for cat in self.categories:
             if cat.name == name:
                 return cat
+        return None
+                
+    def find_table(self, table):
+        for tab in self.tables:
+            if tab.number == table:
+                return tab
+        return None
+    
+    def find_menu_item(self, name):
+        for item in self.menu_items:
+            if item.name == name:
+                return item
+        return None
 
     def add_leaderboard_entry(self, name, email, score, time_played = datetime.now()):
         entry = LeaderboardEntry(name, email, score, time_played)
@@ -315,3 +328,10 @@ class Restaurant:
             "gameName": "Cookie Game",
             "players": toReturn
         }
+        
+    def get_all_assistance(self):
+        tables = []
+        for t in self.tables:
+            if t.needs_assistance:
+                tables.append({"table": t.number})
+        return tables
