@@ -77,6 +77,12 @@ class Restaurant:
                     break
             
             self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
+        
+        cur.execute("select name, email, score, time_played from leaderboard_entry")
+        result = cur.fetchall()
+        for entry in result:
+            self.leaderboard.append(LeaderboardEntry(entry[0], entry[1], entry[2], entry[3]))
+
             
     def menu_contains(self, name):
         for item in self.menu_items:
@@ -273,6 +279,8 @@ class Restaurant:
 
         if (success == True):
             self.leaderboard.clear()
+        
+        return self.get_leaderboard()
 
 
     def get_leaderboard(self):
@@ -288,5 +296,22 @@ class Restaurant:
             })
             position += 1
         return {
+            "players": toReturn
+        }
+
+    def get_entertainment(self):
+        toReturn = []
+        position = 1
+        for entry in sorted(self.leaderboard, key=lambda x: x.score, reverse=True):
+            toReturn.append({
+                "position": position,
+                "name": entry.name,
+                "email": entry.email,
+                "score": entry.score,
+                "time_played": entry.time_played.strftime("%Y-%m-%d %H:%M:%S")
+            })
+            position += 1
+        return {
+            "gameName": "Cookie Game",
             "players": toReturn
         }

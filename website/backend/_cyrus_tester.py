@@ -9,10 +9,12 @@ from helper import OrderStatus
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
 import time
+from manager import Manager
 
 cur = conn.cursor()
 
 restaurant = Restaurant("Catalina")
+m = Manager("josh", restaurant)
 
 # cur = conn.cursor()
 
@@ -40,7 +42,9 @@ restaurant.populate()
 # restaurant.add_leaderboard_entry('Cathy', 'Cathy@gmail.com', 102)
 
 
-print(restaurant.get_leaderboard())
+# print(restaurant.get_leaderboard())
+
+print(restaurant.get_entertainment())
 
 # table1 = restaurant.tables[0]
 

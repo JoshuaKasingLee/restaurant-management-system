@@ -318,3 +318,4 @@ class Manager(Staff):
         else:
             raise Exception("Unable to update category visibility")
         conn.commit()
+
