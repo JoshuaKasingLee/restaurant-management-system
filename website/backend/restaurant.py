@@ -1,20 +1,14 @@
-from operator import truediv
-from re import L
 from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
 from table import Table
 from menu_item import MenuItem
-from tag import Tag
 from category import Category
 from leaderboard_entry import LeaderboardEntry
 from helper import OrderStatus
 from init_db import conn
 from uuid import uuid4
 from datetime import datetime
-import json
-
-from order import Order
 
 class Restaurant:
     def __init__(self, name):
@@ -30,10 +24,8 @@ class Restaurant:
         self.manager_tokens = []
         self.wait_tokens = []
         self.kitchen_tokens = []
-        #may need token thingy for customer and everyone not sure
         
     def populate(self):
-        #make for each entry in db, menu items, tables, leaderboard entries, manager, waiter, kitchen
         cur = conn.cursor()
         cur.execute("select password from staff where role = 'manager'")
         result = cur.fetchall()
@@ -67,37 +59,25 @@ class Restaurant:
         result = cur.fetchall()
         for item in result:
             id, name, cost, category_id, visible, display_order, description, ingredients, image = item; 
-
-            # get the tags assigned to the menu_item
             tag_query = """select t.name from tag t join menu_item_tags mit on mit.tag = t.id where mit.menu_item = %s"""
             cur.execute(tag_query, [id])
             tag_list = cur.fetchall()
-            # menu_tags = []
             menu_tags = {"vegetarian": False, "vegan": False, "gluten free": False, "nut free": False, "dairy free": False, "chef recommended": False}
             for tag_name in tag_list:
                 for tag in tag_name:
                     menu_tags[tag] = True
 
-            # get the category where the id is a match (SQL)
             category_query = """SELECT c.name FROM category c JOIN menu_item m ON m.category = c.id WHERE m.id = %s"""
             cur.execute(category_query, [id])
             category_name = cur.fetchone()[0]
             
-            # get the name where the name is a match (python)
             for category in self.categories:
                 if category_name == category.name:
                     menu_item_category = category
                     break
             
             self.menu_items.append(MenuItem(name, description, ingredients, cost, menu_item_category, menu_tags, image, visible, display_order))
-
-        # cur.execute("select name, email, score, time_played from leaderboard_entry")
-        # result = cur.fetchall()
-        # for cat in result:
-        #     self.leaderboard.append(LeaderboardEntry(cat[0], cat[1], cat[2], cat[3]))
             
-            
-    # menu editor helper function
     def menu_contains(self, name):
         for item in self.menu_items:
             if item.name == name:
@@ -297,7 +277,6 @@ class Restaurant:
 
     def get_leaderboard(self):
         toReturn = []
-        # print(sorted(self.leaderboard, key=lambda x: x.score))
         position = 1
         for entry in sorted(self.leaderboard, key=lambda x: x.score, reverse=True):
             toReturn.append({

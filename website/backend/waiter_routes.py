@@ -1,7 +1,6 @@
 from flask import Blueprint
 from flask import request
 from __init__res import restaurant, wait_staff
-from wait_staff import WaitStaff
 from helper import OrderStatus
 
 waiter_routes = Blueprint('waiter_routes', __name__)

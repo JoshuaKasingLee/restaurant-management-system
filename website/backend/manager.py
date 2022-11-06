@@ -1,5 +1,3 @@
-from email.mime import image
-from operator import truediv
 from staff import Staff
 from menu_item import MenuItem
 from category import Category
@@ -10,20 +8,17 @@ class Manager(Staff):
     def __init__(self, password, restaurant):
         super().__init__(password, restaurant)
 
-    # menu editor functions
-
     def add_category(self, name):
         if self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} already exists")
         else:
-            #bug is when for unassigned you should just ignore stuff and add it in
             c = Category(name)
             cur = conn.cursor()
             if name != "Unassigned":
                 unassigned = self.restaurant.find_category('Unassigned')
                 try:
                     cur.execute("update category set display_order = %s where name = 'Unassigned'", [c.display_order])
-                    cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, unassigned.display_order]) # need to change to default order at end
+                    cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, unassigned.display_order])
                 except Exception as err:
                     conn.rollback()
                     raise Exception("Inserting new category failed")
@@ -33,7 +28,7 @@ class Manager(Staff):
                 c.display_order = old_unassigned_display_order
             else:
                 try:
-                    cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, c.display_order]) # need to change to default order at end
+                    cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [name, False, c.display_order])
                 except Exception as err:
                     conn.rollback()
                     raise Exception("Inserting new category failed")
@@ -192,7 +187,6 @@ class Manager(Staff):
                 raise Exception("Inserting new menu item failed")
             conn.commit()
 
-            # adding tags
             if tags != None:
                 if tags["vegetarian"]:
                     try:
@@ -257,7 +251,6 @@ class Manager(Staff):
             if item.name == name:
                 self.restaurant.menu_items.remove(item)
                 return True
-        # check if exception needs to be thrown if no item was found
         return False
 
 
@@ -302,10 +295,6 @@ class Manager(Staff):
             conn.commit()
             self.restaurant.tables.append(Table(table_num))
                 
-        
-        # if (len(self.restaurant.tables) - number > self.restaurant.count_unoccupied()):
-        #     raise Exception("Not enough tables able to be removed")
-            
         while (len(self.restaurant.tables) > number):
             self.restaurant.remove_table()
         

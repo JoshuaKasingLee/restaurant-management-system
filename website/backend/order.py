@@ -1,6 +1,5 @@
 from helper import OrderStatus
 from menu_item import MenuItem
-import json
 
 class Order:
     def __init__(self, menu_item: MenuItem, table, time_ordered, id = None, status = OrderStatus.ORDERED):

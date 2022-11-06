@@ -1,17 +1,13 @@
 import pytest
 from staff import Staff
 from restaurant import Restaurant
-from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
-from table import Table
-from order import Order
 from menu_item import MenuItem
 from category import Category
 from init_db import conn
 from helper import OrderStatus
 import time
-from datetime import datetime
 
 def test_get_restaurant():
     r = Restaurant("Kelly's Kitchen")

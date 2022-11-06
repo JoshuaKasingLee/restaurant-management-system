@@ -52,7 +52,6 @@ def add_category():
         cat = restaurant.manager.add_category(cat_name)
     except:
         return {"error": f"Category {cat_name} cannot be added, as a category with that name already exists"}, 401
-        # need to check this can't be some other error
     return {
         "name": cat.name,
         "show": cat.visible,
@@ -78,7 +77,6 @@ def add_menu_item():
         restaurant.manager.add_menu_item(name, desc, ingredients, cost, category, tags, img)
     except:
         return {"error": f"Menu item {name} cannot be added, as a menu item with that name already exists"}, 401
-        # need to check this can't be some other error
     res = restaurant.category_to_JSON(category)
     return res
 

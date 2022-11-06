@@ -1,6 +1,5 @@
 from staff import Staff
 from init_db import conn
-# from helper import StaffRole
 
 class WaitStaff(Staff):
     def __init__(self, password, restaurant):

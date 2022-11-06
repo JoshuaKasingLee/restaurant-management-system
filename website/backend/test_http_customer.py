@@ -2,8 +2,6 @@ import pytest
 from __init__ import create_app
 import atexit
 from init_db import conn
-from __init__res import restaurant
-from table import Table
 
 
 def closedb():
