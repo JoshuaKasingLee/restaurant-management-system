@@ -1,4 +1,3 @@
-#from venv import create
 from __init__ import create_app
 import atexit
 from init_db import conn

@@ -1,8 +1,5 @@
 
 import psycopg2
-
-#https://www.digitalocean.com/community/tutorials/how-to-use-a-postgresql-database-in-a-flask-application
-
 def query_db(query):
     conn = psycopg2.connect(
         host="localhost",

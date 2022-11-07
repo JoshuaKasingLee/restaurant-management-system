@@ -1,8 +1,5 @@
 from enum import Enum
 from init_db import conn
-
-# need to check enum values
-
 class OrderStatus(Enum):
     ORDERED = 'ordered'
     COOKING = 'cooking'

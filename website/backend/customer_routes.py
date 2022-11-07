@@ -3,8 +3,7 @@ from flask import request
 from __init__res import restaurant
 
 customer_routes = Blueprint('customer_routes', __name__)
-    
-    
+
 @customer_routes.route('/table', methods=['GET'])
 def count_tables():
     num = restaurant.count_tables()
