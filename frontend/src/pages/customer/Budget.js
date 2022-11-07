@@ -1,13 +1,13 @@
 import * as React from 'react';
-import TabForm from '../../components/customer/TabForm';
+import BudgetForm from '../../components/customer/BudgetForm';
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
 
-function Tab () {  
+function Budget () {  
 	return (
     <>
       <Header image={localStorage.getItem('restaurantImage')} title={"Budget Allocation"}/>
-      <TabForm submit = {async (budget) => {
+      <BudgetForm submit = {async (budget) => {
         if (budget !== '') {
           const response = await fetch('http://localhost:5000/customer/budget', {
             method: 'PUT',
@@ -37,4 +37,4 @@ function Tab () {
 	);
 }
   
-export default Tab;
+export default Budget;

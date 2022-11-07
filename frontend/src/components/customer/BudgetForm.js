@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Box, Button, FormControl, FormHelperText, InputLabel, OutlinedInput, InputAdornment, Stack, Typography } from '@mui/material';
 
-/* Tab Form Component */
+/* Budget Form Component */
 
-function TabForm ({ submit }) {
+function BudgetForm ({ submit }) {
   const [budget, setBudget] = React.useState('');
 
   const onSubmit = () => {
@@ -53,8 +53,8 @@ function TabForm ({ submit }) {
   )
 }
 
-TabForm.propTypes = {
+BudgetForm.propTypes = {
   submit: PropTypes.elementType
 }
 
-export default TabForm;
+export default BudgetForm;

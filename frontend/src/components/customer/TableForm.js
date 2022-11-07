@@ -76,7 +76,7 @@ function TableForm ({ submit }) {
             </Select>
           </FormControl>
         </Box>
-        <Button component={Link} to={'/customer/tab'} variant="contained" onClick={onSubmit} disabled={table === ''}>
+        <Button component={Link} to={'/customer/budget'} variant="contained" onClick={onSubmit} disabled={table === ''}>
           Confirm
         </Button>
       </Stack>
