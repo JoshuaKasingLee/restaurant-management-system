@@ -34,3 +34,6 @@ Week 7
 Kelly and I discussed that we needed to change some routes to path based on id and not name. I fixed some bugs related to display-order and implemented those functions and changing routes to pass in Id instead of name in the URL.
 I also discussed with James about the routes again to confirm and make changes to them if they were not what he wanted. I finished user stories related to Sprint 2 allocated to me. 
 
+Week 8 
+Backend team worked with frontend team to iron out any last minute bugs for the demo and completed the retrospective B assessment. We also discussed what was left to complete and allocated tasks regarding the final report. Kelly Cyrus and I discussed
+software quality for the backend as well and discussed ideas about what to fix e.g. less repetition, refactoring function responsibilities for each class
