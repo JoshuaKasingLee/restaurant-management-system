@@ -11,6 +11,7 @@ class StaffRole(Enum):
     KITCHEN = 2
     MANAGER = 3
 
+# need to use or delete these enums
 class TagNames(Enum):
     VEGETARIAN = 'vegetarian'
     VEGAN = 'vegan'
