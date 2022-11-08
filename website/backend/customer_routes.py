@@ -31,7 +31,13 @@ def get_budget():
     table = args.get("table")
     t = restaurant.find_table(int(table))
     if t != None:
-        return {"budget": t.budget }
+        res = {
+            "budget": t.budget, 
+            "orderTotal": t.get_total_cost(),
+            "remaining": t.budget - t.get_total_cost()
+        }
+        return res
+        
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/budget', methods=['PUT'])
