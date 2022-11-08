@@ -4,12 +4,18 @@ from menu_item import MenuItem
 from category import Category
 from table import Table
 from init_db import conn
+from staff import Staff
 from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
 
 
 # restaurant initialisation
+def test_get_restaurant():
+    r = Restaurant("Kelly's Kitchen")
+    s = Staff("test123", r)
+    assert(s.restaurant.name == "Kelly's Kitchen")
+
 def test_make_restaurant():
     r = Restaurant("Kelly's Kitchen")
     assert(r.name == "Kelly's Kitchen")

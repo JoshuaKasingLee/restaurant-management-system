@@ -23,8 +23,6 @@ class Table:
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)
 
-    # order menu items
-
     def check_order_budget(self, menu_item_name: str, quantity: int):
         if quantity > 0:
             cur = conn.cursor()
@@ -51,8 +49,6 @@ class Table:
             except Exception as err:
                 conn.rollback()
                 raise Exception("Menu item could not be found")
-
-            # print(cur.fetchone())
             result = cur.fetchone()
             name = result[0]
             desc = result[1]
@@ -108,8 +104,6 @@ class Table:
             "total": self.get_total_cost(),
             "orderItems": order_items
         }
-
-    # request assistance
 
     def request_assistance(self):
         cur = conn.cursor()
@@ -237,9 +231,6 @@ class Table:
                 dishes_split[orderId] = 1
         return dishes_split
 
-
-    # budgeting solution functions
-
     def set_budget(self, budget = None):
         cur = conn.cursor()
         try:
@@ -249,10 +240,8 @@ class Table:
             raise Exception("Setting budget failed")
         conn.commit()
         self.budget = budget
-        # check whether we need to validate here > 0
-
-    # clear table
-
+        
+        
     def clear_table(self):
         cur = conn.cursor()
 

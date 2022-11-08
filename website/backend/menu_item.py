@@ -1,12 +1,9 @@
 
 from init_db import conn
-from helper import TagNames
 
 
 class MenuItem:
-    # assume tags will be in format:
     curr_max_display_order = 0
-    # “tags”: {“vegetarian”: bool, “vegan”: bool, “gluten free”: bool, “nut free”: bool, “dairy free”: bool, “chef recommended”: bool} 
     def __init__(self, name, desc, ingredients, cost, category, tags = None, img = 'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg', visible = False, display_order = 0):
         self.name = name
         self.desc = desc

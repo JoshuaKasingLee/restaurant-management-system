@@ -1,6 +1,5 @@
 from staff import Staff
 from init_db import conn
-# from helper import StaffRole
 
 class WaitStaff(Staff):
     def __init__(self, password, restaurant):
@@ -24,11 +23,7 @@ class WaitStaff(Staff):
         return orders
 
     def get_assistance_requests(self):
-        tables = []
-        for t in self.restaurant.tables:
-            if t.needs_assistance:
-                tables.append({"table": t.number})
-        return tables
+        return self.restaurant.get_all_assistance()
 
     def resolve_assistance_request(self, table_num):
         cur = conn.cursor()

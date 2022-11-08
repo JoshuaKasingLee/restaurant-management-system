@@ -1,10 +1,9 @@
-from flask import Response, Blueprint
+from flask import Blueprint
 from flask import request
 from __init__res import restaurant
 
 customer_routes = Blueprint('customer_routes', __name__)
-    
-    
+
 @customer_routes.route('/table', methods=['GET'])
 def count_tables():
     num = restaurant.count_tables()
@@ -30,9 +29,15 @@ def get_budget():
         return {"error": "Unable to validate"}, 401
     args = request.args
     table = args.get("table")
-    for t in restaurant.tables:
-        if t.number == int(table):
-            return {"budget": t.budget }
+    t = restaurant.find_table(int(table))
+    if t != None:
+        res = {
+            "budget": t.budget, 
+            "orderTotal": t.get_total_cost(),
+            "remaining": t.budget - t.get_total_cost()
+        }
+        return res
+        
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/budget', methods=['PUT'])
@@ -45,13 +50,13 @@ def set_budget():
     data = request.get_json()
     table = data["table"]
     budget = data["budget"]
-    for t in restaurant.tables:
-        if t.number == int(table):
-            try:
-                t.set_budget(budget)
-            except:
-                return {"error": f"Setting budget failed"}, 401
-            return {}
+    t = restaurant.find_table(int(table))
+    if t != None:
+        try:
+            t.set_budget(budget)
+        except:
+            return {"error": f"Setting budget failed"}, 401
+        return {}
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/menu', methods=['GET'])
@@ -75,9 +80,9 @@ def check_order_within_budget():
     table = data["table"]
     menu_item = data["menuItem"]
     quantity = data ["quantity"]
-    for t in restaurant.tables:
-        if t.number == int(table):
-            return {"withinBudget": t.check_order_budget(menu_item, quantity)}
+    t = restaurant.find_table(int(table))
+    if t != None:
+        return {"withinBudget": t.check_order_budget(menu_item, quantity)}
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/order', methods=['POST'])
@@ -91,13 +96,13 @@ def order_dishes():
     table = data["table"]
     menu_item = data["menuItem"]
     quantity = data ["quantity"]
-    for t in restaurant.tables:
-        if t.number == int(table):
-            try:
-                t.order_dishes(menu_item, quantity)
-            except:
-                return {"error": f"Ordering menu item {menu_item} failed"}, 401
-            return {}
+    t = restaurant.find_table(int(table))
+    if t != None:
+        try:
+            t.order_dishes(menu_item, quantity)
+        except:
+            return {"error": f"Ordering menu item {menu_item} failed"}, 401
+        return {}
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/order', methods=['GET'])
@@ -110,10 +115,10 @@ def view_orders():
     args = request.args
     table = args.get("table")
     orders = {}
-    for t in restaurant.tables:
-        if t.number == int(table):
-            orders = t.view_orders()
-            return orders
+    t = restaurant.find_table(int(table))
+    if t != None:
+        orders = t.view_orders()
+        return orders
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/assistance', methods=['PUT'])
@@ -126,18 +131,18 @@ def toggle_assistance():
     data = request.get_json()
     table = data["table"]
     assistance_required = data["request"]
-    for t in restaurant.tables:
-        if t.number == int(table):
-            if assistance_required:
-                try:
-                    t.request_assistance()
-                except:
-                    return {"error": "Assistance request failed"}, 401
-            else:
-                try:
-                    t.unrequest_assistance()
-                except:
-                    return {"error": "Assistance unrequest failed"}, 401
+    t = restaurant.find_table(int(table))
+    if t != None:
+        if assistance_required:
+            try:
+                t.request_assistance()
+            except:
+                return {"error": "Assistance request failed"}, 401
+        else:
+            try:
+                t.unrequest_assistance()
+            except:
+                return {"error": "Assistance unrequest failed"}, 401
     return {}
 
 @customer_routes.route('/assistance', methods=['GET'])
@@ -149,9 +154,9 @@ def get_assistance_boolean():
         return {"error": "Unable to validate"}, 401
     args = request.args
     table = args.get("table")
-    for t in restaurant.tables:
-        if t.number == int(table):
-            return {"request": t.needs_assistance }
+    t = restaurant.find_table(int(table))
+    if t != None:
+        return {"request": t.needs_assistance }
     return {"error": f"Cannot find table number {table}"}, 401
 
 
@@ -167,14 +172,14 @@ def get_bill():
     type = data["type"]
     num_split = data["numSplit"]
     dishes = data["dishes"]
-    for t in restaurant.tables:
-        if t.number == int(table):
-            res = t.get_bill(type, int(num_split), dishes)
-            try:
-                t.clear_table()
-            except:
-                return {"error": f"Clearing table {table} failed"}, 401
-            return res
+    t = restaurant.find_table(int(table))
+    if t != None:
+        res = t.get_bill(type, int(num_split), dishes)
+        try:
+            t.clear_table()
+        except:
+            return {"error": f"Clearing table {table} failed"}, 401
+        return res
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/leaderboard', methods=['GET'])
