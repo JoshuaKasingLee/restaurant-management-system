@@ -15,6 +15,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import Slide from '@mui/material/Slide';
 import EditItemDialog from './EditItemDialog';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -23,6 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function MenuItemCard({item, categoryName, updateMenu}) {
 
   const [open, setOpen] = React.useState(false);
+  const [visible, setVisible] = React.useState(item.visible);
 
   const [openEditItem, setOpenEditItem] = React.useState(false);
 
@@ -37,6 +40,47 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleToggleVisibility = (e) => {
+    visible ? setVisible(false) : setVisible(true);
+    editItem();
+    e.stopPropagation();
+  };
+
+  const editItem = async () => {
+    const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+      'Content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        newName: item.title,
+        category: categoryName,
+        description: item.description,
+        ingredients: item.ingredients,
+        tags: {
+            vegetarian: item.actualTags.includes("vegetarian"),
+            vegan: item.actualTags.includes("vegan"),
+            "gluten free": item.actualTags.includes("gluten free"),
+            "nut free": item.actualTags.includes("nut free"),
+            "dairy free": item.actualTags.includes("dairy free"),
+            "chef recommended": item.actualTags.includes("chef recommended"),
+        },
+        cost: parseFloat(item.cost),
+        img: item.img,
+        show: visible
+        })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      updateMenu(true);
+    } else {
+      alert(await data.error);
+    }
+  }
 
   const handleDelete = async () => {
     const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
@@ -53,7 +97,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
         }
       )
     });
-    const data = await response;
+    const data = await response.json();
     if (response.ok) {
       updateMenu(true);
       setOpen(false);
@@ -91,7 +135,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
           title={item.title}
           subtitle={<span>${item.cost.toFixed(2)}</span>}
           position="below"
-          actionIcon={
+          actionIcon={           
             <IconButton
               aria-label={`info about ${item.title}`}
             >
@@ -99,6 +143,14 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
             </IconButton>
           }
         />
+
+        <IconButton sx={{ position: 'absolute', left: 0, top: 0 }}
+          onClick={(e) => handleToggleVisibility(e)}>
+          {visible
+            ? <VisibilityIcon/>
+            : <VisibilityOffIcon/>
+          }
+        </IconButton>
       </ImageListItem>
       <Dialog
         open={open}
