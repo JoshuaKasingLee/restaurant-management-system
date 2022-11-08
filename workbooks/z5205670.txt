@@ -24,3 +24,20 @@ Week 5
 I continued coding the customer menu page, menu item dialogs, order page and
 bill page. I completed all that was assigned for sprint 1. I planned the 
 structure of Demo A.
+
+Week 6
+I started coding for sprint 2. I put a listener on the customer route to catch order 
+status updates. I implemented a filter for the menu items. I implemented the sort 
+functionality for menu items.
+
+Week 7
+I continued coding for sprint 2. I continued working on the game by creating a game 
+home page, updating the game play and graphics. I added split bill equally functionality 
+to the payment options. I tested the assistance functionality and connection between 
+customer and waitstaff interface. I displayed restaurant name and image to frontend.
+
+Week 8
+I continued coding for sprint 2. I applied display order 
+to the categories and menu items on the frontend. I added pause and game over 
+screens to the game so that customers can play, pause and reset the game. I added
+validation helper text to input fields.
