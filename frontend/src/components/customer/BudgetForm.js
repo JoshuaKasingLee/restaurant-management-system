@@ -36,7 +36,7 @@ function BudgetForm ({ submit }) {
               step=".01"
             />
             <FormHelperText id="filled-weight-helper-text">
-            Max $1000.00
+            Max $1000
             </FormHelperText>
           </FormControl>
         </Box>

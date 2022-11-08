@@ -7,6 +7,13 @@ import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import QuantityButtonGroup from '../QuantityButtonGroup';
+import { ReactComponent as DairyIcon } from './DF.svg';
+import { ReactComponent as GlutenIcon } from './GF.svg';
+import { ReactComponent as NutIcon } from './NF.svg';
+import { ReactComponent as StarIcon } from './CR.svg';
+import { ReactComponent as VeganIcon } from './VE.svg';
+import { ReactComponent as VegIcon } from './V.svg';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -165,33 +172,51 @@ function MenuCategory({category, filters, sort}) {
   };
 
   return (
-    <ImageList sx={{ width: 950, height: 500 }} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: 950, height: 500}} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
-        < div key={item.img}>
-          <ImageListItem sx={{ width: 230 }} onClick={handleClickOpen(index)}>
+        < div key={item.img} style={{ border: '1px dashed red',borderRadius: '25%' }}>
+          <ImageListItem sx={{ width: 230, boxShadow: 4 }} onClick={handleClickOpen(index)}>
             <img
+              style={{ border: '1px dashed red', borderRadius: '10% 10% 0% 0%' }}
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
               srcSet={`${item.img}?w=230&h=200&fit=crop&auto=format&dpr=2 2x`}
               alt={item.title}
               loading="lazy"
             />
-            {item.tags === "Chef's Reccomendation" && <ImageListItemBar
-              subtitle={<StarsRoundedIcon />}
+            <ImageListItemBar
               position="top"
-              sx={{ bgcolor: 'transparent' }}
-              
-            />}
+              sx={{ bgcolor:'transparent'}}
+              actionIcon={
+                <IconButton
+                  aria-label={`star ${item.title}`}
+                >
+                  {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
+                  {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
+                  {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
+                  {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
+                  {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
+                  {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
+                </IconButton>
+              }
+              actionPosition="right"
+            />
             <ImageListItemBar
               title={item.title}
               subtitle={<span>${item.cost.toFixed(2)}</span>}
               position="below"
-              actionIcon={
-                <IconButton
-                  aria-label={`info about ${item.title}`}
-                >
-                  <InfoIcon />
-                </IconButton>
-              }
+              // actionIcon={
+              //   <IconButton
+              //     sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
+              //     aria-label={`info about ${item.title}`}
+              //   >
+              //     {item.tags.includes("Chef's Recommendation") && <StarIcon />}
+              //     {item.tags.includes("Chef's Recommendation") && <VegIcon />}
+              //     {item.tags.includes("Chef's Recommendation") && <VeganIcon/>}
+              //     {item.tags.includes("Chef's Recommendation") && <GlutenIcon/>}
+              //     {item.tags.includes("Chef's Recommendation") && <NutIcon/>}
+              //     {item.tags.includes("Chef's Recommendation") && <DairyIcon />}
+              //   </IconButton>
+              // }
             />
           </ImageListItem>
           <Dialog
@@ -245,8 +270,8 @@ function MenuCategory({category, filters, sort}) {
               <Button onClick={handleOrder(item, index)}>Order</Button>
             </DialogActions>
             {!withinBudget && 
-              <Alert severity="warning">
-                You will exceed you budget with this order. Increase your budget to order more.
+              <Alert severity="error">
+                You will exceed you budget with this order. Update your budget to order more.
               </Alert>
             }
           </Dialog>

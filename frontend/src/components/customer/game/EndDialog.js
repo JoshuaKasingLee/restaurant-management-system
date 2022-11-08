@@ -32,7 +32,7 @@ function EndDialog(props) {
         <StopCircleRoundedIcon  sx={{width: 200, height: 200 }}  />
         </IconButton> 
       </Box>
-      <DialogContent>
+      <DialogContent dividers>
         <DialogContentText textAlign='center'>
           Want to be on the leaderboard and have the chance to win prizes?
           Provide your name and email for your shot of winning!
@@ -52,7 +52,7 @@ function EndDialog(props) {
           type="email"
           fullWidth
           variant="outlined"
-          helperText="Email must contain '@' character and a maximum 0f 100 characters"
+          helperText="Email must contain '@' character and a maximum of 100 characters"
         />
       </DialogContent>
       <DialogActions>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, Tab, Tabs, Typography } from '@mui/material';
+import { ReactComponent as GlutenIcon } from '../../components/customer/menu/GF.svg';
 
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
@@ -8,6 +9,7 @@ import MenuCategory from '../../components/customer/menu/MenuCategory';
 import MenuSort from '../../components/customer/menu/MenuSort';
 import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
+import SvgIcon from '@mui/material/SvgIcon';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,7 +50,7 @@ function Menu() {
   const [menu, setMenu] = React.useState({'categories': []}); 
   const [sort, setSort] = React.useState({ value: 'none', label: 'None' });
   const [filters, setFilters] = React.useState([]);
-  const [budget, setBudget] = React.useState(0); 
+  const [budget, setBudget] = React.useState(null); 
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event, newValue, newLabel) => {
@@ -57,12 +59,34 @@ function Menu() {
   };
 
   const handleClose = (value) => {
-    if (value === 'update') {
-      setBudget(budget);
+    if(value !== budget) {
+      const updateBudget = async (budget) => {
+        const response = await fetch('http://localhost:5000/customer/budget', {
+          method: 'PUT',
+          mode: 'cors',
+          headers: {
+          'Content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify(
+            { 
+              table: localStorage.getItem('table'),
+              budget: value
+            }
+          )
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setBudget(value);
+        } else {
+          alert(await data.error);
+        }
+      }
+      updateBudget();
     }
     setOpen(false);
   };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -90,7 +114,6 @@ function Menu() {
     };
 
     const getBudget = async () => {
-      // await new Promise(response => setTimeout(response, 1000));
       const response = await fetch(`http://localhost:5000/customer/budget?table=${localStorage.getItem('table')}`, {  
         method: 'GET',
         headers: {
@@ -100,7 +123,6 @@ function Menu() {
       });
       const data = await response.json();
       if (response.ok) {
-        // console.log(data);
         setBudget( data.budget );
       } else {
         alert(await data.error);
@@ -110,31 +132,6 @@ function Menu() {
     getMenu();
     getBudget();
   }, []);
-
-  React.useEffect(() => {
-    const getMenu = async () => {
-      const response = await fetch('http://localhost:5000/customer/budget', {
-        method: 'PUT',
-        mode: 'cors',
-        headers: {
-        'Content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(
-          { 
-            table: localStorage.getItem('table'),
-            budget: parseFloat(budget)
-          }
-        )
-      });
-      const data = await response.json();
-      if (response.ok) {
-      } else {
-        alert(await data.error);
-      }
-    }
-  }, [budget]);
 
   const getContent = () => {
     let content = [];
@@ -204,22 +201,32 @@ function Menu() {
         </Tabs>
         {getCategoriesTabPanels()}
       </Box>
-      {budget !== null && 
-      <>
-        <Button sx={{ p: 0 }} justifyContent='center' onClick={handleClickOpen}>
-          <Box width="160px" alignItems='end' sx={{ mx: '10px', border: 1, borderColor: 'text.secondary', borderRadius: '16px' }}>
-            <Typography color='text.secondary' align="center" variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Budget: ${budget.toFixed(2)}
-            </Typography>
-          </Box>
-        </Button>
-        <BudgetDialog
-          open={open}
-          onClose={handleClose}
-          budget={budget}
-        />
-      </>
-      } 
+      <Button 
+        sx={{ 
+          width:'160px',
+          border: 1, 
+          borderColor: 'text.secondary', 
+          borderRadius: '16px', 
+          mx: '10px', 
+          p: 0 
+        }} 
+        onClick={handleClickOpen}
+      >
+        {budget === null 
+          ? <Typography color='text.secondary' variant="h6" component="div" >
+            Set Budget
+          </Typography>
+          : <Typography color='text.secondary' variant="h6" component="div" >
+            Budget: ${budget.toFixed(0)}
+          </Typography>
+        }
+        {/* <MoreVertRoundedIcon/> */}
+      </Button>
+      <BudgetDialog
+        open={open}
+        onClose={handleClose}
+        budget={budget}
+      />
       <Footer initialValue={"menu"}/>
     </ >
   );
