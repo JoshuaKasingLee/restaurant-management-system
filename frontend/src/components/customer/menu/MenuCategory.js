@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
   IconButton, ImageList, ImageListItem, ImageListItemBar, Slide, Typography } from '@mui/material';
-import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
-import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import QuantityButtonGroup from '../QuantityButtonGroup';
 import { ReactComponent as DairyIcon } from './DF.svg';
@@ -172,12 +170,12 @@ function MenuCategory({category, filters, sort}) {
   };
 
   return (
-    <ImageList sx={{ width: 950, height: 500}} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: 950, height: 510}} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
-        < div key={item.img} style={{ border: '1px dashed red',borderRadius: '25%' }}>
-          <ImageListItem sx={{ width: 230, boxShadow: 4 }} onClick={handleClickOpen(index)}>
+        < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
+          <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%' }} onClick={handleClickOpen(index)}>
             <img
-              style={{ border: '1px dashed red', borderRadius: '10% 10% 0% 0%' }}
+              style={{ borderRadius: '5% 5% 0% 0%' }}
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
               srcSet={`${item.img}?w=230&h=200&fit=crop&auto=format&dpr=2 2x`}
               alt={item.title}
@@ -185,7 +183,11 @@ function MenuCategory({category, filters, sort}) {
             />
             <ImageListItemBar
               position="top"
-              sx={{ bgcolor:'transparent'}}
+              sx={{
+                background:
+                  'linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, ' +
+                  'rgba(255,255,255,0.3) 70%, rgba(255,255,255,0) 100%)',
+              }}
               actionIcon={
                 <IconButton
                   aria-label={`star ${item.title}`}
@@ -204,19 +206,7 @@ function MenuCategory({category, filters, sort}) {
               title={item.title}
               subtitle={<span>${item.cost.toFixed(2)}</span>}
               position="below"
-              // actionIcon={
-              //   <IconButton
-              //     sx={{ color: 'rgba(0, 0, 0, 0.54)' }}
-              //     aria-label={`info about ${item.title}`}
-              //   >
-              //     {item.tags.includes("Chef's Recommendation") && <StarIcon />}
-              //     {item.tags.includes("Chef's Recommendation") && <VegIcon />}
-              //     {item.tags.includes("Chef's Recommendation") && <VeganIcon/>}
-              //     {item.tags.includes("Chef's Recommendation") && <GlutenIcon/>}
-              //     {item.tags.includes("Chef's Recommendation") && <NutIcon/>}
-              //     {item.tags.includes("Chef's Recommendation") && <DairyIcon />}
-              //   </IconButton>
-              // }
+              sx={{ px: 1 }}
             />
           </ImageListItem>
           <Dialog
@@ -250,8 +240,13 @@ function MenuCategory({category, filters, sort}) {
                   <Typography gutterBottom>
                     Category: {category.name}
                   </Typography>
-                  <Typography gutterBottom>
-                    Tags: {item.tags.join(', ')}
+                  <Typography component='div' gutterBottom>
+                    {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
+                    {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
+                    {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
+                    {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
+                    {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
+                    {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
                   </Typography>
                   <Typography gutterBottom>
                     Cost: ${item.cost.toFixed(2)}

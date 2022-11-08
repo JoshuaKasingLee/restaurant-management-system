@@ -1,7 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, Tab, Tabs, Typography } from '@mui/material';
-import { ReactComponent as GlutenIcon } from '../../components/customer/menu/GF.svg';
 
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
@@ -9,7 +8,6 @@ import MenuCategory from '../../components/customer/menu/MenuCategory';
 import MenuSort from '../../components/customer/menu/MenuSort';
 import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
-import SvgIcon from '@mui/material/SvgIcon';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,6 +49,8 @@ function Menu() {
   const [sort, setSort] = React.useState({ value: 'none', label: 'None' });
   const [filters, setFilters] = React.useState([]);
   const [budget, setBudget] = React.useState(null); 
+  const [remaining, setRemaining] = React.useState(null); 
+  const [order, setOrder] = React.useState(0); 
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event, newValue, newLabel) => {
@@ -113,6 +113,10 @@ function Menu() {
       }
     };
 
+    getMenu();
+  }, []);
+
+  React.useEffect(() => {
     const getBudget = async () => {
       const response = await fetch(`http://localhost:5000/customer/budget?table=${localStorage.getItem('table')}`, {  
         method: 'GET',
@@ -124,14 +128,15 @@ function Menu() {
       const data = await response.json();
       if (response.ok) {
         setBudget( data.budget );
+        setRemaining( data.remaining );
+        setOrder( data.orderTotal );
       } else {
         alert(await data.error);
       }
     };
 
-    getMenu();
     getBudget();
-  }, []);
+  }, [budget, order]);
 
   const getContent = () => {
     let content = [];
@@ -185,7 +190,7 @@ function Menu() {
         <MenuSort submit = { sort => { setSort(sort) }} />
       </Box>
       <Box
-        sx={{ height: '75vh', bgcolor: 'background.paper', display: 'flex' }}
+        sx={{ height: '71vh', bgcolor: 'background.paper', display: 'flex' }}
       >
         <Tabs
           orientation="vertical"
@@ -217,7 +222,7 @@ function Menu() {
             Set Budget
           </Typography>
           : <Typography color='text.secondary' variant="h6" component="div" >
-            Budget: ${budget.toFixed(0)}
+            Remaining Budget: ${remaining.toFixed(0)}
           </Typography>
         }
         {/* <MoreVertRoundedIcon/> */}
@@ -226,6 +231,8 @@ function Menu() {
         open={open}
         onClose={handleClose}
         budget={budget}
+        remaining={remaining}
+        order={order}
       />
       <Footer initialValue={"menu"}/>
     </ >

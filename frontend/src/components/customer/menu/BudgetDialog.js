@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, 
-  DialogTitle, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, 
+  InputAdornment, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const BootstrapDialogTitle = (props) => {
@@ -34,7 +34,7 @@ BootstrapDialogTitle.propTypes = {
 };
 
 function BudgetDialog(props) {
-  const { onClose, open, budget } = props;
+  const { onClose, open, budget, remaining, order } = props;
   const [value, setValue] = React.useState(budget); 
 
   const handleClick = (value) => {
@@ -54,6 +54,16 @@ function BudgetDialog(props) {
         Update budget
       </BootstrapDialogTitle>
       <DialogContent dividers>
+        <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
+          Your total budget is ${budget}.
+        </Typography>
+        <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
+          You have ${remaining} remaining.
+        </Typography>
+        <Typography color='text.secondary' component="div">
+          Would you like to update your total budget?
+          {console.log(order)}
+        </Typography>
         <TextField
           margin="dense"
           id="budget"
@@ -72,7 +82,7 @@ function BudgetDialog(props) {
       <DialogActions>
         <Button onClick={() => handleClick(null)}>Delete</Button> 
         <Button onClick={() => handleClick(budget)}>Cancel</Button> 
-        <Button onClick={() => handleClick(value)} disabled={!value || value <= budget || value > 1000}>Submit</Button>
+        <Button onClick={() => handleClick(value)} disabled={!value || value < order || value > 1000}>Submit</Button>
       </DialogActions>
     </Dialog>
   );
@@ -83,5 +93,7 @@ export default BudgetDialog;
 BudgetDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  budget: PropTypes.number.isRequired
+  budget: PropTypes.number,
+  remaining: PropTypes.number,
+  order: PropTypes.number,
 };

@@ -1,16 +1,48 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, 
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, 
   DialogTitle, IconButton, TextField, Typography } from '@mui/material';
 import ReplayCircleFilledRoundedIcon from '@mui/icons-material/ReplayCircleFilledRounded';
 import StopCircleRoundedIcon from '@mui/icons-material/StopCircleRounded';
 
 function EndDialog(props) {
   const { onClose, open, score } = props;
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [submitted, setSubmitted] = React.useState(false);
 
   const handleClick = (value) => {
     onClose(value);
+    setSubmitted(false);
   };
+
+  const handleSubmit = () => {
+    const submit = async () => {
+      const response = await fetch('http://localhost:5000/customer/leaderboard', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(
+          { 
+            name: name,
+            email: email,
+            score: score
+          }
+        )
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        alert(await data.error);
+      }
+    }
+    submit();
+  }
 
   return (
     <Dialog 
@@ -44,6 +76,7 @@ function EndDialog(props) {
           type="string"
           fullWidth
           variant="outlined"
+          onChange={(e)=>setName(e.target.value)}
         />
         <TextField
           margin="dense"
@@ -53,12 +86,17 @@ function EndDialog(props) {
           fullWidth
           variant="outlined"
           helperText="Email must contain '@' character and a maximum of 100 characters"
+          onChange={(e)=>setEmail(e.target.value)}
         />
       </DialogContent>
       <DialogActions>
-        <Button>Submit</Button> 
-        {/* add onlick */}
+        <Button onClick={handleSubmit} disabled={submitted}>Submit</Button> 
       </DialogActions>
+      {submitted && 
+        <Alert severity="success">
+          Entry submitted, good luck!
+        </Alert>
+      }
     </Dialog>
   );
 }

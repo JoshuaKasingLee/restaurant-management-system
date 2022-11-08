@@ -1,6 +1,8 @@
+import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Grid, IconButton, Paper, Typography } from '@mui/material';
 import PlayCircleRoundedIcon from '@mui/icons-material/PlayCircleRounded';
+import LeaderboardTable from './LeaderboardTable';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -11,6 +13,27 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function Leaderboard({submit}) {
+  const [leaderboard, setLeaderboard] = React.useState([]);
+
+  React.useEffect(() => {
+    const getLeaderboard = async () => {
+      const response = await fetch(`http://localhost:5000/customer/leaderboard`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setLeaderboard( data.players );
+      } else {
+        alert(await data.error);
+      }
+    };
+
+    getLeaderboard();
+  }, []);
 
   const start = () => {
     submit(true);
@@ -56,8 +79,10 @@ function Leaderboard({submit}) {
         <Grid item xs={6} md={7.8} sx={{ mx: 1, border: 1, borderRadius: 3 }}>
           <Item>
             <Typography variant='h2'>
-              Leaderboard (coming soon...)
+              Leaderboard
             </Typography>
+            <br/>
+            <LeaderboardTable leaderboard={leaderboard} />
           </Item>
         </Grid>
       </Grid>
