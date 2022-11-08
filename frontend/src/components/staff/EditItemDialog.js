@@ -73,7 +73,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
             },
             cost: parseFloat(cost),
             img: image,
-            show: true //TODO: change
+            show: item.visible
             })
         });
         const data = await response.json();
@@ -83,7 +83,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         } else {
           alert(await data.error);
         }
-    } 
+    }
 
     async function deleteItem() {
         const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
