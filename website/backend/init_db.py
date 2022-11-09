@@ -22,12 +22,12 @@ def query_db(query):
     
     
 conn = psycopg2.connect(
-    host="localhost",
-    database="flask_db",
-    user="postgres"
-    # database="postgres",
-    # user="postgres",
-    # password="mypassword",
-    # host="myrestaurant.cmza9ty67rf0.ap-northeast-1.rds.amazonaws.com",
-    # port="5432"
+    # host="localhost",
+    # database="flask_db",
+    # user="postgres"
+    database="postgres",
+    user="postgres",
+    password="mypassword",
+    host="myrestaurant.cmza9ty67rf0.ap-northeast-1.rds.amazonaws.com",
+    port="5432"
 )

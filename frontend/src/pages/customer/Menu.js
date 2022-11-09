@@ -96,7 +96,7 @@ function Menu() {
     // if (localStorage.getItem('assistance') === null)
     //   localStorage.setItem('assistance', false);
     const getMenu = async () => {
-      await new Promise(response => setTimeout(response, 1000));
+      // await new Promise(response => setTimeout(response, 1000));
       const response = await fetch(`http://localhost:5000/customer/menu`, {  
         method: 'GET',
         headers: {
@@ -219,13 +219,13 @@ function Menu() {
         }} 
         onClick={handleClickOpen}
       >
-        {budget === null 
+        {budget === null || remaining === null
           ? <Box>
             <Typography color='text.secondary' variant="h6" component="div" >
               Set budget
             </Typography>
           </Box>
-          : <Typography color='text.secondary' variant="h6" component="div" >
+          : <Typography sx={{lineHeight: '20px'}} color='text.secondary' variant="h6" component="div" >
             Remaining Budget: ${remaining.toFixed(0)}
           </Typography>
         }
