@@ -62,6 +62,9 @@ function PaymentToggleButton({ submit, disable, order }) {
               setQuantity(quantity);
             }}
           />
+          <Typography fontSize='14px' color='gray'>
+            Share between a maximum of four (4) people
+          </Typography>
         </ div>
       }
       <br />

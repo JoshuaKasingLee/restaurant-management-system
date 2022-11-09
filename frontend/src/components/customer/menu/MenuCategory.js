@@ -80,6 +80,7 @@ function MenuCategory({submit, category, filters, sort}) {
           description: category.menu_items[i].description,
           ingredients: category.menu_items[i].ingredients,
           tags: tagList,
+          visible: category.menu_items[i].visible,
         }
       );
     }
@@ -175,6 +176,7 @@ function MenuCategory({submit, category, filters, sort}) {
   return (
     <ImageList sx={{ width: 950, height: 510}} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
+        // item.visible &&
         < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
           <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%' }} onClick={handleClickOpen(index)}>
             <img
@@ -260,6 +262,9 @@ function MenuCategory({submit, category, filters, sort}) {
                     max={4} 
                     submit = { quantity => setQuantity( state => ({ ...state, [index]: quantity})) } 
                   />
+                  <Typography fontSize='14px' color='gray'>
+                    Limited to four (4) servings per order
+                  </Typography>
                 </Grid>
               </Grid>
             </DialogContent>

@@ -143,7 +143,8 @@ function Menu() {
     for (let i = 0; i < menu.categories.length; i++) {
       content.push({ 
         order: menu.categories[i].display_order,
-        title: menu.categories[i].name
+        title: menu.categories[i].name,
+        visible: menu.categories[i].visible,
       });
     }
     return content;
