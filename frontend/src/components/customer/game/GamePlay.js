@@ -23,6 +23,8 @@ function GamePlay({submit}) {
   const [circleY, setCircleY] = useState(Array(circles).fill(undefined));
   const [brickX, setBrickX] = useState(Array(bricks).fill(undefined));
   const [brickY, setBrickY] = useState(Array(bricks).fill(undefined));
+  // const [timerCircle, setTimerCircle] = useState(Array(circles));
+  // const [timerBrick, setTimerBrick] = useState(Array(bricks));
   const [timer, setTimer] = useState();
   const [paused, setPaused] = useState(false);
   const [openPause, setOpenPause] = React.useState(false);
@@ -46,12 +48,13 @@ function GamePlay({submit}) {
       handleClickOpenEnd();
   });
 
-  const onClickCircle = () => {
+  const onClickCircle = (i) => {
     if (!paused) setScore((s) => s + 10);
   };
 
-  const onClickBrick = () => {
+  const onClickBrick = (i) => {
     if (!paused) setLives((l) => Math.max(0, l - 1));
+    setBrickX()
   };
 
   const onClickBox = (event) => {
@@ -64,34 +67,61 @@ function GamePlay({submit}) {
 
   const start = () => {
     setPaused(false);
-      const timer = setInterval(() => {
-        let newCircleX = [];
-        let newCircleY = [];
-        for (let i = 0; i < circles; i++) {
-          newCircleX.push(Math.floor(Math.random() * (gameWidth - circleSize) + gameLeft));
-          newCircleY.push(Math.floor(Math.random() * (gameHeight - circleSize) + gameTop));
-        }
-        setCircleX(newCircleX);
-        setCircleY(newCircleY);
+    // for (let i = 0; i < circles; i++) {
+    //   const timer = setInterval(() => {
+    //     setCircleX(value => ({...value, [i]: Math.floor(Math.random() * (gameWidth - circleSize) + gameLeft)}));
+    //     setCircleY(value => ({...value, [i]: Math.floor(Math.random() * (gameHeight - circleSize) + gameTop)}));
+    //   }, 1000);
+    //   setTimerCircle(value => ({...value, [i]: timer}));
+    // }
+    // for (let i = 0; i < bricks; i++) {
+    //   const timer = setInterval(() => {
+    //     setBrickX(value => ({...value, [i]: Math.floor(Math.random() * (gameWidth - circleSize) + gameLeft)}));
+    //     setBrickY(value => ({...value, [i]: Math.floor(Math.random() * (gameHeight - circleSize) + gameTop)}));
+    //   }, 1000);
+    //   setTimerBrick(value => ({...value, [i]: timer}));
+    // }
 
-        let newBrickX = [];
-        let newBrickY = [];
-        for (let i = 0; i < circles; i++) {
-          newBrickX.push(Math.floor(Math.random() * (gameWidth - circleSize) + gameLeft));
-          newBrickY.push(Math.floor(Math.random() * (gameHeight - circleSize) + gameTop));
-        }
-        setBrickX(newBrickX);
-        setBrickY(newBrickY);
-      }, 1000);
-      setTimer(timer);
+    const timer = setInterval(() => {
+      let newCircleX = [];
+      let newCircleY = [];
+      for (let i = 0; i < circles; i++) {
+        newCircleX.push(Math.floor(Math.random() * (gameWidth - circleSize) + gameLeft));
+        newCircleY.push(Math.floor(Math.random() * (gameHeight - circleSize) + gameTop));
+      }
+      setCircleX(newCircleX);
+      setCircleY(newCircleY);
+
+      let newBrickX = [];
+      let newBrickY = [];
+      for (let i = 0; i < circles; i++) {
+        newBrickX.push(Math.floor(Math.random() * (gameWidth - circleSize) + gameLeft));
+        newBrickY.push(Math.floor(Math.random() * (gameHeight - circleSize) + gameTop));
+      }
+      setBrickX(newBrickX);
+      setBrickY(newBrickY);
+    }, 1000);
+    setTimer(timer);
   };
 
   const pause = () => {
     setPaused(true);
+    // for(let i = 0; i < circles; i++) {
+    //   clearInterval(timerCircle[i]);
+    // }
+    // for(let i = 0; i < bricks; i++) {
+    //   clearInterval(timerBrick[i]);
+    // }
     clearInterval(timer);
   };
 
   const end = () => {
+    // for(let i = 0; i < circles; i++) {
+    //   clearInterval(timerCircle[i]);
+    // }
+    // for(let i = 0; i < bricks; i++) {
+    //   clearInterval(timerBrick[i]);
+    // }
     clearInterval(timer);
     setScore(0);
     setCircleX(Array(circles).fill(undefined));
@@ -144,7 +174,7 @@ function GamePlay({submit}) {
               width: `${circleSize}px`,
               height: `${circleSize}px`
             }}
-            onClick={onClickCircle}
+            onClick={() => onClickCircle(i)}
           >
             <img src={cookie} alt='cookie'/>
           </div>
@@ -167,7 +197,7 @@ function GamePlay({submit}) {
               width: `${circleSize}px`,
               height: `${circleSize}px`
             }}
-            onClick={onClickBrick}
+            onClick={() => onClickBrick(i)}
           >
             <img src={brick} alt='boo'/>
           </div>

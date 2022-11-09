@@ -31,10 +31,13 @@ def get_budget():
     table = args.get("table")
     t = restaurant.find_table(int(table))
     if t != None:
+        remaining = None
+        if t.budget != None:
+            remaining = t.budget - t.get_total_cost()
         res = {
             "budget": t.budget, 
             "orderTotal": t.get_total_cost(),
-            "remaining": t.budget - t.get_total_cost()
+            "remaining": remaining
         }
         return res
         
