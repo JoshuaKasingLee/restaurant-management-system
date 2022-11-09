@@ -299,12 +299,13 @@ class Restaurant:
     def get_leaderboard(self):
         toReturn = []
         position = 1
+        counter = 1
         lastScore = -1
         for entry in sorted(self.leaderboard, key=lambda x: (-x.score, x.name), reverse=False):
             if (lastScore == -1):
                 lastScore = entry.score
             elif (entry.score != lastScore):
-                position += 1
+                position = counter
                 lastScore = entry.score
             toReturn.append({
                 "position": position,
@@ -313,6 +314,7 @@ class Restaurant:
                 "score": entry.score,
                 "time_played": entry.time_played.strftime("%Y-%m-%d %H:%M:%S")
             })
+            counter += 1
             
             
         return {
