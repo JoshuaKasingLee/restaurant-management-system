@@ -41,7 +41,7 @@ export default function MenuItemList({category, updateMenu}) {
   }, [category]);
  
   return ( categoryItems &&
-    <ImageList sx={{ width: 950, height: 500 }} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: 950, height: 510 }} cols={4} rowHeight={250}>
       {categoryItems.map((item) => (
         <MenuItemCard key={`item-${item.id}`} item={item} categoryName={category.name} updateMenu={updateMenu}/>
       ))}

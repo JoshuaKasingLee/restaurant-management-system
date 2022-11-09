@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import Button from '@mui/material/Button';
@@ -17,6 +16,13 @@ import Slide from '@mui/material/Slide';
 import EditItemDialog from './EditItemDialog';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { ReactComponent as DairyIcon } from '../customer/menu/DF.svg';
+import { ReactComponent as GlutenIcon } from '../customer/menu/GF.svg';
+import { ReactComponent as NutIcon } from '../customer/menu/NF.svg';
+import { ReactComponent as StarIcon } from '../customer/menu/CR.svg';
+import { ReactComponent as VeganIcon } from '../customer/menu/VE.svg';
+import { ReactComponent as VegIcon } from '../customer/menu/V.svg';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -117,24 +123,41 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
   });
 
   return(
-    < div >
-      <ImageListItem sx={{ width: 230 }} onClick={handleClickOpen}>
+    < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
+      <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%' }} onClick={handleClickOpen}>
         <img
+          style={{ borderRadius: '5% 5% 0% 0%' }}
           src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
           srcSet={`${item.img}?w=230&h=200&fit=crop&auto=format&dpr=2 2x`}
           alt={item.title}
           loading="lazy"
         />
-        {item.tags === "Chef's Reccomendation" && <ImageListItemBar
-          subtitle={<StarsRoundedIcon />}
+        <ImageListItemBar
           position="top"
-          sx={{ bgcolor: 'transparent' }}
-          
-        />}
+          sx={{
+            background:
+              'linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, ' +
+              'rgba(255,255,255,0.3) 70%, rgba(255,255,255,0) 100%)',
+          }}
+          actionIcon={
+            <IconButton
+              aria-label={`star ${item.title}`}
+            >
+              {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
+              {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
+              {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
+              {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
+              {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
+              {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
+            </IconButton>
+          }
+          actionPosition="right"
+        />
         <ImageListItemBar
           title={item.title}
           subtitle={<span>${item.cost.toFixed(2)}</span>}
           position="below"
+          sx={{ px: 1 }}
           actionIcon={           
             <IconButton
               aria-label={`info about ${item.title}`}
@@ -143,7 +166,6 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
             </IconButton>
           }
         />
-
         <IconButton sx={{ position: 'absolute', left: 0, top: 0 }}
           onClick={(e) => handleToggleVisibility(e)}>
           {visible
