@@ -23,11 +23,17 @@ function GamePlay({submit}) {
   const [openPause, setOpenPause] = React.useState(false);
   const [openEnd, setOpenEnd] = React.useState(false);
   const [lives, setLives] = React.useState(3);
+  const [counter, setCounter] = React.useState(60);
 
   useEffect(() => {
     // console.log(boxRef.current.offsetTop);
     start();
   }, []);
+
+  React.useEffect(() => {
+    counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+  }, [counter]);
+
 
   useEffect(() => {
     // console.log(boxRef.current.offsetTop);
@@ -106,6 +112,7 @@ function GamePlay({submit}) {
             Score: {score}
           </Typography>
           <Box>
+            <div>Countdown: {counter}</div>
             <IconButton onClick={handleClickOpenPause}>
               <PauseCircleFilledRoundedIcon sx={{width: 40, height:40 }} />
             </IconButton> 
