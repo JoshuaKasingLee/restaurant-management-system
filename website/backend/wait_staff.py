@@ -17,7 +17,8 @@ class WaitStaff(Staff):
                 'id': order['id'],
                 'table': order['table'],
                 'name': order['menu_item'],
-                'status': order['status']
+                'status': order['status'],
+                'time_ordered': order['time_ordered'].strftime("%Y-%m-%d %H:%M:%S")
             }
             orders.append(to_append)
         return orders
