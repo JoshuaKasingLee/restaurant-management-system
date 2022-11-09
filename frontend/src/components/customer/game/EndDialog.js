@@ -90,7 +90,7 @@ function EndDialog(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmit} disabled={submitted}>Submit</Button> 
+        <Button onClick={handleSubmit} disabled={!email.includes('@') || submitted}>Submit</Button> 
       </DialogActions>
       {submitted && 
         <Alert severity="success">

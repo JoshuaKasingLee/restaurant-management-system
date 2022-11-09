@@ -51,6 +51,7 @@ function Menu() {
   const [budget, setBudget] = React.useState(null); 
   const [remaining, setRemaining] = React.useState(null); 
   const [order, setOrder] = React.useState(0); 
+  const [ordered, setOrdered] = React.useState(true); 
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event, newValue, newLabel) => {
@@ -60,7 +61,7 @@ function Menu() {
 
   const handleClose = (value) => {
     if(value !== budget) {
-      const updateBudget = async (budget) => {
+      const updateBudget = async () => {
         const response = await fetch('http://localhost:5000/customer/budget', {
           method: 'PUT',
           mode: 'cors',
@@ -105,7 +106,6 @@ function Menu() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
         localStorage.setItem('menu', JSON.stringify(data));
         setMenu( data );
       } else {
@@ -136,7 +136,7 @@ function Menu() {
     };
 
     getBudget();
-  }, [budget, order]);
+  }, [budget, ordered]);
 
   const getContent = () => {
     let content = [];
@@ -170,6 +170,7 @@ function Menu() {
           <TabPanel  key={i} value={value} index={i}>
             <Typography variant="h3" >{sortedContent[value].title}</Typography>
             <MenuCategory 
+              submit = {(ordered) => setOrdered(ordered)}
               category={menu.categories[content.findIndex(obj => 
                 obj.order === sortedContent[value].order)]} 
               filters={filters} 
@@ -209,6 +210,7 @@ function Menu() {
       <Button 
         sx={{ 
           width:'160px',
+          height: '60px',
           border: 1, 
           borderColor: 'text.secondary', 
           borderRadius: '16px', 
@@ -218,14 +220,15 @@ function Menu() {
         onClick={handleClickOpen}
       >
         {budget === null 
-          ? <Typography color='text.secondary' variant="h6" component="div" >
-            Set Budget
-          </Typography>
+          ? <Box>
+            <Typography color='text.secondary' variant="h6" component="div" >
+              Set budget
+            </Typography>
+          </Box>
           : <Typography color='text.secondary' variant="h6" component="div" >
             Remaining Budget: ${remaining.toFixed(0)}
           </Typography>
         }
-        {/* <MoreVertRoundedIcon/> */}
       </Button>
       <BudgetDialog
         open={open}

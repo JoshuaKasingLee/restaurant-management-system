@@ -4,9 +4,11 @@ import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import BalanceRoundedIcon from '@mui/icons-material/BalanceRounded';
 import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
 import QuantityButtonGroup from './QuantityButtonGroup';
+import PaymentDishSelection from './PaymentDishSelection';
 
-function PaymentToggleButton({ submit }) {
+function PaymentToggleButton({ submit, order }) {
   const [type, setType] = React.useState('together');  
+  const [quantity, setQuantity] = React.useState(4);
 
   const handlePaymentType = (event, newType) => {
     setType(newType);
@@ -50,9 +52,16 @@ function PaymentToggleButton({ submit }) {
             initial={4}
             min={2}
             max={4} 
-            submit = { quantity => localStorage.setItem('numSplit', quantity) }
+            submit = { quantity => {
+              localStorage.setItem('numSplit', quantity);
+              setQuantity(quantity);
+            }}
           />
         </ div>
+      }
+      <br />
+      { type === 'dish' &&
+        <PaymentDishSelection people={Array(quantity).fill(0)} order={order}/>
       }
     </ >
   );

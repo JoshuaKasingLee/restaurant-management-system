@@ -40,39 +40,54 @@ function BudgetDialog(props) {
   const handleClick = (value) => {
     onClose(value);
   };
-
-  // const handleBudget = (value) => {
-  //   budget(value);
-  // }
   
   return (
     <Dialog 
       open={open}
       onClose={() => handleClick(budget)}
     >
-      <BootstrapDialogTitle id="customized-dialog-title" onClose={() => handleClick(budget)}>
+      {budget !== null
+      ? <BootstrapDialogTitle id="customized-dialog-title" onClose={() => handleClick(budget)}>
         Update budget
       </BootstrapDialogTitle>
+      : <BootstrapDialogTitle id="customized-dialog-title" onClose={() => handleClick(budget)}>
+        Set budget
+      </BootstrapDialogTitle>
+      }
       <DialogContent dividers>
-        <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
-          Your total budget is ${budget}.
-        </Typography>
-        <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
-          You have ${remaining} remaining.
-        </Typography>
-        <Typography color='text.secondary' component="div">
-          Would you like to update your total budget?
-          {console.log(order)}
-        </Typography>
+      {budget !== null 
+      ? <>
+          <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
+            Your total budget is ${budget}.
+          </Typography>
+          <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
+            You have ${remaining} remaining.
+          </Typography>
+          <Typography color='text.secondary' component="div">
+            Would you like to update your total budget?
+          </Typography>
+        </>
+      : <>
+          <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
+            Your order total is ${order}.
+          </Typography>
+          <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
+            No budget has been set.
+          </Typography>
+          <Typography color='text.secondary' component="div">
+            Would you like to set a new budget?
+          </Typography>
+        </>
+      }
         <TextField
           margin="dense"
           id="budget"
           label="Budget"
           type="number"
-          fullWidth
+          sx={{width:300}}
           variant="outlined"
           defaultValue={budget}
-          helperText="Max $1000"
+          helperText="Cannot be less than order total or over $1000"
           InputProps={{ 
             startAdornment: <InputAdornment position="start">$</InputAdornment>
           }}
@@ -83,6 +98,8 @@ function BudgetDialog(props) {
         <Button onClick={() => handleClick(null)}>Delete</Button> 
         <Button onClick={() => handleClick(budget)}>Cancel</Button> 
         <Button onClick={() => handleClick(value)} disabled={!value || value < order || value > 1000}>Submit</Button>
+        {console.log(value)}
+        {console.log(typeof(value))}
       </DialogActions>
     </Dialog>
   );

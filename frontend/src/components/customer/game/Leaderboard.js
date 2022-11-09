@@ -43,7 +43,7 @@ function Leaderboard({submit}) {
     <Box sx={{ ml: 4, mr: 1, mt: 4, flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid container direction="column" item xs={6} md={3.8} sx={{ height: '75vh', mx:1 }}>
-          <Grid item xs={4} sx={{ height: '42vh', p: 1, mt: -2, ml: -2, border: 1, borderRadius: 3 }}>
+          <Grid item xs={4} sx={{ height: '42vh', p: 1, mt: -2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
             <Item>
               <Typography variant='h2'>
                 Play
@@ -56,7 +56,7 @@ function Leaderboard({submit}) {
             </Item>
           </Grid>
           <br />
-          <Grid item xs={4} sx={{ height: '40vh', p: 2, ml: -2, border: 1, borderRadius: 3 }}>
+          <Grid item xs={4} sx={{ height: '40vh', p: 2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
             <Item>
               <Typography variant='h2'>
                 Instructions
@@ -76,7 +76,7 @@ function Leaderboard({submit}) {
             </Item>
           </Grid>
         </Grid>
-        <Grid item xs={6} md={7.8} sx={{ mx: 1, border: 1, borderRadius: 3 }}>
+        <Grid item xs={6} md={7.8} sx={{  height: '74vh', mx: 1, borderRadius: 2, boxShadow: 3 }}>
           <Item>
             <Typography variant='h2'>
               Leaderboard

@@ -53,11 +53,12 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-function MenuCategory({category, filters, sort}) {
+function MenuCategory({submit, category, filters, sort}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
   const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
   const [withinBudget, setWithinBudget] = React.useState(true);
+  const [ordered, setOrdered] = React.useState(false);
 
   React.useEffect(() => {
     let content = [];
@@ -160,6 +161,8 @@ function MenuCategory({category, filters, sort}) {
             ...state, 
             [index]: 1
           }));
+          submit(ordered);
+          setOrdered(ordered => !ordered);
         } else {
           alert(await data1.error);
         }
