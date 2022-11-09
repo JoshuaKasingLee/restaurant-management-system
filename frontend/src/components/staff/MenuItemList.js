@@ -30,7 +30,8 @@ export default function MenuItemList({category, updateMenu}) {
           ingredients: category.menu_items[i].ingredients,
           order: category.menu_items[i].display_order,
           tags: tagList, //"Chef's Reccomendation"
-          actualTags: actualTags
+          actualTags: actualTags,
+          visible: category.menu_items[i].visible
         }
       );
       content.sort( (a, b) => a.order < b.order ? -1 : 1 );

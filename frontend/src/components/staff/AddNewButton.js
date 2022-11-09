@@ -4,7 +4,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import NewCategoryDialog from './NewCategoryDialog';
 import NewItemDialog from './NewItemDialog';
-import { Link } from 'react-router-dom';
 
 export default function AddNewButton({updateMenu}) {
   const [anchorEl, setAnchorEl] = React.useState(null);

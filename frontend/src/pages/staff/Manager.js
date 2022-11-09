@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import MenuEditor from '../../components/staff/MenuEditor';
 import UserManager from '../../components/staff/UserManager';
+import Entertainment from '../../components/staff/Entertainment';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -70,7 +71,7 @@ export default function Manager() {
           <UserManager />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Entertainment
+          <Entertainment />
         </TabPanel>
     </ >
   );
