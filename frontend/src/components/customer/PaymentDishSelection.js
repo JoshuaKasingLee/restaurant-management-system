@@ -9,14 +9,20 @@ export default function PaymentDishelection({ people, order }) {
     let newChecked = [...checked];
     newChecked[row][column] = event.target.checked;
     setChecked(newChecked);
-    // let dishes = {};
-    // for ( let i = 0; i < checked.length; i++) {
-    //   for (let j = 0; j < checked[i].length; j++) {
-    //     if(checked[i][j]) 
-    //       let newEntry = {`person ${i}`: [...dishes.get(`person ${i}`), order[j].id]};
-    //   }
-    // }
+
+    let splitDishes = {};
+    let dishes = [];
+    for ( let i = 0; i < people.length; i++) {
+      dishes = [];
+      for (let j = 0; j < order.length; j++) {
+        if(checked[j][i]) dishes.push(order[j].id);
+      }
+      splitDishes[`person${i+1}`] = dishes;
+    }
+    localStorage.setItem('dishes', JSON.stringify(splitDishes));
+    // console.log(localStorage.getItem('dishes'));
     console.log(checked);
+    console.log(splitDishes);
   };
 
   return (
@@ -24,14 +30,11 @@ export default function PaymentDishelection({ people, order }) {
       <Table stickyHeader size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>
-                Order
-            </TableCell>
-            <TableCell>
+            <TableCell align='center' sx={{width:'100px'}}>
                 Dish
             </TableCell>
             {people.map((column, index) => (
-              <TableCell>
+              <TableCell align='center' >
                   Person {index + 1}
               </TableCell>
             ))}
@@ -43,11 +46,9 @@ export default function PaymentDishelection({ people, order }) {
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                  {row.id}
-              </TableCell>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" align='center' scope="row">
                   {row.name}
+                  <img src={row.img} alt={row.name}/>
               </TableCell>
               {people.map((column, columnIndex) => (
                 <TableCell align='center'>

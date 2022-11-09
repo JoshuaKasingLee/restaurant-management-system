@@ -9,6 +9,7 @@ function Bill() {
   const [total, setTotal] = React.useState(0);
   const [charge, setCharge] = React.useState(new Array(4).fill(0));
   const [orderItems, setOrderItems] = React.useState([]);
+  // const [people, setPeople] = React.useState(Array(parseInt(localStorage.getItem('numSplit'))).fill(0));
 
   React.useEffect(() => {
     const getBill = async () => {
@@ -25,12 +26,7 @@ function Bill() {
             table: localStorage.getItem('table'),
             type: localStorage.getItem('paymentType'),
             numSplit: localStorage.getItem('numSplit'),
-            dishes: {
-              person1: [],
-              person2: [],
-              person3: [],
-              person4: [],
-            }
+            dishes: JSON.parse(localStorage.getItem('dishes')),
           }
         )
       });
@@ -60,6 +56,13 @@ function Bill() {
             <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
               Charge/pp: ${charge[0].toFixed(2)}
             </Typography>
+          }
+          {localStorage.getItem('paymentType') === 'dish' &&
+            Array(parseInt(localStorage.getItem('numSplit'))).fill(0).map((person, index) => (
+              <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+                Person {index + 1} Charge : ${charge[index].toFixed(2)}
+              </Typography>
+            ))
           }
           <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Total Charge: ${total.toFixed(2)}

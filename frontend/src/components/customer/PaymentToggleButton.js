@@ -42,9 +42,9 @@ function PaymentToggleButton({ submit, order }) {
           Split by dish
         </ToggleButton>
       </ToggleButtonGroup>
-      <br />
       { type !== 'together' && 
         <div>
+          <br />
           <Typography gutterBottom>
             How many people are you splitting between?
           </Typography>
