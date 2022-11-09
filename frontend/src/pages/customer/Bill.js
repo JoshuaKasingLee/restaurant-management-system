@@ -59,7 +59,7 @@ function Bill() {
           }
           {localStorage.getItem('paymentType') === 'dish' &&
             Array(parseInt(localStorage.getItem('numSplit'))).fill(0).map((person, index) => (
-              <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+              <Typography key={index} color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
                 Person {index + 1} Charge : ${charge[index].toFixed(2)}
               </Typography>
             ))

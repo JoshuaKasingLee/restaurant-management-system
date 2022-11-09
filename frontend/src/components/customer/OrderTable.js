@@ -57,6 +57,7 @@ function OrderTable() {
   const [order, setOrder] = React.useState([]);
   const [totalCost, setTotalCost] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+  const [valid, setValid] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -173,10 +174,10 @@ function OrderTable() {
               <Typography gutterBottom>
                 We hope you enjoyed you're meal. How would you like to pay?
               </Typography>
-              <PaymentToggleButton order={order} submit = { type => localStorage.setItem('paymentType', type) }/>
+              <PaymentToggleButton order={order} disable = { valid => setValid(valid)} submit = { type => localStorage.setItem('paymentType', type) }/>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus component={Link} to={'/customer/bill'}>
+              <Button autoFocus component={Link} to={'/customer/bill'} disabled={!valid}>
                 Request Bill
               </Button>
             </DialogActions>

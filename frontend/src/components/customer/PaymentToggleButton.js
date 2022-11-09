@@ -6,9 +6,10 @@ import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
 import QuantityButtonGroup from './QuantityButtonGroup';
 import PaymentDishSelection from './PaymentDishSelection';
 
-function PaymentToggleButton({ submit, order }) {
+function PaymentToggleButton({ submit, disable, order }) {
   const [type, setType] = React.useState('together');  
   const [quantity, setQuantity] = React.useState(4);
+  const [valid, setValid] = React.useState(true);
 
   const handlePaymentType = (event, newType) => {
     setType(newType);
@@ -20,6 +21,10 @@ function PaymentToggleButton({ submit, order }) {
     localStorage.setItem('numSplit', 4);
   }, []);
 
+  React.useEffect(() => {
+    disable(valid);
+  }, [disable, valid]);
+
   return (
     <>
       <ToggleButtonGroup
@@ -29,15 +34,15 @@ function PaymentToggleButton({ submit, order }) {
         onChange={handlePaymentType}
         aria-label="payment method"
       >
-        <ToggleButton color="primary" value="together" aria-label="pay together">
+        <ToggleButton color="primary" value="together" aria-label="pay together" onClick={() => setValid(true)}>
           <GroupsRoundedIcon />
           Pay together
         </ToggleButton>
-        <ToggleButton color="primary" value="equal" aria-label="split equally">
+        <ToggleButton color="primary" value="equal" aria-label="split equally" onClick={() => setValid(true)}>
           <BalanceRoundedIcon />
           Split equally
         </ToggleButton>
-        <ToggleButton color="primary" value="dish" aria-label="split by dish">
+        <ToggleButton color="primary" value="dish" aria-label="split by dish" onClick={() => setValid(false)}>
           <RestaurantRoundedIcon />
           Split by dish
         </ToggleButton>
@@ -61,7 +66,7 @@ function PaymentToggleButton({ submit, order }) {
       }
       <br />
       { type === 'dish' &&
-        <PaymentDishSelection people={Array(quantity).fill(0)} order={order}/>
+        <PaymentDishSelection submit={(valid) => setValid(valid)} people={Array(quantity).fill(0)} order={order}/>
       }
     </ >
   );
