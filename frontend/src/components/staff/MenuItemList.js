@@ -30,7 +30,8 @@ export default function MenuItemList({category, updateMenu}) {
           ingredients: category.menu_items[i].ingredients,
           order: category.menu_items[i].display_order,
           tags: tagList, //"Chef's Reccomendation"
-          actualTags: actualTags
+          actualTags: actualTags,
+          visible: category.menu_items[i].visible
         }
       );
       content.sort( (a, b) => a.order < b.order ? -1 : 1 );
@@ -40,7 +41,7 @@ export default function MenuItemList({category, updateMenu}) {
   }, [category]);
  
   return ( categoryItems &&
-    <ImageList sx={{ width: 950, height: 500 }} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: 950, height: 510 }} cols={4} rowHeight={250}>
       {categoryItems.map((item) => (
         <MenuItemCard key={`item-${item.id}`} item={item} categoryName={category.name} updateMenu={updateMenu}/>
       ))}

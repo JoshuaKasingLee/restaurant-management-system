@@ -57,6 +57,7 @@ function OrderTable() {
   const [order, setOrder] = React.useState([]);
   const [totalCost, setTotalCost] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+  const [valid, setValid] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,15 +83,16 @@ function OrderTable() {
         for (let i=0; i < data.orderItems.length; i++) {
           content.push(
             { 
+              id: data.orderItems[i].id,
               img: data.orderItems[i].img,
               name: data.orderItems[i].name,
               status: data.orderItems[i].status,
               cost: data.orderItems[i].cost,
             }
           );
-          setOrder( order => content );
+          setOrder( content );
         }
-        setTotalCost( totalCost => data.total);
+        setTotalCost( data.total);
       } else {
         alert(await data.error);
       }
@@ -105,8 +107,8 @@ function OrderTable() {
   }, []);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 500 }}>
+    <Paper sx={{ m: 2, overflow: 'hidden', borderRadius: 2, boxShadow: 3 }}>
+      <TableContainer sx={{ maxHeight: 535 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -172,10 +174,10 @@ function OrderTable() {
               <Typography gutterBottom>
                 We hope you enjoyed you're meal. How would you like to pay?
               </Typography>
-              <PaymentToggleButton submit = { type => localStorage.setItem('paymentType', type) }/>
+              <PaymentToggleButton order={order} disable = { valid => setValid(valid)} submit = { type => localStorage.setItem('paymentType', type) }/>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus component={Link} to={'/customer/bill'}>
+              <Button autoFocus component={Link} to={'/customer/bill'} disabled={!valid}>
                 Request Bill
               </Button>
             </DialogActions>

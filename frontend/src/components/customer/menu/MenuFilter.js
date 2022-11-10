@@ -1,19 +1,24 @@
 import * as React from 'react';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
-import GradeRoundedIcon from '@mui/icons-material/GradeRounded';
+import { ReactComponent as DairyIcon } from './DF.svg';
+import { ReactComponent as GlutenIcon } from './GF.svg';
+import { ReactComponent as NutIcon } from './NF.svg';
+import { ReactComponent as StarIcon } from './CR.svg';
+import { ReactComponent as VeganIcon } from './VE.svg';
+import { ReactComponent as VegIcon } from './V.svg';
 import { Chip, Stack } from '@mui/material';
+import SvgIcon from '@mui/material/SvgIcon';
 
 // ----------------------------------------------------------------------
 
 function MenuFilter({ submit }) {
   // const [filters, setFilters] = React.useState([]);
   const [chipData, setChipData] = React.useState([
-    { key: 0, label: "Chef's Recommendation", icon: GradeRoundedIcon, selected: 'outlined default' },
-    { key: 1, label: 'Vegetarian', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 2, label: 'Vegan', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 3, label: 'Gluten Free', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 4, label: 'Nut Free', icon: TagFacesIcon, selected: 'outlined default' },
-    { key: 5, label: 'Dairy Free', icon: TagFacesIcon, selected: 'outlined default' },
+    { key: 0, label: "Chef's Recommendation", icon: StarIcon, selected: 'outlined default' },
+    { key: 1, label: 'Vegetarian', icon: VegIcon, selected: 'outlined default' },
+    { key: 2, label: 'Vegan', icon: VeganIcon, selected: 'outlined default' },
+    { key: 3, label: 'Gluten Free', icon: GlutenIcon, selected: 'outlined default' },
+    { key: 4, label: 'Nut Free', icon: NutIcon, selected: 'outlined default' },
+    { key: 5, label: 'Dairy Free', icon: DairyIcon, selected: 'outlined default' },
   ]);
 
   const handleClick = (data) => () => {
@@ -36,7 +41,7 @@ function MenuFilter({ submit }) {
             variant={data.selected.split(' ')[0]} 
             color={data.selected.split(' ')[1]} 
             size="small"
-            icon={<data.icon/>}
+            icon={<SvgIcon component={data.icon}/>}
             label={data.label}
             onClick={handleClick(data)}
           />

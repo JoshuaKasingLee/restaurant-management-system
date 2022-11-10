@@ -52,7 +52,7 @@ function MenuEditor() {
 
   React.useEffect(() => {
     const getMenu = async () => {
-      await new Promise(response => setTimeout(response, 1000));
+      // await new Promise(response => setTimeout(response, 1000));
       const response = await fetch(`http://localhost:5000/manager/menu`, {  
         method: 'GET',
         headers: {
@@ -178,7 +178,9 @@ function MenuEditor() {
           value={value}
           label={label}
           onChange={handleChange}
-          aria-label="Vertical tabs example"
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="Vertical tabs for menu categories"
           sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
         >
           {getCategoriesTabs(menu)}

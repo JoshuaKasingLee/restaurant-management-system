@@ -176,7 +176,7 @@ def category_delete(CategoryId):
 def get_entertainment():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    valid = restaurant.customer_validate(token)
+    valid = restaurant.manager_validate(token)
     if (valid == False):
         return {"error": "Unable to validate"}, 401
     return restaurant.get_entertainment()
@@ -185,7 +185,7 @@ def get_entertainment():
 def reset_leaderboard():
     bearer = request.headers['Authorization']
     token = bearer.split()[1]
-    valid = restaurant.customer_validate(token)
+    valid = restaurant.manager_validate(token)
     if (valid == False):
         return {"error": "Unable to validate"}, 401
     return restaurant.clear_leaderboard()

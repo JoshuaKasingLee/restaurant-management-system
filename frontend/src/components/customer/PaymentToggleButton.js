@@ -4,9 +4,12 @@ import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import BalanceRoundedIcon from '@mui/icons-material/BalanceRounded';
 import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
 import QuantityButtonGroup from './QuantityButtonGroup';
+import PaymentDishSelection from './PaymentDishSelection';
 
-function PaymentToggleButton({ submit }) {
+function PaymentToggleButton({ submit, disable, order }) {
   const [type, setType] = React.useState('together');  
+  const [quantity, setQuantity] = React.useState(4);
+  const [valid, setValid] = React.useState(true);
 
   const handlePaymentType = (event, newType) => {
     setType(newType);
@@ -18,6 +21,10 @@ function PaymentToggleButton({ submit }) {
     localStorage.setItem('numSplit', 4);
   }, []);
 
+  React.useEffect(() => {
+    disable(valid);
+  }, [disable, valid]);
+
   return (
     <>
       <ToggleButtonGroup
@@ -27,22 +34,22 @@ function PaymentToggleButton({ submit }) {
         onChange={handlePaymentType}
         aria-label="payment method"
       >
-        <ToggleButton color="primary" value="together" aria-label="pay together">
+        <ToggleButton color="primary" value="together" aria-label="pay together" onClick={() => setValid(true)}>
           <GroupsRoundedIcon />
           Pay together
         </ToggleButton>
-        <ToggleButton color="primary" value="equal" aria-label="split equally">
+        <ToggleButton color="primary" value="equal" aria-label="split equally" onClick={() => setValid(true)}>
           <BalanceRoundedIcon />
           Split equally
         </ToggleButton>
-        <ToggleButton color="primary" value="dish" aria-label="split by dish">
+        <ToggleButton color="primary" value="dish" aria-label="split by dish" onClick={() => setValid(false)}>
           <RestaurantRoundedIcon />
           Split by dish
         </ToggleButton>
       </ToggleButtonGroup>
-      <br />
       { type !== 'together' && 
         <div>
+          <br />
           <Typography gutterBottom>
             How many people are you splitting between?
           </Typography>
@@ -50,9 +57,16 @@ function PaymentToggleButton({ submit }) {
             initial={4}
             min={2}
             max={4} 
-            submit = { quantity => localStorage.setItem('numSplit', quantity) }
+            submit = { quantity => {
+              localStorage.setItem('numSplit', quantity);
+              setQuantity(quantity);
+            }}
           />
         </ div>
+      }
+      <br />
+      { type === 'dish' &&
+        <PaymentDishSelection submit={(valid) => setValid(valid)} people={Array(quantity).fill(0)} order={order}/>
       }
     </ >
   );

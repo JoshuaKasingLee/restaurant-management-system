@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
-import RoomServiceRoundedIcon from '@mui/icons-material/RoomServiceRounded';
+import RecordVoiceOverRoundedIcon from '@mui/icons-material/RecordVoiceOverRounded';
 
 const drawerWidth = 50;
 
@@ -89,7 +89,7 @@ function Header({image, title}) {
           color="primary"
           onChange={handleChange}
           >
-            <RoomServiceRoundedIcon fontSize="large" />
+            <RecordVoiceOverRoundedIcon  sx={{width: 50, height: 50 }} />
           </ToggleButton>}
         </Toolbar>
       </AppBar>

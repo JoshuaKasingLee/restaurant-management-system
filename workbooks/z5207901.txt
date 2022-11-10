@@ -6,3 +6,21 @@ During week 2, Kelly, Josh and I spent some time to discuss the languages and fr
 
 Week 3
 During week 3, I spent the majority of my time writing my section of the report whilst populating the Jira board with our defined user stories & acceptance criteria. Our database implementation has been set and we've all begun doing some coding to get our allocated sections completed. At the beginning of week 3, we delegated user stories amongst ourselves with an aim to finish it slightly before the due date in order to go through an offline demo of our product.
+
+Week 4
+Josh, Kelly and I had a discussion regarding the file structure and how we should set up the testing and exception handling. I completed my allocated sprint 1 functionality including the get menu functionality and also the order functions that was passed to the waiter and kitchen interface. Because of the way we structured out code, it was easy-ish to navigate and implement these functionalities. I also managed to generate tests for these functions so that they were complete.
+
+Week 5
+In week 5, the team and I finalised our sprint and demo'd. Here we began using the Swagger chrome extension to test our routes because the front end team were running into issues where our routes were generated incorrectly. As a team, we also agreed on our sprint 2 work alocation and sprints. I used this time to consolidate my understanding of how the entertainment section of the application worked.
+
+Week 6 (Flexi Week)
+Week 6 was flexi week so I spent the better half of this week working on my functions and ensuring good code quality across the codebase. I was able to look into a potential AWS-database solution -> hooking up our application to AWS as a means of running our app via the cse-computers of vlab.
+
+Week 7
+In week 7, I was able to showcase to the team the working AWS database solution. This meant that we have a fallback solution for the VM that we were having trouble setting up. Initially I tried to install PostgresSQL into the cse machines, but that seemed to fail. One drawback however, was that the AWS database seems to have a slight latency issue when pushing requests, however we will begin to resolve this.
+
+Week 8
+In week 8, I caught COVID and was mostly out of commission. Fortunately the functionality I was assigned at sprint 2 had minimal impact to the second demo meaning the team was able to function without me being at full capacity. As a team, we looked into how we can allocate the final report and also how we can refactor the backend code appropriately to achieve marks for software quality. These were all assigned. I was assigned into looking at whether we can send error messages to the routes and categorising the tests better.
+
+Week 9
+In week 9, I completed all functionality regarding the final demo. So far I have gone back and forth with the front end team ammending my changes according to their requirements. These functions included getting the leaderboard to the customer and managers at their associated entry time and ordering the entries by their score and in alphabetical order. The respective entries required a position/rank allocated (including having ties for people who had the same score).

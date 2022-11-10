@@ -1,12 +1,17 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
   IconButton, ImageList, ImageListItem, ImageListItemBar, Slide, Typography } from '@mui/material';
-import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
-import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import QuantityButtonGroup from '../QuantityButtonGroup';
+import { ReactComponent as DairyIcon } from './DF.svg';
+import { ReactComponent as GlutenIcon } from './GF.svg';
+import { ReactComponent as NutIcon } from './NF.svg';
+import { ReactComponent as StarIcon } from './CR.svg';
+import { ReactComponent as VeganIcon } from './VE.svg';
+import { ReactComponent as VegIcon } from './V.svg';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -48,10 +53,12 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-function MenuCategory({category, filters, sort}) {
+function MenuCategory({submit, category, filters, sort}) {
   const [categoryItems, setCategoryItems] = React.useState([]);
   const [open, setOpen] = React.useState(new Array(category.menu_items.length).fill(false));
   const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
+  const [withinBudget, setWithinBudget] = React.useState(true);
+  const [ordered, setOrdered] = React.useState(false);
 
   React.useEffect(() => {
     let content = [];
@@ -95,7 +102,7 @@ function MenuCategory({category, filters, sort}) {
     }));
   };
 
-  const handleClose = (index) => () => {
+  const handleClose = (index) => () => {  
     setOpen( state => ({ 
       ...state, 
       [index]: false
@@ -104,10 +111,11 @@ function MenuCategory({category, filters, sort}) {
       ...state, 
       [index]: 1
     }));
+    setWithinBudget(true);
   };
-  
+
   const handleOrder = (item, index) => async () => {
-    const response = await fetch('http://localhost:5000/customer/order', {
+    const response = await fetch('http://localhost:5000/customer/checkorder', {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -123,50 +131,85 @@ function MenuCategory({category, filters, sort}) {
         }
       )
     });
-    const data = await response;
+    const data = await response.json();
     if (response.ok) {
-      setOpen( state => ({ 
-        ...state, 
-        [index]: false
-      }));
-      setQuantity( state => ({ 
-        ...state, 
-        [index]: 1
-      }));
+      setWithinBudget(data.withinBudget);
+      if(data.withinBudget) {
+        const response1 = await fetch('http://localhost:5000/customer/order', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+          'Content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify(
+            { 
+              table: localStorage.getItem("table"),
+              menuItem: item.title,
+              quantity: quantity[index]
+            }
+          )
+        });
+        const data1 = await response1;
+        if (response1.ok) {
+          setOpen( state => ({ 
+            ...state, 
+            [index]: false
+          }));
+          setQuantity( state => ({ 
+            ...state, 
+            [index]: 1
+          }));
+          submit(ordered);
+          setOrdered(ordered => !ordered);
+        } else {
+          alert(await data1.error);
+        }
+      }
     } else {
       alert(await data.error);
     }
-
   };
 
   return (
-    <ImageList sx={{ width: 950, height: 500 }} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: 950, height: 510}} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
-        < div key={item.img}>
-          <ImageListItem sx={{ width: 230 }} onClick={handleClickOpen(index)}>
+        < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
+          <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%' }} onClick={handleClickOpen(index)}>
             <img
+              style={{ borderRadius: '5% 5% 0% 0%' }}
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
               srcSet={`${item.img}?w=230&h=200&fit=crop&auto=format&dpr=2 2x`}
               alt={item.title}
               loading="lazy"
             />
-            {item.tags === "Chef's Reccomendation" && <ImageListItemBar
-              subtitle={<StarsRoundedIcon />}
+            <ImageListItemBar
               position="top"
-              sx={{ bgcolor: 'transparent' }}
-              
-            />}
+              sx={{
+                background:
+                  'linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, ' +
+                  'rgba(255,255,255,0.3) 70%, rgba(255,255,255,0) 100%)',
+              }}
+              actionIcon={
+                <IconButton
+                  aria-label={`star ${item.title}`}
+                >
+                  {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
+                  {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
+                  {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
+                  {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
+                  {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
+                  {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
+                </IconButton>
+              }
+              actionPosition="right"
+            />
             <ImageListItemBar
               title={item.title}
               subtitle={<span>${item.cost.toFixed(2)}</span>}
               position="below"
-              actionIcon={
-                <IconButton
-                  aria-label={`info about ${item.title}`}
-                >
-                  <InfoIcon />
-                </IconButton>
-              }
+              sx={{ px: 1 }}
             />
           </ImageListItem>
           <Dialog
@@ -178,7 +221,7 @@ function MenuCategory({category, filters, sort}) {
             fullWidth={true}
             maxWidth='sm'
           >
-            <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose(index)}>
+            <BootstrapDialogTitle onClose={handleClose(index)}>
               {item.title}
             </BootstrapDialogTitle>
             <DialogContent dividers sx={{ flexGrow: 1 }}>
@@ -200,8 +243,13 @@ function MenuCategory({category, filters, sort}) {
                   <Typography gutterBottom>
                     Category: {category.name}
                   </Typography>
-                  <Typography gutterBottom>
-                    Tags: {item.tags.join(', ')}
+                  <Typography component='div' gutterBottom>
+                    {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
+                    {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
+                    {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
+                    {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
+                    {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
+                    {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
                   </Typography>
                   <Typography gutterBottom>
                     Cost: ${item.cost.toFixed(2)}
@@ -216,8 +264,14 @@ function MenuCategory({category, filters, sort}) {
               </Grid>
             </DialogContent>
             <DialogActions>
+              <Button onClick={handleClose(index)}>Cancel</Button>
               <Button onClick={handleOrder(item, index)}>Order</Button>
             </DialogActions>
+            {!withinBudget && 
+              <Alert severity="error">
+                You will exceed you budget with this order. Update your budget to order more.
+              </Alert>
+            }
           </Dialog>
         </div>
       ))}

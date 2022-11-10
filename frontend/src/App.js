@@ -11,6 +11,7 @@ import ThemeProvider from './theme';
 
 import Landing from './pages/Landing';
 import Table from './pages/customer/Table';
+import Budget from './pages/customer/Budget';
 import Menu from './pages/customer/Menu';
 import Game from './pages/customer/Game';
 import Order from './pages/customer/Order';
@@ -28,6 +29,7 @@ function App () {
         <Routes>
           <Route exact path='/' element={<Landing />} />
           <Route exact path='/customer/table' element={<Table />} />
+          <Route exact path='/customer/budget' element={<Budget />} />
           <Route exact path='/customer/menu' element={<Menu />} />
           <Route exact path='/customer/game' element={<Game />} />
           <Route exact path='/customer/order' element={<Order />} />

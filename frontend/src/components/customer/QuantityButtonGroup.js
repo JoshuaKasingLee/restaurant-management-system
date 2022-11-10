@@ -16,7 +16,7 @@ function QuantityButtonGroup({initial, min, max, submit}) {
 
   return (
 		<ButtonGroup variant="outlined" aria-label="outlined button group">
-			<Button sx={{ width: 50 }} onClick={handleSubtract}>
+			<Button sx={{ width: 50 }} onClick={handleSubtract} disabled={quantity === min}>
 				<Typography variant="h4">
 					-
 				</Typography>
@@ -26,7 +26,7 @@ function QuantityButtonGroup({initial, min, max, submit}) {
 					{JSON.stringify(quantity)}
 				</Typography>
 			</Box>
-			<Button sx={{ width: 50 }} onClick={handleAdd}>
+			<Button sx={{ width: 50 }} onClick={handleAdd} disabled={quantity === max}>
 				<Typography variant="h4">
 					+
 				</Typography>

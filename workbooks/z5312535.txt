@@ -13,3 +13,19 @@ Jannet and I worked together to write up the API endpoints that we would need fr
 Week 4
 
 I cleaned up the API endpoints with Jannet after discussions with the team. I read up on the documentation for React and mocked up a frontend with all the necessary staff pages for sprint 1, unconnected to the backend. This was demoed to the team, to make sure everyone liked it. Then, I connected most of the kitchen, wait, and login side of staff with the backend.
+
+Week 5
+
+I finished off the frontend implementations for staff for sprint 1. This included adding and deleting items, setting up the user manager, and the kitchen and wait staff interfaces. Had a little a problem with deleting items, which I worked with the backend to solve.
+
+Week 6
+
+I took a break during flexi week.
+
+Week 7
+
+I continued doing the frontend implementation for staff sprint 2. This included, setting up request assistance from the wait staff, adding and deleting categories, editing categories and items, and reordering items and categories, the latter which took the longest as I chose to use an external library to implement it.
+
+Week 8
+
+I added validation checking for all the cases needing user input, and finished off the reordering functionality. Also, solved a small problem for the deleting categories functionality.
