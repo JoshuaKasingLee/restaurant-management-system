@@ -176,7 +176,7 @@ function MenuCategory({submit, category, filters, sort}) {
   return (
     <ImageList sx={{ width: 950, height: 510}} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
-        // item.visible &&
+        item.visible &&
         < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
           <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%' }} onClick={handleClickOpen(index)}>
             <img

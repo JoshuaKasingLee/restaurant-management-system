@@ -59,8 +59,8 @@ function Menu() {
     setLabel(newLabel);
   };
 
-  const handleClose = (value) => {
-    if(value !== budget) {
+  const handleClose = (budgetValue) => {
+    if(budgetValue !== budget) {
       const updateBudget = async () => {
         const response = await fetch('http://localhost:5000/customer/budget', {
           method: 'PUT',
@@ -73,13 +73,13 @@ function Menu() {
           body: JSON.stringify(
             { 
               table: localStorage.getItem('table'),
-              budget: value
+              budget: budgetValue
             }
           )
         });
         const data = await response.json();
         if (response.ok) {
-          setBudget(value);
+          setBudget(budgetValue);
         } else {
           alert(await data.error);
         }
@@ -108,6 +108,7 @@ function Menu() {
       if (response.ok) {
         localStorage.setItem('menu', JSON.stringify(data));
         setMenu( data );
+        console.log(data.categories);
       } else {
         alert(await data.error);
       }
@@ -150,13 +151,16 @@ function Menu() {
     return content;
   }
 
+  const getFilteredContent = () => {
+    return getContent().filter(value => value.title !== 'Unassigned' && value.visible === true);
+  }
+
   const getCategoriesTabs = () => {
     let renderedContent = [];
-    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-      if(sortedContent[i].title !== 'Unassigned') {
         renderedContent.push(<Tab key={i} label={sortedContent[i].title} {...a11yProps(i)} />);
-      }
+        console.log('tab' + i);
     }
     return renderedContent;
   };
@@ -164,22 +168,20 @@ function Menu() {
   const getCategoriesTabPanels = () => {
     let renderedContent = [];
     let content = getContent();
-    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-      if(sortedContent[i].title !== 'Unassigned') {
         renderedContent.push(
           <TabPanel  key={i} value={value} index={i}>
-            <Typography variant="h3" >{sortedContent[value].title}</Typography>
+            <Typography variant="h3" >{sortedContent[i].title}</Typography>
             <MenuCategory 
               submit = {(ordered) => setOrdered(ordered)}
               category={menu.categories[content.findIndex(obj => 
-                obj.order === sortedContent[value].order)]} 
+                obj.order === sortedContent[i].order)]} 
               filters={filters} 
               sort={sort}
             />
           </TabPanel>
         );
-      }
     }
     return renderedContent;
   };
