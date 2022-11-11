@@ -20,11 +20,11 @@ class TagNames(Enum):
     DF = 'dairy free'
     CR = 'chef recommended'
 
-def get_dish_cost(orderId: int):
+def get_dish_cost(order_id: int) -> float:
     cur = conn.cursor()
     try:
         # need to check row count instead
-        cur.execute("select menu_item from orders where id = %s", [orderId])
+        cur.execute("select menu_item from orders where id = %s", [order_id])
     except Exception as err:
         conn.rollback()
         raise Exception("Order could not be found")

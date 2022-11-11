@@ -1,7 +1,7 @@
 from datetime import datetime
 
 class LeaderboardEntry:
-    def __init__(self, name, email, score, time_played = datetime.now()):
+    def __init__(self, name: str, email: str, score: int, time_played: datetime = datetime.now()):
         self.name = name
         self.email = email
         self.score = score

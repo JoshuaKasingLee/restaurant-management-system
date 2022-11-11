@@ -1,14 +1,15 @@
 from staff import Staff
+from helper import OrderStatus
 
 class KitchenStaff(Staff):
-    def __init__(self, password, restaurant):
+    def __init__(self, password: str, restaurant):
         super().__init__(password, restaurant)
 
-    def update_status(self, id, status):
+    def update_status(self, id: int, status: OrderStatus):
         for table in self.restaurant.tables:
             table.update_order_status(id, status)
     
-    def get_order_list(self):
+    def get_order_list(self) -> list:
         all_orders = self.restaurant.get_kitchen_order_list()
         orders = []
         for order in all_orders:

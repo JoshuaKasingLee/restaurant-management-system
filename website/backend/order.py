@@ -1,8 +1,9 @@
 from helper import OrderStatus
 from menu_item import MenuItem
+from datetime import datetime
 
 class Order:
-    def __init__(self, menu_item: MenuItem, table, time_ordered, id = None, status = OrderStatus.ORDERED):
+    def __init__(self, menu_item: MenuItem, table: int, time_ordered: datetime, id: int = None, status = OrderStatus.ORDERED):
         self.menu_item = menu_item
         self.table = table
         self.status = status

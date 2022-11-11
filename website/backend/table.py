@@ -10,7 +10,7 @@ import json
 
 
 class Table:
-    def __init__(self, number: int, budget = None, orders=None, needs_assistance = False, occupied = False):
+    def __init__(self, number: int, budget: float = None, orders: list=None, needs_assistance: bool = False, occupied: bool = False):
         self.number = number
         self.budget = budget
         if orders is None:
@@ -20,10 +20,10 @@ class Table:
         self.occupied = occupied
         self.token = None
     
-    def to_JSON(self):
+    def to_JSON(self) -> dict:
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)
 
-    def check_order_budget(self, menu_item_name: str, quantity: int):
+    def check_order_budget(self, menu_item_name: str, quantity: int) -> bool:
         if quantity > 0:
             cur = conn.cursor()
             try:
@@ -40,7 +40,7 @@ class Table:
             else:
                 return True
 
-    def order_dishes(self, menu_item_name, quantity: int):
+    def order_dishes(self, menu_item_name: str, quantity: int):
         if quantity > 0:
             cur = conn.cursor()
             try:
@@ -83,13 +83,13 @@ class Table:
         order_id = cur.fetchone()[0]
         self.add_order_to_table(menu_item, order_id)
 
-    def add_order_to_table(self, menu_item, order_id = None):
+    def add_order_to_table(self, menu_item: MenuItem, order_id: int = None):
         new_order = Order(menu_item, self.number, datetime.now(), order_id)
         self.orders.append(new_order)
 
     # view orders
 
-    def view_orders(self):
+    def view_orders(self) -> dict:
         order_items = []
         for order in self.orders:
             order_info = {
@@ -127,13 +127,13 @@ class Table:
 
     # request the (split) bill
 
-    def get_total_cost(self):
+    def get_total_cost(self) -> float:
         cost = 0
         for order in self.orders:
             cost += order.menu_item.cost
         return cost
 
-    def get_bill(self, type: str, num_split: int = 0, dishes: dict = {}):
+    def get_bill(self, type: str, num_split: int = 0, dishes: dict = {}) -> dict:
         cur = conn.cursor()
 
         receipt = []
@@ -157,7 +157,7 @@ class Table:
             "order_items": receipt
         }
 
-    def get_charge_array(self, type: str, num_split: int = 0, dishes: dict = {}):
+    def get_charge_array(self, type: str, num_split: int = 0, dishes: dict = {}) -> list:
         charge_array = []
         if (type == 'together'):
             charge_array = [self.get_total_cost(), 0, 0, 0]
@@ -231,7 +231,7 @@ class Table:
                 dishes_split[orderId] = 1
         return dishes_split
 
-    def set_budget(self, budget = None):
+    def set_budget(self, budget: float = None):
         cur = conn.cursor()
         try:
             cur.execute("update tables set budget = %s where num = %s", [budget, self.number])
@@ -262,7 +262,7 @@ class Table:
         self.token = None
 
     # modifying order
-    def update_order_status(self, id, status):
+    def update_order_status(self, id: int, status: OrderStatus):
         for order in self.orders:
             if order.id == id:
                 cur = conn.cursor()

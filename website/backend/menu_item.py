@@ -1,10 +1,10 @@
 
 from init_db import conn
-
+from category import Category
 
 class MenuItem:
     curr_max_display_order = 0
-    def __init__(self, name, desc, ingredients, cost, category, tags = None, img = 'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg', visible = False, display_order = 0):
+    def __init__(self, name: str, desc: str, ingredients: str, cost: str, category: Category, tags = None, img = 'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg', visible = False, display_order = 0):
         self.name = name
         self.desc = desc
         self.ingredients = ingredients
@@ -23,7 +23,7 @@ class MenuItem:
             if (display_order > MenuItem.curr_max_display_order): 
                 MenuItem.curr_max_display_order = display_order
     
-    def to_JSON(self):
+    def to_JSON(self) -> dict:
         cur = conn.cursor()
         cur.execute("select id from menu_item where name = %s", [self.name])
         item_id = cur.fetchone()[0]
