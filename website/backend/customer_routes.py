@@ -40,7 +40,6 @@ def get_budget():
             "remaining": remaining
         }
         return res
-        
     return {"error": f"Cannot find table number {table}"}, 401
 
 @customer_routes.route('/budget', methods=['PUT'])

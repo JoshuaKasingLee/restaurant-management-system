@@ -4,7 +4,6 @@ from __init__res import restaurant
 
 manager_routes = Blueprint('manager_routes', __name__)
 
-
 @manager_routes.route('/users', methods=['GET'])
 def get_restaurant_info():
     bearer = request.headers['Authorization']
@@ -14,8 +13,6 @@ def get_restaurant_info():
         return {"error": "Unable to validate"}, 401
     return restaurant.get_restaurant_info()
     
-
-
 @manager_routes.route('/users', methods=['POST']) # is this meant to be put?
 def change_restaurant_info():
     bearer = request.headers['Authorization']
