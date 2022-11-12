@@ -6,6 +6,7 @@ from menu_item import MenuItem
 from category import Category
 from table import Table
 from init_db import conn
+from helper import TagNames
 
 class Manager(Staff):
     def __init__(self, password: str, restaurant):
@@ -131,8 +132,8 @@ class Manager(Staff):
         conn.commit()
     
     def edit_menu_item(self, id: int, name: str, category: str, desc: str, ingredients: str, cost: float, show: bool, tags = None, img = None) -> MenuItem:
-    
         cur = conn.cursor()
+
         cur.execute("select name from menu_item where id = %s", [id])
         oldname = cur.fetchone()[0]
         if not self.restaurant.menu_contains(oldname):
@@ -158,7 +159,6 @@ class Manager(Staff):
                             raise Exception("Inserting tag failed")
                         
             for item in self.restaurant.menu_items:
-
                 if item.name == oldname:
                     item.name = name
                     #find category object please
@@ -173,7 +173,6 @@ class Manager(Staff):
 
 
     def add_menu_item(self, name: str, desc: str, ingredients: str, cost: float, category: str, tags = None, img = None) -> MenuItem:
-    
         if self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} already exists")
         else:
@@ -190,37 +189,37 @@ class Manager(Staff):
             conn.commit()
 
             if tags != None:
-                if tags["vegetarian"]:
+                if tags[TagNames.VEGETARIAN.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegetarian'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['vegan']:
+                if tags[TagNames.VEGAN.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegan'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['gluten free']:
+                if tags[TagNames.GF.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'gluten free'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['nut free']:
+                if tags[TagNames.NF.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'nut free'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['dairy free']:
+                if tags[TagNames.DF.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'dairy free'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['chef recommended']:
+                if tags[TagNames.CR.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'chef recommended'));", [name])
                     except Exception as err:
@@ -299,7 +298,6 @@ class Manager(Staff):
                 
         while (len(self.restaurant.tables) > number):
             self.restaurant.remove_table()
-        
         conn.commit()
     
     

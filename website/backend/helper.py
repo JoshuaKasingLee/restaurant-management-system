@@ -1,5 +1,8 @@
 from enum import Enum
 from init_db import conn
+
+# enums used
+
 class OrderStatus(Enum):
     ORDERED = 'ordered'
     COOKING = 'cooking'
@@ -11,7 +14,6 @@ class StaffRole(Enum):
     KITCHEN = 2
     MANAGER = 3
 
-# need to use or delete these enums
 class TagNames(Enum):
     VEGETARIAN = 'vegetarian'
     VEGAN = 'vegan'
@@ -20,22 +22,17 @@ class TagNames(Enum):
     DF = 'dairy free'
     CR = 'chef recommended'
 
+# helper functions
+
 def get_dish_cost(order_id: int) -> float:
     cur = conn.cursor()
-    try:
-        # need to check row count instead
-        cur.execute("select menu_item from orders where id = %s", [order_id])
-    except Exception as err:
-        conn.rollback()
-        raise Exception("Order could not be found")
-
-    menu_item_id = cur.fetchone()[0]
-    
-    try:
-        # need to check row count instead
+    cur.execute("select menu_item from orders where id = %s", [order_id])
+    if (cur.rowcount == 1):
+        menu_item_id = cur.fetchone()[0]
         cur.execute("select cost from menu_item where id = %s", [menu_item_id])
-    except Exception as err:
-        conn.rollback()
-        raise Exception("Menu item could not be found")
-
-    return cur.fetchone()[0]
+        if (cur.rowcount == 1):
+            return cur.fetchone()[0]
+        else:
+            raise Exception("Menu item could not be found")
+    else:
+        raise Exception("Order could not be found")

@@ -100,8 +100,6 @@ def test_remove_table():
     cur.execute("select * from tables where num = 1 or num = 2 or num = 3")
     assert(len(cur.fetchall()) == 0)
     
-    
-    
     cur.execute("delete from tables where num = 1 or num = 2 or num = 3")
     conn.commit()
     
@@ -132,10 +130,8 @@ def test_choose_table():
     r.tables.append(t2)
     r.tables.append(t3)
 
-    
     cur = conn.cursor()
     cur.execute("delete from tables where num = 500000 or num = 300002 or num = 300001")
-    
     
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (500000, null, False, False)")
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (300002, null, False, False)")
@@ -181,9 +177,6 @@ def test_login_and_validate():
     cur.execute("delete from tables where num = 1")
     conn.commit()
     
-    
-
-
 def test_get_restaurant_info():
     r = Restaurant("cool")
     k = KitchenStaff("kellyscool", r)

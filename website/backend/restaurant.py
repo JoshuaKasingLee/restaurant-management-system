@@ -194,7 +194,6 @@ class Restaurant:
                     "menu_items": item_list
                 }
         
-       
     def menu_to_JSON(self) -> dict:
         categories = []
         for category in self.categories:
@@ -202,7 +201,6 @@ class Restaurant:
         return {
             "categories": categories
         }
-
 
     def get_restaurant_info(self) -> dict:
         rest_obj = {
@@ -251,7 +249,6 @@ class Restaurant:
                     orders_list.append(order.to_JSON())
         return sorted(orders_list, key=lambda d: d['time_ordered'])
         
-    
     def find_category(self, name: str) -> Category:
         for cat in self.categories:
             if cat.name == name:

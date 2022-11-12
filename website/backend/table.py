@@ -27,14 +27,13 @@ class Table:
     def to_JSON(self) -> dict:
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)
 
+    # order dishes and view orders
+
     def check_order_budget(self, menu_item_name: str, quantity: int) -> bool:
         if quantity > 0:
             cur = conn.cursor()
-            try:
-                # need to check row count instead
-                cur.execute("select cost from menu_item where name = %s", [menu_item_name])
-            except Exception as err:
-                conn.rollback()
+            cur.execute("select cost from menu_item where name = %s", [menu_item_name])
+            if not (cur.rowcount == 1):
                 raise Exception("Menu item could not be found")
             total_cost = cur.fetchone()[0] * quantity
             current_spend = self.get_total_cost()
@@ -47,12 +46,10 @@ class Table:
     def order_dishes(self, menu_item_name: str, quantity: int):
         if quantity > 0:
             cur = conn.cursor()
-            try:
-                # need to check row count instead
-                cur.execute("select name, description, ingredients, cost, category, image, visible, display_order from menu_item where name = %s", [menu_item_name])
-            except Exception as err:
-                conn.rollback()
+            cur.execute("select name, description, ingredients, cost, category, image, visible, display_order from menu_item where name = %s", [menu_item_name])
+            if not (cur.rowcount == 1):
                 raise Exception("Menu item could not be found")
+            
             result = cur.fetchone()
             name = result[0]
             desc = result[1]
@@ -68,7 +65,6 @@ class Table:
             while (i < quantity):
                 self.order_dish(menu_item)
                 i = i + 1
-
 
     def order_dish(self, menu_item: MenuItem):
         cur = conn.cursor()
@@ -91,8 +87,6 @@ class Table:
         new_order = Order(menu_item, self.number, datetime.now(), order_id)
         self.orders.append(new_order)
 
-    # view orders
-
     def view_orders(self) -> dict:
         order_items = []
         for order in self.orders:
@@ -109,27 +103,25 @@ class Table:
             "orderItems": order_items
         }
 
+    # request assistance
+
     def request_assistance(self):
         cur = conn.cursor()
-        try:
-            cur.execute("update tables set needs_assistance = %s where num = %s", [True, self.number])
-        except Exception as err:
-            conn.rollback()
+        cur.execute("update tables set needs_assistance = %s where num = %s", [True, self.number])
+        if not (cur.rowcount == 1):
             raise Exception("Requesting assistance failed")
         conn.commit()
         self.needs_assistance = True
 
     def unrequest_assistance(self):
         cur = conn.cursor()
-        try:
-            cur.execute("update tables set needs_assistance = %s where num = %s", [False, self.number])
-        except Exception as err:
-            conn.rollback()
+        cur.execute("update tables set needs_assistance = %s where num = %s", [False, self.number])
+        if not (cur.rowcount == 1):
             raise Exception("Unrequesting assistance failed")
         conn.commit()
         self.needs_assistance = False
 
-    # request the (split) bill
+    # request the bill (split or together)
 
     def get_total_cost(self) -> float:
         cost = 0
@@ -201,7 +193,6 @@ class Table:
 
         return charge_array
 
-
     def get_order_quantities(self) -> dict:
         receipt = {}
         for order in self.orders:
@@ -235,16 +226,17 @@ class Table:
                 dishes_split[orderId] = 1
         return dishes_split
 
+    # set table budget
+
     def set_budget(self, budget: float = None):
         cur = conn.cursor()
-        try:
-            cur.execute("update tables set budget = %s where num = %s", [budget, self.number])
-        except Exception as err:
-            conn.rollback()
+        cur.execute("update tables set budget = %s where num = %s", [budget, self.number])
+        if not (cur.rowcount == 1):
             raise Exception("Setting budget failed")
         conn.commit()
         self.budget = budget
-        
+
+    # clear table after dining
         
     def clear_table(self):
         cur = conn.cursor()
@@ -266,14 +258,13 @@ class Table:
         self.token = None
 
     # modifying order
+
     def update_order_status(self, id: int, status: OrderStatus):
         for order in self.orders:
             if order.id == id:
                 cur = conn.cursor()
-                try:
-                    cur.execute("""UPDATE orders SET status = %s WHERE id = %s""", [status.value, id])
-                except Exception as err:
-                    conn.rollback()
+                cur.execute("""UPDATE orders SET status = %s WHERE id = %s""", [status.value, id])
+                if not (cur.rowcount == 1):
                     raise Exception("Order update failed")
                 conn.commit()
                 order.update_status(status)

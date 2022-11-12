@@ -2,6 +2,7 @@
 
 class Category:
     curr_max_display_order = 0
+    
     def __init__(self, name: str, visible: bool = False, display_order: int = 0):
         self.name = name
         self.visible = visible
