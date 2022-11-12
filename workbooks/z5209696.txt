@@ -37,3 +37,6 @@ I also discussed with James about the routes again to confirm and make changes t
 Week 8 
 Backend team worked with frontend team to iron out any last minute bugs for the demo and completed the retrospective B assessment. We also discussed what was left to complete and allocated tasks regarding the final report. Kelly Cyrus and I discussed
 software quality for the backend as well and discussed ideas about what to fix e.g. less repetition, refactoring function responsibilities for each class
+
+Week 9 
+Worked on the final report and have been trying to use/setup the Virtual Machine setup as we found it might be better performance wise than using AWS. Also did some limit testing on the frontend. 
