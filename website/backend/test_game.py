@@ -1,12 +1,9 @@
+# This file tests the edge case functionality of the game entertainment system including functions
+# related to the leaderboard and scoring
+
 import pytest
 from restaurant import Restaurant
-from menu_item import MenuItem
-from category import Category
-from table import Table
 from init_db import conn
-from manager import Manager
-from wait_staff import WaitStaff
-from kitchen_staff import KitchenStaff
 
 def test_add_to_leaderboard():
     restaurant = Restaurant("restaurant")

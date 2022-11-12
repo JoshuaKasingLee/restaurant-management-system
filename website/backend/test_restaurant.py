@@ -1,3 +1,6 @@
+# This file uses whitebox testing of the edge case functionality of the restaurant class including
+# functions related to adding, editing, and removing categories, menu items and number of tables
+
 import pytest
 from restaurant import Restaurant
 from menu_item import MenuItem
@@ -233,9 +236,6 @@ def test_change_restaurant_info():
     m.change_wait_pw('waiterA0five')
     conn.commit()
     
-    
-    
-
 def test_menu():
     r = Restaurant("japan")
     

@@ -1,3 +1,7 @@
+# Table object class adhering to Object-Oriented design as per the UML diagram
+# The purpose of this class is to control the inherent functionality related to the tables including
+# order functionalities, budgeting, and notification of whether tables need assistance
+
 from order import Order
 from init_db import conn
 from datetime import datetime

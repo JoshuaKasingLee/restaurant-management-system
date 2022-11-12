@@ -1,3 +1,7 @@
+# Wait staff which inherets the staff object class adhering to Object-Oriented design as per the UML diagram
+# Functionality pertains the actions that wait staff would require including updating the status of orders and 
+# resolving assistance requests
+
 from staff import Staff
 from init_db import conn
 from helper import OrderStatus

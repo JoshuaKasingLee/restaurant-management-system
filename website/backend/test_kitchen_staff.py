@@ -1,3 +1,6 @@
+# This file tests the edge case functionality of the kitchen staff including functions
+# related to updating the order status of orders
+
 import pytest
 from staff import Staff
 from restaurant import Restaurant
@@ -39,7 +42,6 @@ def test_kitchen_order_cooking():
     kitchen_staff.update_status(ordered_list[0]['id'], OrderStatus.COOKING)
 
     ordered_list = restaurant.get_order_list()
-
 
     expected = OrderStatus.COOKING.value
 
@@ -197,7 +199,5 @@ def test_get_staff_menus():
     cur.execute("DELETE FROM category")
     cur.execute("DELETE FROM tables")
     conn.commit()
-
-
 
 pytest.main()

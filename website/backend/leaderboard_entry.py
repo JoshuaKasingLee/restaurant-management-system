@@ -1,3 +1,5 @@
+# Leaderboard entry object class adhering to Object-Oriented design as per the UML diagram
+
 from datetime import datetime
 
 class LeaderboardEntry:

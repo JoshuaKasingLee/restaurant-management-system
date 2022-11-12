@@ -1,3 +1,6 @@
+# This file uses whitebox testing of the edge case functionality of the table class including
+# functions related to budgeting, ordering, billing, and requesting for assistance
+
 import pytest
 from table import Table
 from restaurant import Restaurant

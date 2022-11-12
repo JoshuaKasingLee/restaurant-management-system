@@ -1,3 +1,6 @@
+# Manager object class adhering to Object-Oriented design as per the UML diagram
+# Functionality pertains the actions that the manager would require including adding, editing, and removing categories, menu items, and number of tables
+
 from staff import Staff
 from menu_item import MenuItem
 from category import Category
@@ -38,7 +41,6 @@ class Manager(Staff):
             return c
 
     def remove_category(self, cat_id: int, type: str) -> bool:
-
         cur = conn.cursor()
         
         cur.execute("select name from category where id = %s", [cat_id])

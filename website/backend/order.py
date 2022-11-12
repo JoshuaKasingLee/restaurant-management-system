@@ -1,3 +1,5 @@
+# Manager object class adhering to Object-Oriented design as per the UML diagram
+
 from helper import OrderStatus
 from menu_item import MenuItem
 from datetime import datetime

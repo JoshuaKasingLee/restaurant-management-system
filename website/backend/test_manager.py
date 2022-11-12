@@ -1,3 +1,6 @@
+# This file tests the edge case functionality of managers including functions related to
+# adding, editing, and removing categories, menu items and number of tables
+
 import pytest
 from manager import Manager
 from restaurant import Restaurant
@@ -479,8 +482,6 @@ def test_choose_table_amt_need_more_tables():
     assert(len(cur.fetchall()) == 9)
     cur.execute("delete from tables where num != 9999")
     conn.commit()
-    
-    
     
 def test_choose_table_amt_need_less_tables():
     r = Restaurant("Kelly's Kitchen")

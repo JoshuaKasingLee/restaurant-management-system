@@ -1,3 +1,7 @@
+# Restaurant object class adhering to Object-Oriented design as per the UML diagram
+# The purpose of this class is to control the inherent functionality of the restaurant allowing the interactability 
+# of all users to other objects such as tables, categories, menu-items and the leaderboard
+
 from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
@@ -101,7 +105,6 @@ class Restaurant:
             if (table.number == number):
                 return True
         return False
-        
         
     def count_tables(self) -> int:
         counter = 0

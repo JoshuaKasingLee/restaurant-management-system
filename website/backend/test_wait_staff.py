@@ -1,20 +1,10 @@
+# This file uses whitebox testing of the edge case functionality of the waiter staff class including
+# functions related to requesting for assistance
+
 import pytest
-
-from table import Table
 from restaurant import Restaurant
-from menu_item import MenuItem
-from category import Category
-from helper import OrderStatus
-from order import Order
 from init_db import conn
-
-from staff import Staff
-from manager import Manager
 from wait_staff import WaitStaff
-from kitchen_staff import KitchenStaff
-from category import Category
-import time
-from datetime import datetime
 
 def test_get_assistance_requests():
     cur = conn.cursor()
