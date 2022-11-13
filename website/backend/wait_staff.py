@@ -3,8 +3,8 @@
 # resolving assistance requests
 
 from staff import Staff
-from init_db import conn
 from helper import OrderStatus
+from db_service import DbService
 
 class WaitStaff(Staff):
     def __init__(self, password: str, restaurant):
@@ -32,15 +32,8 @@ class WaitStaff(Staff):
         return self.restaurant.get_all_assistance()
 
     def resolve_assistance_request(self, table_num: int) -> int:
-        cur = conn.cursor()
         for t in self.restaurant.tables:
             if t.number == table_num and t.needs_assistance:
-                try:
-                    cur.execute("update tables set needs_assistance = %s where num = %s", [False, table_num])
-                except Exception as err:
-                    conn.rollback()
-                    raise Exception("Unrequesting assistance failed")
-                conn.commit()
-
+                DbService.update_table_assistance(table_num, False)
                 t.needs_assistance = False
         return table_num

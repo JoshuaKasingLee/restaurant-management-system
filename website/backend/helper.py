@@ -1,5 +1,4 @@
 from enum import Enum
-from init_db import conn
 
 # enums used
 

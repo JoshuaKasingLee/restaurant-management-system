@@ -54,6 +54,7 @@ function MenuEditor() {
   const [trigger, setTrigger] = React.useState(false);
   
   const { setAlert } = useAlert();
+  const [reorderTrigger, setReorderTrigger] = React.useState(false);
 
   React.useEffect(() => {
     const getMenu = async () => {
@@ -67,7 +68,18 @@ function MenuEditor() {
       });
       const data = await response.json();
       if (response.ok) {
+      // this is for changing tabs for reordering, works for existing categories but not for new categories
         // console.log(data);
+        // console.log(data.categories);
+        // console.log(value);
+        // if (reorderTrigger) {
+        //   console.log('run one');
+        //   const current = menu.categories[menu.categories.findIndex(obj => obj.display_order === value + 1)];
+        //   console.log(current);
+        //   const newTitle = data.categories[data.categories.findIndex(obj => obj.name === current.name)];
+        //   console.log(newTitle);
+          // setValue(data.categories[data.categories.findIndex(obj => obj.name === current.name)].display_order - 1);
+        // }
         localStorage.setItem('menu', JSON.stringify(data));
         setMenu( menu => (data) );
       } else {
@@ -76,7 +88,8 @@ function MenuEditor() {
     };
     getMenu();
     setTrigger(false);
-  }, [trigger]);
+    setReorderTrigger(false);
+  }, [trigger, reorderTrigger]);
 
   async function editCategory(id, name, visible) {
     const response = await fetch(`http://localhost:5000/manager/categories/${id}`, {  
@@ -155,22 +168,22 @@ function MenuEditor() {
       renderedContent.push(
         <TabPanel  key={i} value={value} index={i}>
           <div style={{ display: 'inline-flex' }}>
-            { sortedContent[value].title != "Unassigned" &&
+            { sortedContent[i].title !== "Unassigned" &&
               <IconButton onClick={() => {handleOpenEditCategory()}} sx={{ mr: 2 }}>
                 <EditIcon/>
               </IconButton>
             }
-            <Typography variant="h3" >{sortedContent[value].title}</Typography>
+            <Typography variant="h3" >{sortedContent[i].title}</Typography>
           </div>
           <MenuItemList 
             category={menu.categories[content.findIndex(obj => 
-              obj.order === sortedContent[value].order)]} 
+              obj.order === sortedContent[i].order)]}
             updateMenu={setTrigger}
           />
           <EditCategoryDialog
             open={openEditCategory}
             category={content[content.findIndex(obj => 
-              obj.order === sortedContent[value].order)]} 
+              obj.order === sortedContent[i].order)]} 
             handleClose={handleCloseEditCategory}
             updateMenu={setTrigger}
           />
@@ -207,7 +220,7 @@ function MenuEditor() {
         { menu.categories.length > 0 && <>
           <ReorderButton categories={menu.categories}
           items={menu.categories.filter(c => c.display_order === getSortedContent()[value].order)[0].menu_items}
-          updateMenu={setTrigger}/>
+          updateMenu={setReorderTrigger}/>
           <AddNewButton updateMenu={setTrigger}/>
         </>}
       </Box>

@@ -6,7 +6,7 @@ import Footer from '../../components/customer/Footer';
 function Order() {
   return (
     <>
-      <Header image={localStorage.getItem('restaurantImage')} title={"Orderlist"} />
+      <Header image={localStorage.getItem('restaurantImage')} title={"Orders"} />
       <OrderTable />
       <Footer initialValue={"order"} />
     </ >

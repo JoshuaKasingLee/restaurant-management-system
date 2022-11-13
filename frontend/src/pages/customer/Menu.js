@@ -62,8 +62,8 @@ function Menu() {
     setLabel(newLabel);
   };
 
-  const handleClose = (value) => {
-    if(value !== budget) {
+  const handleClose = (budgetValue) => {
+    if(budgetValue !== budget) {
       const updateBudget = async () => {
         const response = await fetch('http://localhost:5000/customer/budget', {
           method: 'PUT',
@@ -76,13 +76,13 @@ function Menu() {
           body: JSON.stringify(
             { 
               table: localStorage.getItem('table'),
-              budget: value
+              budget: budgetValue
             }
           )
         });
         const data = await response.json();
         if (response.ok) {
-          setBudget(value);
+          setBudget(budgetValue);
         } else {
           setAlert(await data.error);
         }
@@ -111,6 +111,7 @@ function Menu() {
       if (response.ok) {
         localStorage.setItem('menu', JSON.stringify(data));
         setMenu( data );
+        console.log(data.categories);
       } else {
         setAlert(await data.error);
       }
@@ -146,19 +147,23 @@ function Menu() {
     for (let i = 0; i < menu.categories.length; i++) {
       content.push({ 
         order: menu.categories[i].display_order,
-        title: menu.categories[i].name
+        title: menu.categories[i].name,
+        visible: menu.categories[i].visible,
       });
     }
     return content;
   }
 
+  const getFilteredContent = () => {
+    return getContent().filter(value => value.title !== 'Unassigned' && value.visible === true);
+  }
+
   const getCategoriesTabs = () => {
     let renderedContent = [];
-    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-      if(sortedContent[i].title !== 'Unassigned') {
         renderedContent.push(<Tab key={i} label={sortedContent[i].title} {...a11yProps(i)} />);
-      }
+        console.log('tab' + i);
     }
     return renderedContent;
   };
@@ -166,21 +171,19 @@ function Menu() {
   const getCategoriesTabPanels = () => {
     let renderedContent = [];
     let content = getContent();
-    let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
+    let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-      if(sortedContent[i].title !== 'Unassigned') {
-        renderedContent.push(
-          <TabPanel key={i} value={value} index={i}>
-            <MenuCategory 
-              submit = {(ordered) => setOrdered(ordered)}
-              category={menu.categories[content.findIndex(obj => 
-                obj.order === sortedContent[value].order)]} 
-              filters={filters} 
-              sort={sort}
-            />
-          </TabPanel>
-        );
-      }
+      renderedContent.push(
+        <TabPanel  key={i} value={value} index={i}>
+          <MenuCategory 
+            submit = {(ordered) => setOrdered(ordered)}
+            category={menu.categories[content.findIndex(obj => 
+              obj.order === sortedContent[i].order)]} 
+            filters={filters} 
+            sort={sort}
+          />
+        </TabPanel>
+      );
     }
     return renderedContent;
   };

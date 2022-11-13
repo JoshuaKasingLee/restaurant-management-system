@@ -215,8 +215,13 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
               <Typography gutterBottom>
                 Category: {categoryName}
               </Typography>
-              <Typography gutterBottom>
-                Tags: {item.tags.join(', ')}
+              <Typography component='div' gutterBottom>
+                {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
+                {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
+                {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
+                {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
+                {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
+                {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
               </Typography>
               <Typography gutterBottom>
                 Cost: ${item.cost.toFixed(2)}

@@ -25,7 +25,7 @@ function Header({image, title}) {
 
   React.useEffect(() => {
     if (selected !== null) {
-      if (title === 'Menu' || title === 'Orderlist' || title === 'Game') {
+      if (title === 'Menu' || title === 'Orders' || title === 'Game') {
         const setAssistance = async () => {
           const response = await fetch(`http://localhost:5000/customer/assistance`, {  
             method: 'PUT',

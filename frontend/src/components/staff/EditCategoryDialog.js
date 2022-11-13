@@ -14,8 +14,9 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
   const [show, setShow] = React.useState(category.visible);
   const { setAlert } = useAlert();
 
-  // React.useEffect(() => {console.log("name", name)})
-  // React.useEffect(() => {console.log("category.title", category.title)},[category])
+  React.useEffect(() => {
+    setName(category.title);
+  },[category])
 
   const [disabled, setDisabled] = React.useState(true);
 
