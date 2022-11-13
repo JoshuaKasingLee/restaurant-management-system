@@ -191,7 +191,7 @@ def get_leaderboard():
     valid = restaurant.customer_validate(token)
     if (valid == False):
         return {"error": "Unable to validate"}, 401
-    return restaurant.get_leaderboard()
+    return restaurant.get_leaderboard(True)
 
 @customer_routes.route('/leaderboard', methods=['POST'])
 def add_leaderboard_entry():
