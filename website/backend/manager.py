@@ -44,27 +44,16 @@ class Manager(Staff):
 
     def remove_category(self, cat_id: int, type: str) -> bool:
         cur = conn.cursor()
-        
-        cur.execute("select name from category where id = %s", [cat_id])
-        name = cur.fetchone()[0]
+        name = DbService.get_category_name(cat_id)
         if not self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} does not exist")
+
         if type == "removeItems":
-            #delete tags first
-            cur.execute("select id from menu_item where category = %s", [cat_id])
-            menu_ids = cur.fetchall()
+            # delete tags first
+            menu_ids = DbService.get_all_menu_items_in_category(cat_id)
             for row in menu_ids:
-                try:
-                    cur.execute("delete from menu_item_tags where menu_item = %s", [row[0]])
-                except:
-                    conn.rollback()
-                    raise Exception("Deleting related menu item tags failed")
-        
-            try:
-                cur.execute("delete from menu_item where category = %s", [cat_id])
-            except:
-                conn.rollback()
-                raise Exception("Deleting menu items from category failed")
+                DbService.delete_menu_item_tags(row[0])
+            DbService.delete_all_menu_items_with_category(cat_id)
             
             to_remove = []
             for item in self.restaurant.menu_items:
@@ -73,11 +62,11 @@ class Manager(Staff):
             
             for item in to_remove:
                 self.restaurant.menu_items.remove(item)
-                    
-            
+                         
         elif type == "keepItems":
             try:
                 cur.execute("update menu_item set category = (select id from category where name = %s)", ["Unassigned"])
+                # BUG BUG BUG ONLY UPDATE WHERE CATEGORY = NAME
             except:
                 conn.rollback()
                 raise Exception("Moving menu items to Unassigned category failed")
@@ -196,21 +185,16 @@ class Manager(Staff):
                 
 
     def remove_menu_item(self, id: int) -> bool:
-        cur = conn.cursor()
         name = DbService.get_menu_item_name(id)
-
         if not self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} does not exist")
 
-        try:
-            item_id = DbService.get_menu_item_id(name)
-            cur.execute("""DELETE FROM menu_item_tags where menu_item = %s""", [item_id])
-            cur.execute("""DELETE FROM menu_item where name = %s""", [name])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("Deleting menuitem failed")
-        conn.commit()
+        # remove from database
+        item_id = DbService.get_menu_item_id(name)
+        DbService.delete_menu_item_tags(item_id)
+        DbService.delete_menu_item(name)
 
+        # if successful, remove from objects
         item = self.restaurant.find_menu_item(name)
         if item != None:
             self.restaurant.menu_items.remove(item)
@@ -252,20 +236,14 @@ class Manager(Staff):
             self.restaurant.remove_table()
         conn.commit()
     
-    
     def category_edit(self, cat_id: int, show: bool, new_name: str):
-        cur = conn.cursor()
         name = DbService.get_category_name(cat_id)
         if not self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} does not exist")
 
-        cur.execute("""update category set visible = %s, name = %s where id = %s""", [show, new_name, cat_id])
-        if (cur.rowcount == 1): 
-            cat = self.restaurant.find_category(name)
-            if cat != None:
-                cat.visible = show
-                cat.name = new_name
-        else:
-            raise Exception("Unable to update category visibility")
-        conn.commit()
+        DbService.update_category(cat_id, show, new_name)
+        cat = self.restaurant.find_category(name)
+        if cat != None:
+            cat.visible = show
+            cat.name = new_name
 

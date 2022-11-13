@@ -1,7 +1,7 @@
 # Menu-item object class adhering to Object-Oriented design as per the UML diagram
 
-from init_db import conn
 from category import Category
+from db_service import DbService
 
 class MenuItem:
     curr_max_display_order = 0
@@ -25,10 +25,7 @@ class MenuItem:
                 MenuItem.curr_max_display_order = display_order
     
     def to_JSON(self) -> dict:
-        cur = conn.cursor()
-        cur.execute("select id from menu_item where name = %s", [self.name])
-        item_id = cur.fetchone()[0]
-        
+        item_id = DbService.get_menu_item_id(self.name)
         return {
             "id": item_id,
             "name": self.name,
