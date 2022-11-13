@@ -1,30 +1,15 @@
+# This file establishes the connection between the restaurant and the database
 
 import psycopg2
-def query_db(query):
-    conn = psycopg2.connect(
-        host="localhost",
-        database="flask_db",
-        user="postgres"
-        )
     
-    cur = conn.cursor()
-
-    cur.execute(query)
-
-    conn.commit()
-
-    result = cur.fetchall()
-
-    cur.close()
-    conn.close()
-
-    return result
-    
-    
+# uncomment the database connections you would like to connect to
 conn = psycopg2.connect(
+    # connection to your local database
     host="localhost",
     database="flask_db",
     user="postgres"
+
+    # connection to the AWS server
     # database="postgres",
     # user="postgres",
     # password="mypassword",

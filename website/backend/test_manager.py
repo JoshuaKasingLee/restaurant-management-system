@@ -1,3 +1,6 @@
+# This file tests the edge case functionality of managers including functions related to
+# adding, editing, and removing categories, menu items and number of tables
+
 import pytest
 from manager import Manager
 from restaurant import Restaurant
@@ -480,8 +483,6 @@ def test_choose_table_amt_need_more_tables():
     cur.execute("delete from tables where num != 9999")
     conn.commit()
     
-    
-    
 def test_choose_table_amt_need_less_tables():
     r = Restaurant("Kelly's Kitchen")
     m = Manager("tomiscool", r)
@@ -547,7 +548,6 @@ def test_update_categories_display_order():
     m.add_category("Nice")
     m.add_category("Yum")
     
-    
     cur.execute("""select id from category where name = %s""", ["Sashimi"])
     id = cur.fetchone()[0]
     cur.execute("""select id from category where name = %s""", ["Yum"])
@@ -576,7 +576,6 @@ def test_update_menu_items_display_order():
     m.add_category("Japanese")
     m.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese")
     m.add_menu_item("Yum", "Nice", "super super", "1", "Japanese")
-    
     
     cur.execute("""select id from menu_item where name = %s""", ["Sashimi"])
     id = cur.fetchone()[0]
@@ -608,16 +607,13 @@ def test_edit_menu_item():
     m1.add_category("Tasty")
     m1.add_category("Japanese")
     
-    
     item = m1.add_menu_item("Sashimi", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Japanese", {"vegetarian": True, "vegan": False, "gluten free": True, "nut free": False, "dairy free": False, "chef recommended": False})
 
-    
     assert(item.tags == {"vegetarian": True, "vegan": False, "gluten free": True, "nut free": False, "dairy free": False, "chef recommended": False})
     cur.execute("select id from menu_item where name = %s", ["Sashimi"])
     s_id = cur.fetchone()[0]
     item = m1.edit_menu_item(s_id, "Awesome", "Tasty", "Sugoi", "just fish and rice", "1.50", True, {"vegetarian": True, "vegan": True, "nut free": True, "dairy free": True}, "big image of sushi")
 
-    
     assert(item.name == "Awesome")
     assert(item.category.name == "Tasty")
     assert(item.desc == "Sugoi")
@@ -626,7 +622,6 @@ def test_edit_menu_item():
     assert(item.tags == {"vegetarian": True, "vegan": True, "nut free": True, "dairy free": True})
     assert(item.visible == True)
     assert(item.img == "big image of sushi")  
-    
     
     cur.execute("delete from menu_item_tags")
     cur.execute("delete from menu_item")

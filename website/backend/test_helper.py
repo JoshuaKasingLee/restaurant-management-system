@@ -1,3 +1,5 @@
+# This file tests the edge case functionality of the helper functions
+
 import pytest
 from init_db import conn
 from helper import get_dish_cost

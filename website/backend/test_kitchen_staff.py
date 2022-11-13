@@ -1,3 +1,6 @@
+# This file tests the edge case functionality of the kitchen staff including functions
+# related to updating the order status of orders
+
 import pytest
 from staff import Staff
 from restaurant import Restaurant
@@ -40,7 +43,6 @@ def test_kitchen_order_cooking():
 
     ordered_list = restaurant.get_order_list()
 
-
     expected = OrderStatus.COOKING.value
 
     cur.execute("DELETE FROM orders")
@@ -69,7 +71,6 @@ def test_kitchen_order_cooking():
 
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
 
-
     restaurant.populate()
     
     table1 = restaurant.tables[0]
@@ -82,7 +83,6 @@ def test_kitchen_order_cooking():
     kitchen_staff.update_status(ordered_list[0]['id'], OrderStatus.PREPARED)
 
     ordered_list = restaurant.get_order_list()
-
 
     expected = OrderStatus.PREPARED.value
 
@@ -112,7 +112,6 @@ def test_wait_order_serving():
 
     cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
 
-
     restaurant.populate()
     
     table1 = restaurant.tables[0]
@@ -124,7 +123,6 @@ def test_wait_order_serving():
     wait_staff.update_status(ordered_list[0]['id'], OrderStatus.COMPLETED)
 
     ordered_list = restaurant.get_order_list()
-
 
     expected = OrderStatus.COMPLETED.value
 
@@ -144,9 +142,6 @@ def test_get_staff_menus():
     m1 = MenuItem("Escargot", "Snails in butter", "Snails, butter, oil", 20.80, french)
     m2 = MenuItem("Croissant", "Filled with almond praline cream", "Flour, almonds, butter", 6, french)
     m3 = MenuItem("Steak", "Medium rare", "Beef, red wine jus", 48.50, french)
-
-    cur = conn.cursor()
-
 
     cur = conn.cursor()
 
@@ -197,7 +192,5 @@ def test_get_staff_menus():
     cur.execute("DELETE FROM category")
     cur.execute("DELETE FROM tables")
     conn.commit()
-
-
 
 pytest.main()

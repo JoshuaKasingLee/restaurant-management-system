@@ -1,14 +1,18 @@
+# Manager object class adhering to Object-Oriented design as per the UML diagram
+# Functionality pertains the actions that the manager would require including adding, editing, and removing categories, menu items, and number of tables
+
 from staff import Staff
 from menu_item import MenuItem
 from category import Category
 from table import Table
 from init_db import conn
+from helper import TagNames
 
 class Manager(Staff):
-    def __init__(self, password, restaurant):
+    def __init__(self, password: str, restaurant):
         super().__init__(password, restaurant)
 
-    def add_category(self, name):
+    def add_category(self, name: str) -> Category:
         if self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} already exists")
         else:
@@ -37,8 +41,7 @@ class Manager(Staff):
             self.restaurant.categories.append(c)
             return c
 
-    def remove_category(self, cat_id, type):
-
+    def remove_category(self, cat_id: int, type: str) -> bool:
         cur = conn.cursor()
         
         cur.execute("select name from category where id = %s", [cat_id])
@@ -95,7 +98,7 @@ class Manager(Staff):
         # check if exception needs to be thrown if no category was found
         return False
         
-    def update_categories_display_order(self, category_display_orders):
+    def update_categories_display_order(self, category_display_orders: list):
         cur = conn.cursor()
     
         for category in category_display_orders:
@@ -111,7 +114,7 @@ class Manager(Staff):
         
         conn.commit()
     
-    def update_menu_items_display_order(self, menu_item_display_orders):
+    def update_menu_items_display_order(self, menu_item_display_orders: list):
         cur = conn.cursor()
     
         for item in menu_item_display_orders:
@@ -128,9 +131,9 @@ class Manager(Staff):
                     
         conn.commit()
     
-    def edit_menu_item(self, id, name, category, desc, ingredients, cost, show, tags = None, img = None):
-    
+    def edit_menu_item(self, id: int, name: str, category: str, desc: str, ingredients: str, cost: float, show: bool, tags = None, img = None) -> MenuItem:
         cur = conn.cursor()
+
         cur.execute("select name from menu_item where id = %s", [id])
         oldname = cur.fetchone()[0]
         if not self.restaurant.menu_contains(oldname):
@@ -156,7 +159,6 @@ class Manager(Staff):
                             raise Exception("Inserting tag failed")
                         
             for item in self.restaurant.menu_items:
-
                 if item.name == oldname:
                     item.name = name
                     #find category object please
@@ -170,8 +172,7 @@ class Manager(Staff):
                     return item
 
 
-    def add_menu_item(self, name, desc, ingredients, cost, category: str, tags = None, img = None):
-    
+    def add_menu_item(self, name: str, desc: str, ingredients: str, cost: float, category: str, tags = None, img = None) -> MenuItem:
         if self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} already exists")
         else:
@@ -188,37 +189,37 @@ class Manager(Staff):
             conn.commit()
 
             if tags != None:
-                if tags["vegetarian"]:
+                if tags[TagNames.VEGETARIAN.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegetarian'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['vegan']:
+                if tags[TagNames.VEGAN.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegan'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['gluten free']:
+                if tags[TagNames.GF.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'gluten free'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['nut free']:
+                if tags[TagNames.NF.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'nut free'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['dairy free']:
+                if tags[TagNames.DF.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'dairy free'));", [name])
                     except Exception as err:
                         conn.rollback()
                         raise Exception("Inserting new tag failed")
-                if tags['chef recommended']:
+                if tags[TagNames.CR.value]:
                     try:
                         cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'chef recommended'));", [name])
                     except Exception as err:
@@ -229,7 +230,7 @@ class Manager(Staff):
             return m
                 
 
-    def remove_menu_item(self, id):
+    def remove_menu_item(self, id: int) -> bool:
         cur = conn.cursor()
         cur.execute("select name from menu_item where id = %s", [id])
         name = cur.fetchone()[0]
@@ -254,21 +255,21 @@ class Manager(Staff):
         return False
 
 
-    def change_wait_pw(self, new_pw):
+    def change_wait_pw(self, new_pw: str):
         cur = conn.cursor()
         cur.execute("""update staff set password = %s where role = 'wait'""", [new_pw])
         if (cur.rowcount == 1): 
             self.restaurant.wait.password = new_pw
         conn.commit()
         
-    def change_kitchen_pw(self, new_pw):
+    def change_kitchen_pw(self, new_pw: str):
         cur = conn.cursor()
         cur.execute("""update staff set password = %s where role = 'kitchen'""", [new_pw])
         if (cur.rowcount == 1): 
             self.restaurant.kitchen.password = new_pw
         conn.commit()
         
-    def change_manager_pw(self, new_pw):
+    def change_manager_pw(self, new_pw: str):
         cur = conn.cursor()
         cur.execute("""update staff set password = %s where role = 'manager'""", [new_pw])
         if (cur.rowcount == 1): 
@@ -276,7 +277,7 @@ class Manager(Staff):
         conn.commit()
         
         
-    def choose_table_amt(self, number):
+    def choose_table_amt(self, number: int):
         if (number < 0):
             raise Exception("Number of tables cannot be negative")
             
@@ -297,11 +298,10 @@ class Manager(Staff):
                 
         while (len(self.restaurant.tables) > number):
             self.restaurant.remove_table()
-        
         conn.commit()
     
     
-    def category_edit(self, cat_id, show, new_name):
+    def category_edit(self, cat_id: int, show: bool, new_name: str):
         cur = conn.cursor()
         cur.execute("""select name from category where id = %s""", [cat_id])
         name = cur.fetchone()[0]

@@ -1,3 +1,7 @@
+# Restaurant object class adhering to Object-Oriented design as per the UML diagram
+# The purpose of this class is to control the inherent functionality of the restaurant allowing the interactability 
+# of all users to other objects such as tables, categories, menu-items and the leaderboard
+
 from manager import Manager
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
@@ -11,7 +15,7 @@ from uuid import uuid4
 from datetime import datetime
 
 class Restaurant:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.pic = "https://media.istockphoto.com/vectors/sushi-logo-vector-id1257720422?k=20&m=1257720422&s=612x612&w=0&h=uryvlA7FalZfJeXcK2OkChqEfVxV0GX3FxvZP_J4tl0="
         self.tables = []
@@ -84,26 +88,25 @@ class Restaurant:
             self.leaderboard.append(LeaderboardEntry(entry[0], entry[1], entry[2], entry[3]))
 
             
-    def menu_contains(self, name):
+    def menu_contains(self, name: str) -> bool:
         for item in self.menu_items:
             if item.name == name:
                 return True
         return False
 
-    def category_exists(self, name):
+    def category_exists(self, name: str) -> bool:
         for cat in self.categories:
             if cat.name == name:
                 return True
         return False    
         
-    def tab_num_exist(self, number):
+    def tab_num_exist(self, number: int) -> bool:
         for table in self.tables:
             if (table.number == number):
                 return True
         return False
         
-        
-    def count_tables(self):
+    def count_tables(self) -> int:
         counter = 0
         for table in self.tables:
             counter += 1
@@ -118,7 +121,7 @@ class Restaurant:
         conn.commit()
                 
                 
-    def choose_table(self, number):
+    def choose_table(self, number: int):
         cur = conn.cursor()
         for table in self.tables:
             if (table.number == number):
@@ -132,7 +135,7 @@ class Restaurant:
         return None
         
                 
-    def login(self, user, password):
+    def login(self, user: str, password: str) -> str:
         if (user == 'manager' and password == self.manager.password):
             manager_token = uuid4()
             self.manager_tokens.append(str(manager_token))
@@ -148,32 +151,32 @@ class Restaurant:
         else:
             return None
     
-    def kitchen_validate(self, token):
+    def kitchen_validate(self, token: str) -> bool:
         for tok in self.kitchen_tokens:
             if (tok == token):
                 return True 
         return False
 
-    def wait_validate(self, token):
+    def wait_validate(self, token: str) -> bool:
         for tok in self.wait_tokens:
             if (tok == token):
                 return True 
         return False
 
-    def manager_validate(self, token):
+    def manager_validate(self, token: str) -> bool:
         for tok in self.manager_tokens:
             if (tok == token):
                 return True 
         return False
 
-    def customer_validate(self, token):
+    def customer_validate(self, token: str) -> bool:
         for table in self.tables:
             if (table.token == token):
                 return True 
         return False
     
     # converts a category to JSON
-    def category_to_JSON(self, category_name):
+    def category_to_JSON(self, category_name: str) -> dict:
         cur = conn.cursor()
         for category in self.categories:
             if category.name == category_name:
@@ -191,8 +194,7 @@ class Restaurant:
                     "menu_items": item_list
                 }
         
-       
-    def menu_to_JSON(self):
+    def menu_to_JSON(self) -> dict:
         categories = []
         for category in self.categories:
             categories.append(self.category_to_JSON(category.name))
@@ -200,8 +202,7 @@ class Restaurant:
             "categories": categories
         }
 
-
-    def get_restaurant_info(self):
+    def get_restaurant_info(self) -> dict:
         rest_obj = {
             "name": self.name,
             "tables": self.count_tables(),
@@ -217,7 +218,7 @@ class Restaurant:
             "passwords": password_obj
         }
         
-    def change_restaurant_info(self, name, tab_num, image, kitchen, wait, manager):
+    def change_restaurant_info(self, name: str, tab_num: int, image, kitchen: str, wait: str, manager: str):
         self.name = name
         self.pic = image 
         self.manager.change_kitchen_pw(kitchen)
@@ -225,14 +226,14 @@ class Restaurant:
         self.manager.change_manager_pw(manager)
         self.manager.choose_table_amt(tab_num)
 
-    def get_order_list(self):
+    def get_order_list(self) -> list:
         orders_list = []
         for table in self.tables:
             for order in table.orders:
                 orders_list.append(order.to_JSON())
         return sorted(orders_list, key=lambda d: d['time_ordered'])
 
-    def get_wait_order_list(self):
+    def get_wait_order_list(self) -> list:
         orders_list = []
         for table in self.tables:
             for order in table.orders:
@@ -240,7 +241,7 @@ class Restaurant:
                     orders_list.append(order.to_JSON())
         return sorted(orders_list, key=lambda d: d['time_ordered'])
     
-    def get_kitchen_order_list(self):
+    def get_kitchen_order_list(self) -> list:
         orders_list = []
         for table in self.tables:
             for order in table.orders:
@@ -248,26 +249,25 @@ class Restaurant:
                     orders_list.append(order.to_JSON())
         return sorted(orders_list, key=lambda d: d['time_ordered'])
         
-    
-    def find_category(self, name):
+    def find_category(self, name: str) -> Category:
         for cat in self.categories:
             if cat.name == name:
                 return cat
         return None
                 
-    def find_table(self, table):
+    def find_table(self, table: int) -> Table:
         for tab in self.tables:
             if tab.number == table:
                 return tab
         return None
     
-    def find_menu_item(self, name):
+    def find_menu_item(self, name: str) -> MenuItem:
         for item in self.menu_items:
             if item.name == name:
                 return item
         return None
 
-    def add_leaderboard_entry(self, name, email, score, time_played = datetime.now()):
+    def add_leaderboard_entry(self, name: str, email: str, score: int, time_played: datetime = datetime.now()) -> LeaderboardEntry:
         entry = LeaderboardEntry(name, email, score, time_played)
         cur = conn.cursor()
         try:
@@ -279,7 +279,7 @@ class Restaurant:
         self.leaderboard.append(entry)
         return entry
     
-    def clear_leaderboard(self):
+    def clear_leaderboard(self) -> dict:
         cur = conn.cursor()
         success = True
         try:
@@ -295,16 +295,20 @@ class Restaurant:
         
         return self.get_leaderboard()
 
-
-    def get_leaderboard(self):
+    def get_leaderboard(self, is_customer=False) -> dict:
         toReturn = []
         position = 1
+        counter = 1
         lastScore = -1
         for entry in sorted(self.leaderboard, key=lambda x: (-x.score, x.name), reverse=False):
+            if (counter > 10 and lastScore > entry.score and is_customer == True):
+                return {
+                    "players": toReturn
+                }
             if (lastScore == -1):
                 lastScore = entry.score
             elif (entry.score != lastScore):
-                position += 1
+                position = counter
                 lastScore = entry.score
             toReturn.append({
                 "position": position,
@@ -313,13 +317,12 @@ class Restaurant:
                 "score": entry.score,
                 "time_played": entry.time_played.strftime("%Y-%m-%d %H:%M:%S")
             })
-            
-            
+            counter += 1
         return {
             "players": toReturn
         }
 
-    def get_entertainment(self):
+    def get_entertainment(self) -> dict:
         toReturn = []
         position = 1
         for entry in sorted(self.leaderboard, key=lambda x: x.score, reverse=True):
@@ -336,7 +339,7 @@ class Restaurant:
             "players": toReturn
         }
         
-    def get_all_assistance(self):
+    def get_all_assistance(self) -> list:
         tables = []
         for t in self.tables:
             if t.needs_assistance:

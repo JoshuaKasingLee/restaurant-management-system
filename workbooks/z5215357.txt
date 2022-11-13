@@ -49,3 +49,10 @@ Week 7
 I discussed with Jannet and Josh some of the routes details that needed to change, such as adding a route to get the
 current assistance boolean, and changing some fields from name references to ids. I made these changes, and then tidied
 some of my code for Sprint 2 to improve software quality.
+
+Week 8
+I added extra data into our demo sql database, to help better showcase some of the new functions we had implemented.
+I also planned the structure for our second demo. Additionally, I completed my remaining user stories for milestone 3,
+including splitting the bill by dish and allowing an optional budget on their table which would prevent them from
+ordering above the limit. The backend team also discussed overall improvements to code quality that needed to be made,
+which I plan to work on next week.

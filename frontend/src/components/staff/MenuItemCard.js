@@ -160,19 +160,14 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
           sx={{ px: 1 }}
           actionIcon={           
             <IconButton
-              aria-label={`info about ${item.title}`}
-            >
-              <InfoIcon />
+            onClick={(e) => handleToggleVisibility(e)}>
+            {visible
+              ? <VisibilityIcon/>
+              : <VisibilityOffIcon/>
+            }
             </IconButton>
           }
         />
-        <IconButton sx={{ position: 'absolute', left: 0, top: 0 }}
-          onClick={(e) => handleToggleVisibility(e)}>
-          {visible
-            ? <VisibilityIcon/>
-            : <VisibilityOffIcon/>
-          }
-        </IconButton>
       </ImageListItem>
       <Dialog
         open={open}
