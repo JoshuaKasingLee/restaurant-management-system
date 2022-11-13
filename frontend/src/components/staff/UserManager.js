@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { MenuItem, FormControl, InputLabel, Select } from '@mui/material';
-import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
+// import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
 import PasswordInput from './PasswordInput';
 
 export default function NewItem() {
@@ -101,9 +101,9 @@ export default function NewItem() {
     }
   } 
 
-  const handleChangeImage = (event) => {
-    setImage(URL.createObjectURL(event.target.files[0]))
-  }
+  // const handleChangeImage = (event) => {
+  //   setImage(URL.createObjectURL(event.target.files[0]))
+  // }
 
   return (
     <Box maxWidth="md" m="auto" component="form"
@@ -132,23 +132,22 @@ export default function NewItem() {
           {getTableContent(numTables)}
         </Select>
       </FormControl>
-      {/* <Button variant="outlined">Upload Image</Button> */}
-      <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
+      {/* <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
         Upload Image
         <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
-      </Button>
-      <Box sx={{ width: '200px' }}>
-        <img 
-          src={image}
-          alt="img"
-        /> 
-      </Box> 
+      </Button> */}
       <TextField
         required
         label="Image Link"
         value={image}
         onChange={e => setImage(e.target.value)}
       />
+      <Box sx={{ width: '200px' }}>
+        <img 
+          src={image}
+          alt="img"
+        /> 
+      </Box> 
       <Typography variant="h5">Passwords</Typography>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <PasswordInput 

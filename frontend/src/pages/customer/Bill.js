@@ -72,7 +72,6 @@ function Bill() {
           </Typography>
         </Box>
       </Box>
-      <Footer initialValue={"order"} title={"Bill"} />
     </ >
   );
 }

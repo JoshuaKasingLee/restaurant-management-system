@@ -98,8 +98,8 @@ function BudgetDialog(props) {
         <Button onClick={() => handleClick(null)}>Delete</Button> 
         <Button onClick={() => handleClick(budget)}>Cancel</Button> 
         <Button onClick={() => handleClick(value)} disabled={!value || value < order || value > 1000}>Submit</Button>
-        {console.log(value)}
-        {console.log(typeof(value))}
+        {/* {console.log(value)}
+        {console.log(typeof(value))} */}
       </DialogActions>
     </Dialog>
   );

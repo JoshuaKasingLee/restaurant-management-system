@@ -6,7 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
+// import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
 
 export default function EditItemDialog({open, item, categoryName, updateMenu, handleClose}) {
     
@@ -108,9 +108,9 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
     }
 
     // React.useEffect(() => {console.log("CAT", category)})
-    const handleChangeImage = (event) => {
-        setImage(URL.createObjectURL(event.target.files[0]))
-    }
+    // const handleChangeImage = (event) => {
+    //     setImage(URL.createObjectURL(event.target.files[0]))
+    // }
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth='md'>
@@ -158,22 +158,22 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
             />
             <Dropdown update={setCategory} category={category}/>
             <Checkboxes update={setTags} tags={tags}/>
-            <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
+            {/* <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
                 Upload Image
                 <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
-            </Button>
-            <Box sx={{ width: '200px' }}>
-                <img 
-                src={image}
-                alt="img"
-                /> 
-            </Box> 
+            </Button> */}
             <TextField
                 required
                 label="Image Link"
                 value={image}
                 onChange={e => setImage(e.target.value)}
             />
+            <Box sx={{ width: '200px' }}>
+                <img 
+                src={image}
+                alt="img"
+                /> 
+            </Box> 
         </Box>
         </DialogContent>
         <DialogActions>

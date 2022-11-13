@@ -109,7 +109,7 @@ function Menu() {
       if (response.ok) {
         localStorage.setItem('menu', JSON.stringify(data));
         setMenu( data );
-        console.log(data.categories);
+        // console.log(data.categories);
       } else {
         alert(await data.error);
       }
@@ -161,7 +161,7 @@ function Menu() {
     let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
         renderedContent.push(<Tab key={i} label={sortedContent[i].title} {...a11yProps(i)} />);
-        console.log('tab' + i);
+        // console.log('tab' + i);
     }
     return renderedContent;
   };

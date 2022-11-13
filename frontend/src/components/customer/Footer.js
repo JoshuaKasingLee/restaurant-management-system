@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import { Badge, BottomNavigation, BottomNavigationAction, Box, Card } from '@mui/material';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
@@ -12,6 +9,32 @@ import Typography from '@mui/material/Typography';
 
 function Footer({initialValue, title}) {
   const [value, setValue] = React.useState(initialValue);
+  const [orders, setOrders] = React.useState(0);
+
+  React.useEffect(() => {
+    const getOrder = async () => {
+      const response = await fetch(`http://localhost:5000/customer/order?table=${localStorage.getItem('table')}`, {  
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setOrders( data.orderItems.length );
+      } else {
+        alert(await data.error);
+      }
+    };
+    
+    const intervalID = setInterval(getOrder, 1000)
+
+    return (() => {
+      clearInterval(intervalID)
+    })
+
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -44,7 +67,11 @@ function Footer({initialValue, title}) {
         <BottomNavigationAction
             label="Order"
             value="order"
-            icon={<ListAltRoundedIcon fontSize="medium" />}
+            icon={
+              <Badge badgeContent={orders} color="primary">
+                <ListAltRoundedIcon fontSize="medium" />
+              </Badge>
+            }
             component={Link} to={'/customer/order'}
         />
         <BottomNavigationAction

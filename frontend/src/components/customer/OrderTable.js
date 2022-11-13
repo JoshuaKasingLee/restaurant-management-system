@@ -109,7 +109,7 @@ function OrderTable() {
   return (
     <Paper sx={{ m: 2, overflow: 'hidden', borderRadius: 2, boxShadow: 3 }}>
       <TableContainer sx={{ maxHeight: 535 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               {columns.map((column) => (

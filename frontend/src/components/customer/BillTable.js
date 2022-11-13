@@ -35,7 +35,7 @@ function BillTable({ orderItems }) {
   return (
     <Paper sx={{ width: '30%', overflow: 'hidden' }}>
       <TableContainer sx={{ fullHeight: true, maxHeight: 400 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
