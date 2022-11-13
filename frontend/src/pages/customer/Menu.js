@@ -8,6 +8,7 @@ import MenuCategory from '../../components/customer/menu/MenuCategory';
 import MenuSort from '../../components/customer/menu/MenuSort';
 import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
+import zIndex from '@mui/material/styles/zIndex';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -189,48 +190,43 @@ function Menu() {
   return (
     <>
       <Header image={localStorage.getItem('restaurantImage')} title={"Menu"} />
-      <Box display='flex' alignItems='flex-end' flexDirection="column" position='fixed' right='0' spacing={1} sx={{ mt: '10px', mr: '25px' }}>
-        <MenuFilter submit = { filters => { setFilters(filters) }} />
-        <MenuSort submit = { sort => { setSort(sort) }} />
-      </Box>
       <Box
-        sx={{ height: '71vh', bgcolor: 'background.paper', display: 'flex' }}
+        sx={{ height: '100vh', bgcolor: 'background.paper', display: 'flex' }}
       >
-        <Tabs
-          orientation="vertical"
-          value={value}
-          label={label}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="Vertical tabs for menu categories"
-          sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
-        >
-          {getCategoriesTabs()}
-        </Tabs>
-        {getCategoriesTabPanels()}
+        <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', height: '100vh', zIndex: 50 }}>
+          <Tabs
+            orientation="vertical"
+            value={value}
+            label={label}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{ height: '75vh', mr: -0.2}}
+          >
+            {getCategoriesTabs()}
+          </Tabs>
+        </Box>
+        <Box display='flex' alignItems='flex-end' flexDirection="column" spacing={1} sx={{ mt: '10px', mr: '25px', justifyContent: 'right' }}>
+          <MenuFilter submit = { filters => { setFilters(filters) }} />
+          <MenuSort submit = { sort => { setSort(sort) }} />
+          {getCategoriesTabPanels()}
+        </Box>
       </Box>
       <Button 
-        sx={{ 
+        sx={{
+          position: 'fixed',
+          bottom: 20,
+          right: 30,
           width:'160px',
           height: '60px',
-          border: 1, 
-          borderColor: 'text.secondary', 
-          borderRadius: '16px', 
-          mx: '10px', 
-          p: 0 
-        }} 
+          bgcolor: (theme) => theme.palette.primary.light
+        }}
+        variant='contained'
         onClick={handleClickOpen}
       >
         {budget === null || remaining === null
-          ? <Box>
-            <Typography color='text.secondary' variant="h6" component="div" >
-              Set budget
-            </Typography>
-          </Box>
-          : <Typography sx={{lineHeight: '20px'}} color='text.secondary' variant="h6" component="div" >
-            Remaining Budget: ${remaining.toFixed(0)}
-          </Typography>
+          ? <>Set budget</>
+          : <>Remaining: ${remaining.toFixed(0)}</>
         }
       </Button>
       <BudgetDialog

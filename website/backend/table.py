@@ -3,15 +3,13 @@
 # order functionalities, budgeting, and notification of whether tables need assistance
 
 from order import Order
-from init_db import conn
 from datetime import datetime
 from helper import OrderStatus
 from category import Category
 from menu_item import MenuItem
-from helper import get_dish_cost
+from db_service import DbService
 
 import json
-
 
 class Table:
     def __init__(self, number: int, budget: float = None, orders: list=None, needs_assistance: bool = False, occupied: bool = False):
@@ -31,11 +29,7 @@ class Table:
 
     def check_order_budget(self, menu_item_name: str, quantity: int) -> bool:
         if quantity > 0:
-            cur = conn.cursor()
-            cur.execute("select cost from menu_item where name = %s", [menu_item_name])
-            if not (cur.rowcount == 1):
-                raise Exception("Menu item could not be found")
-            total_cost = cur.fetchone()[0] * quantity
+            total_cost = DbService.get_dish_cost_by_name(menu_item_name) * quantity
             current_spend = self.get_total_cost()
             pending_spend = total_cost + current_spend
             if self.budget != None and pending_spend > self.budget:
@@ -45,12 +39,7 @@ class Table:
 
     def order_dishes(self, menu_item_name: str, quantity: int):
         if quantity > 0:
-            cur = conn.cursor()
-            cur.execute("select name, description, ingredients, cost, category, image, visible, display_order from menu_item where name = %s", [menu_item_name])
-            if not (cur.rowcount == 1):
-                raise Exception("Menu item could not be found")
-            
-            result = cur.fetchone()
+            result = DbService.get_menu_item_info(menu_item_name)
             name = result[0]
             desc = result[1]
             ingredients = result[2]
@@ -67,20 +56,11 @@ class Table:
                 i = i + 1
 
     def order_dish(self, menu_item: MenuItem):
-        cur = conn.cursor()
-        try:
-            cur.execute("select id from menu_item where name = %s", [menu_item.name])
-            item_id = cur.fetchone()[0]
-            cur.execute("select id from tables where num = %s", [self.number])
-            table_id = cur.fetchone()[0]
-            cur.execute("""INSERT INTO orders(menu_item, table_num, status) values (%s, %s, %s)""", [item_id, table_id, OrderStatus.ORDERED.value])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("Order insert failed")
+        item_id = DbService.get_menu_item_id(menu_item.name)
+        table_id = DbService.get_table_id(self.number)
+        DbService.insert_order(item_id, table_id)
 
-        conn.commit()
-        cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
-        order_id = cur.fetchone()[0]
+        order_id = DbService.get_most_recent_order()
         self.add_order_to_table(menu_item, order_id)
 
     def add_order_to_table(self, menu_item: MenuItem, order_id: int = None):
@@ -106,19 +86,11 @@ class Table:
     # request assistance
 
     def request_assistance(self):
-        cur = conn.cursor()
-        cur.execute("update tables set needs_assistance = %s where num = %s", [True, self.number])
-        if not (cur.rowcount == 1):
-            raise Exception("Requesting assistance failed")
-        conn.commit()
+        DbService.update_table_assistance(self.number, True)
         self.needs_assistance = True
 
     def unrequest_assistance(self):
-        cur = conn.cursor()
-        cur.execute("update tables set needs_assistance = %s where num = %s", [False, self.number])
-        if not (cur.rowcount == 1):
-            raise Exception("Unrequesting assistance failed")
-        conn.commit()
+        DbService.update_table_assistance(self.number, False)
         self.needs_assistance = False
 
     # request the bill (split or together)
@@ -130,14 +102,9 @@ class Table:
         return cost
 
     def get_bill(self, type: str, num_split: int = 0, dishes: dict = {}) -> dict:
-        cur = conn.cursor()
-
         receipt = []
-
         for dish_name, quantity in self.get_order_quantities().items():
-            cur.execute("select cost from menu_item where name = %s", [dish_name])
-            item_cost = cur.fetchone()[0]
-
+            item_cost = DbService.get_dish_cost_by_name(dish_name)
             receipt.append({
                 "name": dish_name,
                 "quantity": quantity,
@@ -175,16 +142,16 @@ class Table:
             p3 = 0
             p4 = 0
             for orderId in dishes["person1"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost_from_order(orderId)
                 p1 += dish_cost / dishes_split[orderId]
             for orderId in dishes["person2"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost_from_order(orderId)
                 p2 += dish_cost / dishes_split[orderId]
             for orderId in dishes["person3"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost_from_order(orderId)
                 p3 += dish_cost / dishes_split[orderId]
             for orderId in dishes["person4"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost_from_order(orderId)
                 p4 += dish_cost / dishes_split[orderId]
             charge_array = [p1, p2, p3, p4]
 
@@ -229,27 +196,13 @@ class Table:
     # set table budget
 
     def set_budget(self, budget: float = None):
-        cur = conn.cursor()
-        cur.execute("update tables set budget = %s where num = %s", [budget, self.number])
-        if not (cur.rowcount == 1):
-            raise Exception("Setting budget failed")
-        conn.commit()
+        DbService.update_table_budget(self.number, budget)
         self.budget = budget
 
     # clear table after dining
         
     def clear_table(self):
-        cur = conn.cursor()
-
-        try:
-            cur.execute("select id from tables where num = %s", [self.number])
-            table_id = cur.fetchone()[0]
-            cur.execute("update tables set budget = %s, needs_assistance = %s, occupied = %s where num = %s", [None, False, False, self.number])
-            cur.execute("delete from orders where table_num = %s", [table_id])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("Clearing table failed")
-        conn.commit()
+        DbService.clear_table_data(self.number)
         
         self.budget = None
         self.orders = []
@@ -262,9 +215,5 @@ class Table:
     def update_order_status(self, id: int, status: OrderStatus):
         for order in self.orders:
             if order.id == id:
-                cur = conn.cursor()
-                cur.execute("""UPDATE orders SET status = %s WHERE id = %s""", [status.value, id])
-                if not (cur.rowcount == 1):
-                    raise Exception("Order update failed")
-                conn.commit()
+                DbService.update_order_status(id, status.value)
                 order.update_status(status)

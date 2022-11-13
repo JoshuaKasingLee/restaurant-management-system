@@ -2,10 +2,10 @@
 
 import pytest
 from init_db import conn
-from helper import get_dish_cost
+from db_service import DbService
 from table import Table
 
-def test_get_dish_cost():
+def test_get_dish_cost_from_order():
     cur = conn.cursor()
     cur.execute("delete from orders")
     cur.execute("delete from menu_item")
@@ -25,17 +25,17 @@ def test_get_dish_cost():
     table.order_dishes("Escargot", 1)
     cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
     order_id = cur.fetchone()[0]
-    assert(get_dish_cost(order_id) == 20.80)
+    assert(DbService.get_dish_cost_from_order(order_id) == 20.80)
 
     table.order_dishes("Croissant", 1)
     cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
     order_id = cur.fetchone()[0]
-    assert(get_dish_cost(order_id) == 6)
+    assert(DbService.get_dish_cost_from_order(order_id) == 6)
 
     table.order_dishes("Steak", 1)
     cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
     order_id = cur.fetchone()[0]
-    assert(get_dish_cost(order_id) == 48.50)
+    assert(DbService.get_dish_cost_from_order(order_id) == 48.50)
 
     cur.execute("delete from orders")
     cur.execute("delete from menu_item")
