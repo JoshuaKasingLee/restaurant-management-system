@@ -21,6 +21,15 @@ class DbService:
             raise Exception("Table could not be found")
         conn.commit()
 
+    def insert_new_table(num: int):
+        cur = conn.cursor()
+        try:
+            cur.execute("""INSERT INTO tables(num, budget, needs_assistance, occupied) values (%s, null, False, False)""", [num])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("SQL Statement Failed")
+        conn.commit()
+
     def update_table_to_occupied(num: int):
         cur = conn.cursor()
         cur.execute("""update tables set occupied = True where num = %s""", [num])
@@ -70,6 +79,15 @@ class DbService:
             raise Exception("No category with that name was found")
         return cur.fetchone()[0]
 
+    def insert_category(category_name: str, category_order: int):
+        cur = conn.cursor()
+        try:
+            cur.execute("""INSERT INTO category(name, visible, display_order) values (%s, %s, %s)""", [category_name, False, category_order])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Inserting new category failed")
+        conn.commit()
+
     def update_category(cat_id: int, show: bool, new_name: str):
         cur = conn.cursor()
         cur.execute("""update category set visible = %s, name = %s where id = %s""", [show, new_name, cat_id])
@@ -83,6 +101,14 @@ class DbService:
         if not (cur.rowcount == 1): 
             conn.rollback()
             raise Exception("No category with that name was found")
+        conn.commit()
+
+    def update_category_display_order(display_order: int, cat_id: int):
+        cur = conn.cursor()
+        cur.execute("""update category set display_order = %s where id = %s""", [display_order, cat_id])
+        if not (cur.rowcount == 1): 
+            conn.rollback()
+            raise Exception("Display order update failed")
         conn.commit()
 
     # menu items
@@ -124,6 +150,45 @@ class DbService:
             conn.rollback()
             raise Exception("Deleting menu items from category failed")
         conn.commit()
+
+    def insert_menu_item(name: str, desc: str, ingredients: str, cost: float, display_order: int, category: str, img):
+        cur = conn.cursor()
+        try:
+            cat_id = DbService.get_category_id(category)
+            cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values (%s, %s, %s, %s, %s, %s, %s, %s);", [name, desc, ingredients, cost, display_order, cat_id, img, False]) # need to change to default order at end
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Inserting new menu item failed")
+        conn.commit()
+
+    def update_menu_item(category: str, item_name: str, desc: str, ingredients: str, cost: float, show: bool, img, oldname: str):
+        cur = conn.cursor()
+        try:
+            cat_id = DbService.get_category_id(category)
+            cur.execute("""update menu_item set name = %s, category = %s, description = %s, ingredients = %s, cost = %s, visible = %s, image = %s where name = %s""", [item_name, cat_id, desc, ingredients, cost, show, img, oldname])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Updating menu item failed")
+        conn.commit()
+
+    def update_menu_item_category_unassigned(category_id: int):
+        cur = conn.cursor()
+        try:
+            unassigned_id = DbService.get_category_id("Unassigned")
+            cur.execute("update menu_item set category = %s where category = %s", [unassigned_id, category_id])
+        except:
+            conn.rollback()
+            raise Exception("Moving menu items to Unassigned category failed")
+        conn.commit()
+
+    def update_menu_item_display_order(display_order: int, item_id: int):
+        cur = conn.cursor()
+        cur.execute("""update menu_item set display_order = %s where id = %s""", [display_order, item_id])
+        if not (cur.rowcount == 1): 
+            conn.rollback()
+            raise Exception("Display order update failed")
+        conn.commit()
+
 
     # def update_menu_item_to_unassigned()
 
