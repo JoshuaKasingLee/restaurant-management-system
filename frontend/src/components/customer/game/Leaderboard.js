@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Grid, IconButton, Paper, Typography } from '@mui/material';
 import PlayCircleRoundedIcon from '@mui/icons-material/PlayCircleRounded';
 import LeaderboardTable from './LeaderboardTable';
+import useAlert from '../../../utilities/useAlert';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -14,6 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Leaderboard({submit}) {
   const [leaderboard, setLeaderboard] = React.useState([]);
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {
     const getLeaderboard = async () => {
@@ -28,7 +30,7 @@ function Leaderboard({submit}) {
       if (response.ok) {
         setLeaderboard( data.players );
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
 

@@ -9,12 +9,14 @@ import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import useAlert from '../../utilities/useAlert';
 
 /* Table Form Component */
 
 function TableForm ({ submit }) {
   const [table, setTable] = React.useState('');
   const [numTables, setNumTables] = React.useState(0);
+  const { setAlert } = useAlert();
 
   const onSubmit = () => {
     submit(table);
@@ -34,7 +36,7 @@ function TableForm ({ submit }) {
       if (response.ok) {
         setNumTables(data.numTables);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
     getNumTables();

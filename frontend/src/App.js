@@ -6,7 +6,6 @@ import {
 
 import React from 'react';
 import './App.css';
-// theme
 import ThemeProvider from './theme';
 
 import Landing from './pages/Landing';
@@ -21,10 +20,12 @@ import Login from './pages/staff/Login';
 import Kitchen from './pages/staff/Kitchen';
 import Wait from './pages/staff/Wait';
 import Manager from './pages/staff/Manager';
+import AlertPopup from './utilities/AlertPopup';
 
 function App () {
   return (
     <ThemeProvider>
+      <AlertPopup />
       <BrowserRouter>
         <Routes>
           <Route exact path='/' element={<Landing />} />

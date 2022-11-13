@@ -3,10 +3,13 @@ import Header from '../../components/staff/Header';
 import KitchenOrders from '../../components/staff/KitchenOrders';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import useAlert from '../../utilities/useAlert';
 
 export default function Kitchen() {
   const [notStartedOrders, setNotStarted] = React.useState([]);
   const [cookingOrders, setCooking] = React.useState([]);
+
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {  
     const getKitchenOrders = async () => {
@@ -23,7 +26,7 @@ export default function Kitchen() {
         setNotStarted(data.orders.filter(o => o.status === "ordered"));
         setCooking(data.orders.filter(o => o.status === "cooking"));
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     }
 

@@ -11,10 +11,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import useAlert from '../../utilities/useAlert';
 
 export default function Entertainment() {
   const [records, setRecords] = React.useState([]);
   const [trigger, setTrigger] = React.useState(false);
+  const { setAlert } = useAlert();
 
   const reset = async () => {
     const response = await fetch(`http://localhost:5000/manager/entertainment/leaderboard/reset `, {  
@@ -28,7 +30,7 @@ export default function Entertainment() {
     if (response.ok) {
       setTrigger(true);
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
 }
 
@@ -45,7 +47,7 @@ export default function Entertainment() {
       if (response.ok) {
         setRecords(data.players);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
     getLeaderboardRecords();

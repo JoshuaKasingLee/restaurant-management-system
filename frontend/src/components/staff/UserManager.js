@@ -3,6 +3,7 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
 import PasswordInput from './PasswordInput';
+import useAlert from '../../utilities/useAlert';
 
 export default function NewItem() {
   const numTables = 20;
@@ -15,6 +16,8 @@ export default function NewItem() {
   const [trigger, setTrigger] = React.useState(false);
 
   const [disabled, setDisabled] = React.useState(false);
+
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {
     let p = [kPass, wPass, mPass];
@@ -49,7 +52,7 @@ export default function NewItem() {
         setWPass(data.passwords.wait)
         setMPass(data.passwords.manager)
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     }
 
@@ -97,7 +100,7 @@ export default function NewItem() {
       setWPass(data.passwords.wait)
       setMPass(data.passwords.manager)
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   } 
 

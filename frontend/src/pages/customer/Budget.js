@@ -2,8 +2,11 @@ import * as React from 'react';
 import BudgetForm from '../../components/customer/BudgetForm';
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
+import useAlert from '../../utilities/useAlert';
 
-function Budget () {  
+function Budget () {
+  const { setAlert } = useAlert();
+
 	return (
     <>
       <Header image={localStorage.getItem('restaurantImage')} title={"Budget Allocation"}/>
@@ -28,7 +31,7 @@ function Budget () {
           const data = await response.json();
           if (response.ok) {
           } else {
-            alert(await data.error);
+            setAlert(await data.error);
           }
         }
       }} 

@@ -7,11 +7,12 @@ import Box from '@mui/material/Box';
 import MenuItemList from './MenuItemList';
 import AddNewButton from './AddNewButton';
 import EditIcon from '@mui/icons-material/Edit';
- import IconButton from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 import EditCategoryDialog from './EditCategoryDialog';
 import ReorderButton from './ReorderButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import useAlert from '../../utilities/useAlert';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,6 +52,8 @@ function MenuEditor() {
   const [label, setLabel] = React.useState("");
   const [menu, setMenu] = React.useState({'categories': []});
   const [trigger, setTrigger] = React.useState(false);
+  
+  const { setAlert } = useAlert();
   const [reorderTrigger, setReorderTrigger] = React.useState(false);
 
   React.useEffect(() => {
@@ -80,7 +83,7 @@ function MenuEditor() {
         localStorage.setItem('menu', JSON.stringify(data));
         setMenu( menu => (data) );
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
     getMenu();
@@ -104,7 +107,7 @@ function MenuEditor() {
     if (response.ok) {
       setTrigger(true);
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   }
 

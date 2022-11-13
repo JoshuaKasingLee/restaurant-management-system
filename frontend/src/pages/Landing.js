@@ -4,12 +4,15 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import Header from '../components/customer/Header';
 import { useTheme } from '@mui/material/styles';
 import { fontStyle } from '@mui/system';
+import useAlert from '../utilities/useAlert';
 
 /* Landing Page */
 function Landing () {
   const [name, setName] = React.useState('');
   const [image, setImage] = React.useState('');  
   
+  const { setAlert } = useAlert();
+
   const theme = useTheme();
 
   React.useEffect(() => {
@@ -30,7 +33,7 @@ function Landing () {
         localStorage.setItem('restaurantName', data.name);
         localStorage.setItem('restaurantImage', data.image);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
     getRestaurantInfo();

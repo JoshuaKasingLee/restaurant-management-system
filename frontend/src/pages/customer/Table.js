@@ -2,8 +2,11 @@ import * as React from 'react';
 import TableForm from '../../components/customer/TableForm';
 import Header from '../../components/customer/Header';
 import Footer from '../../components/customer/Footer';
+import useAlert from '../../utilities/useAlert';
 
 function Table () {  
+  const { setAlert } = useAlert();
+
 	return (
     <>
       <Header image={localStorage.getItem('restaurantImage')} title={"Table Selection"}/>
@@ -23,7 +26,7 @@ function Table () {
           // console.log(data);
           localStorage.setItem('token', data.token);
         } else {
-          alert(await data.error);
+          setAlert(await data.error);
         }
       }} 
       />

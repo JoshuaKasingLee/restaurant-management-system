@@ -6,9 +6,12 @@ import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import useAlert from '../../utilities/useAlert';
 
 export default function Request({table}) {
     // const labelId = `checkbox-list-label-${table}`;
+
+    const { setAlert } = useAlert();
 
     async function resolveRequest() {
         const response = await fetch(`http://localhost:5000/waiter/assist`, {  
@@ -25,7 +28,7 @@ export default function Request({table}) {
         if (response.ok) {
             
         } else {
-            alert(await data.error);
+            setAlert(await data.error);
         }
     }
 

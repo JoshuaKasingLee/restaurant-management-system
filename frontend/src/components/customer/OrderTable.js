@@ -6,6 +6,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid,
 import { PropTypes } from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import PaymentToggleButton from './PaymentToggleButton';
+import useAlert from '../../utilities/useAlert';
 
 const columns = [
   { id: 'image', label: '', minWidth: 160 },
@@ -58,6 +59,7 @@ function OrderTable() {
   const [totalCost, setTotalCost] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const [valid, setValid] = React.useState(false);
+  const { setAlert } = useAlert();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -94,7 +96,7 @@ function OrderTable() {
         }
         setTotalCost( data.total);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
     

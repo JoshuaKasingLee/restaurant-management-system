@@ -8,7 +8,7 @@ import MenuCategory from '../../components/customer/menu/MenuCategory';
 import MenuSort from '../../components/customer/menu/MenuSort';
 import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
-import zIndex from '@mui/material/styles/zIndex';
+import useAlert from '../../utilities/useAlert';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,6 +55,8 @@ function Menu() {
   const [ordered, setOrdered] = React.useState(true); 
   const [open, setOpen] = React.useState(false);
 
+  const { setAlert } = useAlert();
+
   const handleChange = (event, newValue, newLabel) => {
     setValue(newValue);
     setLabel(newLabel);
@@ -82,7 +84,7 @@ function Menu() {
         if (response.ok) {
           setBudget(budgetValue);
         } else {
-          alert(await data.error);
+          setAlert(await data.error);
         }
       }
       updateBudget();
@@ -111,7 +113,7 @@ function Menu() {
         setMenu( data );
         console.log(data.categories);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
 
@@ -133,7 +135,7 @@ function Menu() {
         setRemaining( data.remaining );
         setOrder( data.orderTotal );
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     };
 
@@ -173,7 +175,6 @@ function Menu() {
     for (let i = 0; i < sortedContent.length; i++) {
       renderedContent.push(
         <TabPanel  key={i} value={value} index={i}>
-          <Typography variant="h3" >{sortedContent[i].title}</Typography>
           <MenuCategory 
             submit = {(ordered) => setOrdered(ordered)}
             category={menu.categories[content.findIndex(obj => 

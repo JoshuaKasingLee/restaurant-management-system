@@ -6,11 +6,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import useAlert from '../../utilities/useAlert';
 
 export default function EditCategoryDialog({open, category, handleClose, updateMenu}) {
 
   const [name, setName] = React.useState(category.title);
   const [show, setShow] = React.useState(category.visible);
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {
     setName(category.title);
@@ -43,7 +45,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
       updateMenu(true);
       handleClose();
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   }
 
@@ -65,7 +67,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
       updateMenu(true);
       handleClose();
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   }
 
