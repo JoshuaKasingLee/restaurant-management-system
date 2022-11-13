@@ -4,12 +4,14 @@ import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContent
   DialogTitle, IconButton, TextField, Typography } from '@mui/material';
 import ReplayCircleFilledRoundedIcon from '@mui/icons-material/ReplayCircleFilledRounded';
 import StopCircleRoundedIcon from '@mui/icons-material/StopCircleRounded';
+import useAlert from '../../../utilities/useAlert';
 
 function EndDialog(props) {
   const { onClose, open, score } = props;
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [submitted, setSubmitted] = React.useState(false);
+  const { setAlert } = useAlert();
 
   const handleClick = (value) => {
     onClose(value);
@@ -38,7 +40,7 @@ function EndDialog(props) {
       if (response.ok) {
         setSubmitted(true);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     }
     submit();

@@ -6,11 +6,14 @@
   import DialogContent from '@mui/material/DialogContent';
   import DialogContentText from '@mui/material/DialogContentText';
   import DialogTitle from '@mui/material/DialogTitle';
+  import useAlert from '../../utilities/useAlert';
   
   export default function NewCategoryDialog({open, handleClose, updateMenu}) {
 
   const [name, setName] = React.useState('');
   const [disabled, setDisabled] = React.useState(true);
+
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {
     if (name.length <= 100 && name.length > 0) {
@@ -36,7 +39,7 @@
       updateMenu(true);
       handleClose();
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   }
 

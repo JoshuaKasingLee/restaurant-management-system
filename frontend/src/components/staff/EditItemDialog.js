@@ -7,6 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
+import useAlert from '../../utilities/useAlert';
 
 export default function EditItemDialog({open, item, categoryName, updateMenu, handleClose}) {
     
@@ -17,6 +18,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
     const [tags, setTags] = React.useState(item.actualTags);
     const [cost, setCost] = React.useState(item.cost);
     const [image, setImage] = React.useState(item.img);
+    const { setAlert } = useAlert();
 
     // const setCostWrapper = (value) => {
     //     setCost(parseFloat(value))
@@ -81,7 +83,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
             updateMenu(true);
             handleClose();
         } else {
-          alert(await data.error);
+          setAlert(await data.error);
         }
     }
 
@@ -103,7 +105,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
             updateMenu(true);
             handleClose();
         } else {
-          alert(await data.error);
+          setAlert(await data.error);
         }
     }
 

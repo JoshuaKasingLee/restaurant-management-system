@@ -10,11 +10,14 @@ import { List, ListItem } from '@mui/material';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 import { Draggable } from 'react-beautiful-dnd';
+import useAlert from '../../utilities/useAlert';
 
 export default function ReorderCategoryDialog({open, categoriesProps, handleClose, updateMenu}) {
 
   const [categories, setCategories] = React.useState(categoriesProps);
   const [unassigned, setUnassigned] = React.useState(null);
+
+  const { setAlert } = useAlert();
 
   async function reorderCategories() {
     const response = await fetch(`http://localhost:5000/manager/categories`, {  
@@ -32,7 +35,7 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
       updateMenu(true);
       handleClose();
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   }
 

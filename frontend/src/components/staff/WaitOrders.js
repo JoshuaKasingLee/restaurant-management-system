@@ -4,6 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Order from './Order'
 import { nextOrderStatus } from '../../utilities/constants';
+import useAlert from '../../utilities/useAlert';
 
 
 export default function WaitOrders() { 
@@ -13,6 +14,8 @@ export default function WaitOrders() {
   // })
 
   const [preparedOrders, setPrepared] = React.useState([]);
+
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {  
     const getWaitOrders = async () => {
@@ -27,7 +30,7 @@ export default function WaitOrders() {
       if (response.ok) {
         setPrepared(data.orders);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     }
 

@@ -12,6 +12,7 @@ import { ReactComponent as StarIcon } from './CR.svg';
 import { ReactComponent as VeganIcon } from './VE.svg';
 import { ReactComponent as VegIcon } from './V.svg';
 import SvgIcon from '@mui/material/SvgIcon';
+import useAlert from '../../../utilities/useAlert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -59,6 +60,7 @@ function MenuCategory({submit, category, filters, sort}) {
   const [quantity, setQuantity] = React.useState(new Array(category.menu_items.length).fill(1));
   const [withinBudget, setWithinBudget] = React.useState(true);
   const [ordered, setOrdered] = React.useState(false);
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {
     let content = [];
@@ -164,11 +166,11 @@ function MenuCategory({submit, category, filters, sort}) {
           submit(ordered);
           setOrdered(ordered => !ordered);
         } else {
-          alert(await data1.error);
+          setAlert(await data1.error);
         }
       }
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   };
 

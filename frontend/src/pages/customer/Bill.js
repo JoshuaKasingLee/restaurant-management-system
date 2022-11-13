@@ -4,11 +4,14 @@ import Footer from '../../components/customer/Footer';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import BillTable from '../../components/customer/BillTable';
+import useAlert from '../../utilities/useAlert';
 
 function Bill() {
   const [total, setTotal] = React.useState(0);
   const [charge, setCharge] = React.useState(new Array(4).fill(0));
   const [orderItems, setOrderItems] = React.useState([]);
+
+  const { setAlert } = useAlert();
   // const [people, setPeople] = React.useState(Array(parseInt(localStorage.getItem('numSplit'))).fill(0));
 
   React.useEffect(() => {
@@ -36,7 +39,7 @@ function Bill() {
         setCharge( data.charge );
         setOrderItems( data.order_items );
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     }
     getBill();

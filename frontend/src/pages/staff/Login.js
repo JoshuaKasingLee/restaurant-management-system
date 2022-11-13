@@ -3,13 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Stack, Avatar, Typography } from '@mui/material';
 import LoginForm from '../../components/staff/LoginForm';
 import Header from '../../components/staff/Header';
+import useAlert from '../../utilities/useAlert';
 
 export default function Login () {
+  
+  const { setAlert } = useAlert();
+  
   localStorage.clear();
 
   const navigate = useNavigate();
   const [role, setRole] = React.useState("Admin");
-  
+ 
   if (role === "Admin") {
     return (<>
         <Header title={role} />
@@ -56,12 +60,14 @@ export default function Login () {
             localStorage.setItem('token', data.token);
             navigate(`/staff/${role}`);
           } else {
-            alert(await data.error);
+            setAlert(await data.error);
           }
         }} role={role} />
       </Box>
       </>
     );
   }
+
+
 
 }

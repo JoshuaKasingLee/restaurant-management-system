@@ -23,6 +23,7 @@ import { ReactComponent as StarIcon } from '../customer/menu/CR.svg';
 import { ReactComponent as VeganIcon } from '../customer/menu/VE.svg';
 import { ReactComponent as VegIcon } from '../customer/menu/V.svg';
 import SvgIcon from '@mui/material/SvgIcon';
+import useAlert from '../../utilities/useAlert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,6 +35,8 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
   const [visible, setVisible] = React.useState(item.visible);
 
   const [openEditItem, setOpenEditItem] = React.useState(false);
+
+  const { setAlert } = useAlert();
 
   const handleCloseEditItem = () => {
     setOpenEditItem(false);
@@ -84,7 +87,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
     if (response.ok) {
       updateMenu(true);
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   }
 
@@ -108,7 +111,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
       updateMenu(true);
       setOpen(false);
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   };
 
