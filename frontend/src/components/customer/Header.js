@@ -5,6 +5,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import RecordVoiceOverRoundedIcon from '@mui/icons-material/RecordVoiceOverRounded';
+import LogoutIcon from '@mui/icons-material/Logout';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 50;
 
@@ -73,24 +77,45 @@ function Header({image, title}) {
   }, [title, selected]);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="transparent">
-        <Toolbar>
-          <Box>
+    <Box sx={{ width: '100vp', zIndex: 100, height: 60 }}>
+      <AppBar sx={{bgcolor: 'background.paper' }}>
+        <Toolbar >
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
             {/* <img src={'https://menufyproduction.imgix.net/637950714526548063+871748.png'} alt="Logo" height="125px" width="125px"/> */}
-            <img src={image} alt="Logo" height="125px" width="125px"/>
+            <img src={image} alt="Logo" height="60px" width="60px"/>
+            { title !== 'Table Selection' && title !== 'Admin' &&
+              <Button 
+              sx={{
+                ml: 8,
+                height: '30px'
+              }}
+              variant="contained"
+              disabled
+            >
+              Table {localStorage.getItem("table")}
+            </Button>}
           </Box>
-          <Typography variant="h1" component="div" sx={{ flexGrow: 1, ml: `${drawerWidth}px` }}>
-          {title}
-          </Typography>
-          {title !== 'Table Selection' && title !== 'Admin' && title !== 'Bill' && <ToggleButton
-          value="check"
-          selected={selected}
-          color="primary"
-          onChange={handleChange}
-          >
-            <RecordVoiceOverRoundedIcon  sx={{width: 50, height: 50 }} />
-          </ToggleButton>}
+          <Box sx={{ display: 'flex', justifyContent: 'right', flexGrow: 1 }}>
+            {title !== 'Table Selection' && title !== 'Admin' && title !== 'Bill' &&
+              <ToggleButton
+                value="check"
+                selected={selected}
+                color="primary"
+                onChange={handleChange}
+                sx={{ width: 40, height: 40, ml: 'auto', mr: 3 }}
+              >
+                <RecordVoiceOverRoundedIcon/>
+              </ToggleButton>
+            }
+            <ToggleButton
+              sx={{ mr: 3, width: 40, height: 40}}
+              color="primary"
+              value="exit"
+              component={Link} to={'/'}
+            >
+              <LogoutIcon/>
+            </ToggleButton>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

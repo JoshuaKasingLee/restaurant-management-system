@@ -33,7 +33,6 @@ function Budget () {
         }
       }} 
       />
-      <Footer title = 'Budget Allocation' />
     </ >
 	);
 }
