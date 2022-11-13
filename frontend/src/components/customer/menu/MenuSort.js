@@ -39,6 +39,7 @@ function MenuSort({ submit }) {
         disableRipple
         onClick={handleOpen}
         endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
+        sx={{ mr: 5 }}
       >
         Sort By:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>

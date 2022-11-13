@@ -27,7 +27,6 @@ function Table () {
         }
       }} 
       />
-      <Footer title = 'Table Selection' />
     </ >
 	);
 }

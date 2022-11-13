@@ -2,12 +2,16 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import Header from '../components/customer/Header';
+import { useTheme } from '@mui/material/styles';
+import { fontStyle } from '@mui/system';
 
 /* Landing Page */
 function Landing () {
   const [name, setName] = React.useState('');
   const [image, setImage] = React.useState('');  
   
+  const theme = useTheme();
+
   React.useEffect(() => {
     // console.log(localStorage.getItem('restaurantImage'));
     // console.log(localStorage.getItem('assistance'));
@@ -34,16 +38,43 @@ function Landing () {
   
   return (
     <>
-      <Header image={image} title={"Admin"}/>
-      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="80vh">
-        <Typography variant='h2'>
-          Hi, welcome to {name}!
-        </Typography>
-        <br />
-        <Stack spacing={2} width={'500px'}>
-          <Button component={Link} to={'/customer/table'} variant="contained">Customer</Button>
-          <Button component={Link} to={'/staff/login'} variant="contained">Staff</Button>
-        </Stack>
+      <Box display="flex" sx={{ height: "100vh" }}>
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
+          sx={{ 
+          width: "50%",
+          bgcolor: 'primary.main',
+          color: 'white'}}
+        >
+          <Typography variant='h4'>
+            WELCOME TO
+          </Typography>
+          <Typography variant='h1'  >
+            {name.toUpperCase() + "!"}
+          </Typography>
+        </Box>
+        
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
+          sx={{ 
+            width: "50%"}}
+        >
+          <Stack spacing={2} width={'40%'}>
+            <Typography variant='body2'>
+              Choose your interface...
+            </Typography>
+            <Button
+              component={Link} to={'/customer/table'}
+              variant="contained"
+              sx={{ height: 100, fontSize: 15}}>
+              CUSTOMER
+            </Button>
+            <Button
+              component={Link} to={'/staff/login'}
+              variant="contained"
+              sx={{ height: 100, fontSize: 15}}>
+              STAFF
+            </Button>
+          </Stack>
+        </Box>
       </Box>
     </ >
   );

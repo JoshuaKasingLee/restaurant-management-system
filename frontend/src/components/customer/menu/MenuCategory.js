@@ -173,10 +173,10 @@ function MenuCategory({submit, category, filters, sort}) {
   };
 
   return (
-    <ImageList sx={{ width: 950, height: 510}} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: '80vp', height: 'auto', ml: 16, px: 2, pb: 10 }} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
         < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
-          <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%' }} onClick={handleClickOpen(index)}>
+          <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%', m: 0.8 }} onClick={handleClickOpen(index)}>
             <img
               style={{ borderRadius: '5% 5% 0% 0%' }}
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}

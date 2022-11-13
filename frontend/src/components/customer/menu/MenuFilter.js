@@ -34,7 +34,7 @@ function MenuFilter({ submit }) {
   };
   
   return (
-    <Stack direction="row" spacing={1}>
+    <Stack direction="row" spacing={1} sx={{ mr: 5, mt: 4 }}>
       {chipData.map((data) => (
         <Stack key={data.key}>
           <Chip 
