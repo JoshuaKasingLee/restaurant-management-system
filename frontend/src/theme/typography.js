@@ -29,7 +29,7 @@ const typography = {
     fontWeight: 700,
     lineHeight: 80 / 64,
     fontSize: pxToRem(40),
-    ...responsiveFontSizes({ sm: 52, md: 58, lg: 64 }),
+    ...responsiveFontSizes({ sm: 58, md: 64, lg: 70 }),
   },
   h2: {
     fontWeight: 700,
