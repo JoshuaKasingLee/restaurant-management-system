@@ -170,18 +170,18 @@ function Menu() {
     let content = getContent();
     let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-        renderedContent.push(
-          <TabPanel  key={i} value={value} index={i}>
-            <Typography variant="h3" >{sortedContent[i].title}</Typography>
-            <MenuCategory 
-              submit = {(ordered) => setOrdered(ordered)}
-              category={menu.categories[content.findIndex(obj => 
-                obj.order === sortedContent[i].order)]} 
-              filters={filters} 
-              sort={sort}
-            />
-          </TabPanel>
-        );
+      renderedContent.push(
+        <TabPanel  key={i} value={value} index={i}>
+          <Typography variant="h3" >{sortedContent[i].title}</Typography>
+          <MenuCategory 
+            submit = {(ordered) => setOrdered(ordered)}
+            category={menu.categories[content.findIndex(obj => 
+              obj.order === sortedContent[i].order)]} 
+            filters={filters} 
+            sort={sort}
+          />
+        </TabPanel>
+      );
     }
     return renderedContent;
   };

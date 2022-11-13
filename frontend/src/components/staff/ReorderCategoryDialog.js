@@ -41,7 +41,7 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
     categories.map((c, i) => {
       result.push({
         id: c.id, 
-        positionId: i
+        positionId: i + 1
       })
     });
     result.push(unassigned);
