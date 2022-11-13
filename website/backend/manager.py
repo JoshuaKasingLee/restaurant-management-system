@@ -7,6 +7,7 @@ from category import Category
 from table import Table
 from init_db import conn
 from helper import TagNames
+from db_service import DbService
 
 class Manager(Staff):
     def __init__(self, password: str, restaurant):
@@ -84,13 +85,7 @@ class Manager(Staff):
                 if item.category.name == name:
                     item.category = self.restaurant.find_category("Unassigned")
 
-        try:
-            cur.execute("""DELETE FROM category where name = %s""", [name])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("Deleting category failed")
-        conn.commit()
-        
+        DbService.delete_category_name(name)
         cat = self.restaurant.find_category(name)
         if cat != None:
             self.restaurant.categories.remove(cat)
@@ -102,8 +97,7 @@ class Manager(Staff):
         cur = conn.cursor()
     
         for category in category_display_orders:
-            cur.execute("""select name from category where id = %s""", [category["id"]])
-            cat_name = cur.fetchone()[0]
+            cat_name = DbService.get_category_name(category["id"])
             cur.execute("""update category set display_order = %s where id = %s""", [category["positionId"], category["id"]])
             if cur.rowcount == 1:
                 cat = self.restaurant.find_category(cat_name)
@@ -118,8 +112,7 @@ class Manager(Staff):
         cur = conn.cursor()
     
         for item in menu_item_display_orders:
-            cur.execute("""select name from menu_item where id = %s""", [item["id"]])
-            item_name = cur.fetchone()[0]
+            item_name = DbService.get_menu_item_name(item["id"])
             cur.execute("""update menu_item set display_order = %s where id = %s""", [item["positionId"], item["id"]])
             if cur.rowcount == 1:
                 menu_item = self.restaurant.find_menu_item(item_name)
@@ -134,14 +127,12 @@ class Manager(Staff):
     def edit_menu_item(self, id: int, name: str, category: str, desc: str, ingredients: str, cost: float, show: bool, tags = None, img = None) -> MenuItem:
         cur = conn.cursor()
 
-        cur.execute("select name from menu_item where id = %s", [id])
-        oldname = cur.fetchone()[0]
+        oldname = DbService.get_menu_item_name(id)
         if not self.restaurant.menu_contains(oldname):
             raise Exception(f"Menu item with name {oldname} does not exist")
         else:
             try:
-                cur.execute("select id from category where name = %s", [category])
-                cat_id = cur.fetchone()[0]
+                cat_id = DbService.get_category_id(category)
                 cur.execute("""update menu_item set name = %s, category = %s, description = %s, ingredients = %s, cost = %s, visible = %s, image = %s where name = %s""", [name, cat_id, desc, ingredients, cost, show, img, oldname])
             except Exception as err:
                 conn.rollback()
@@ -176,12 +167,10 @@ class Manager(Staff):
         if self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} already exists")
         else:
-            #find category object please
             m = MenuItem(name, desc, ingredients, cost, self.restaurant.find_category(category), tags, img)
             cur = conn.cursor()
             try:
-                cur.execute("select id from category where name = %s", [category])
-                cat_id = cur.fetchone()[0]
+                cat_id = DbService.get_category_id(category)
                 cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values (%s, %s, %s, %s, %s, %s, %s, %s);", [name, desc, ingredients, cost, m.display_order, cat_id, img, False]) # need to change to default order at end
             except Exception as err:
                 conn.rollback()
@@ -190,57 +179,31 @@ class Manager(Staff):
 
             if tags != None:
                 if tags[TagNames.VEGETARIAN.value]:
-                    try:
-                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegetarian'));", [name])
-                    except Exception as err:
-                        conn.rollback()
-                        raise Exception("Inserting new tag failed")
+                    DbService.insert_menu_item_tag(name, TagNames.VEGETARIAN.value)
                 if tags[TagNames.VEGAN.value]:
-                    try:
-                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'vegan'));", [name])
-                    except Exception as err:
-                        conn.rollback()
-                        raise Exception("Inserting new tag failed")
+                    DbService.insert_menu_item_tag(name, TagNames.VEGAN.value)
                 if tags[TagNames.GF.value]:
-                    try:
-                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'gluten free'));", [name])
-                    except Exception as err:
-                        conn.rollback()
-                        raise Exception("Inserting new tag failed")
+                    DbService.insert_menu_item_tag(name, TagNames.GF.value)
                 if tags[TagNames.NF.value]:
-                    try:
-                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'nut free'));", [name])
-                    except Exception as err:
-                        conn.rollback()
-                        raise Exception("Inserting new tag failed")
+                    DbService.insert_menu_item_tag(name, TagNames.NF.value)
                 if tags[TagNames.DF.value]:
-                    try:
-                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'dairy free'));", [name])
-                    except Exception as err:
-                        conn.rollback()
-                        raise Exception("Inserting new tag failed")
+                    DbService.insert_menu_item_tag(name, TagNames.DF.value)
                 if tags[TagNames.CR.value]:
-                    try:
-                        cur.execute("INSERT INTO menu_item_tags(menu_item, tag) values ((SELECT id from menu_item WHERE name = %s), (SELECT id from tag WHERE name = 'chef recommended'));", [name])
-                    except Exception as err:
-                        conn.rollback()
-                        raise Exception("Inserting new tag failed")
-            conn.commit()
+                    DbService.insert_menu_item_tag(name, TagNames.CR.value)
+            
             self.restaurant.menu_items.append(m)
             return m
                 
 
     def remove_menu_item(self, id: int) -> bool:
         cur = conn.cursor()
-        cur.execute("select name from menu_item where id = %s", [id])
-        name = cur.fetchone()[0]
-        
+        name = DbService.get_menu_item_name(id)
+
         if not self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} does not exist")
 
         try:
-            cur.execute("select id from menu_item where name = %s", [name])
-            item_id = cur.fetchone()[0]
+            item_id = DbService.get_menu_item_id(name)
             cur.execute("""DELETE FROM menu_item_tags where menu_item = %s""", [item_id])
             cur.execute("""DELETE FROM menu_item where name = %s""", [name])
         except Exception as err:
@@ -254,28 +217,17 @@ class Manager(Staff):
             return True
         return False
 
-
     def change_wait_pw(self, new_pw: str):
-        cur = conn.cursor()
-        cur.execute("""update staff set password = %s where role = 'wait'""", [new_pw])
-        if (cur.rowcount == 1): 
-            self.restaurant.wait.password = new_pw
-        conn.commit()
+        DbService.update_staff_password("wait", new_pw)
+        self.restaurant.wait.password = new_pw
         
     def change_kitchen_pw(self, new_pw: str):
-        cur = conn.cursor()
-        cur.execute("""update staff set password = %s where role = 'kitchen'""", [new_pw])
-        if (cur.rowcount == 1): 
-            self.restaurant.kitchen.password = new_pw
-        conn.commit()
+        DbService.update_staff_password("kitchen", new_pw)
+        self.restaurant.kitchen.password = new_pw
         
     def change_manager_pw(self, new_pw: str):
-        cur = conn.cursor()
-        cur.execute("""update staff set password = %s where role = 'manager'""", [new_pw])
-        if (cur.rowcount == 1): 
-            self.password = new_pw
-        conn.commit()
-        
+        DbService.update_staff_password("manager", new_pw)
+        self.password = new_pw
         
     def choose_table_amt(self, number: int):
         if (number < 0):
@@ -303,8 +255,7 @@ class Manager(Staff):
     
     def category_edit(self, cat_id: int, show: bool, new_name: str):
         cur = conn.cursor()
-        cur.execute("""select name from category where id = %s""", [cat_id])
-        name = cur.fetchone()[0]
+        name = DbService.get_category_name(cat_id)
         if not self.restaurant.category_exists(name):
             raise Exception(f"Category with name {name} does not exist")
 

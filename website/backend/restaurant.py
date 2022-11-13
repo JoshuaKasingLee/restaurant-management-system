@@ -13,6 +13,7 @@ from helper import OrderStatus
 from init_db import conn
 from uuid import uuid4
 from datetime import datetime
+from db_service import DbService
 
 class Restaurant:
     def __init__(self, name: str):
@@ -87,7 +88,6 @@ class Restaurant:
         for entry in result:
             self.leaderboard.append(LeaderboardEntry(entry[0], entry[1], entry[2], entry[3]))
 
-            
     def menu_contains(self, name: str) -> bool:
         for item in self.menu_items:
             if item.name == name:
@@ -107,34 +107,23 @@ class Restaurant:
         return False
         
     def count_tables(self) -> int:
-        counter = 0
-        for table in self.tables:
-            counter += 1
-        return counter
-        
+        return len(self.tables)
+
     def remove_table(self):
-        cur = conn.cursor()
         table_index = len(self.tables) - 1
-        cur.execute("""delete from tables where num = %s""", [self.tables[table_index].number])
-        if (cur.rowcount == 1):
-            self.tables.remove(self.tables[table_index])
-        conn.commit()
-                
+        DbService.delete_table_num(self.tables[table_index].number)
+        self.tables.remove(self.tables[table_index])       
                 
     def choose_table(self, number: int):
-        cur = conn.cursor()
         for table in self.tables:
             if (table.number == number):
-                cur.execute("""update tables set occupied = True where num = %s""", [number])
-                if (cur.rowcount == 1):
-                    cust_token = uuid4()
-                    table.occupied = True
-                    table.token = str(cust_token)    
-                    conn.commit()
-                    return str(cust_token)
+                DbService.update_table_to_occupied(number)
+                cust_token = uuid4()
+                table.occupied = True
+                table.token = str(cust_token)    
+                return str(cust_token)
         return None
         
-                
     def login(self, user: str, password: str) -> str:
         if (user == 'manager' and password == self.manager.password):
             manager_token = uuid4()
@@ -177,11 +166,9 @@ class Restaurant:
     
     # converts a category to JSON
     def category_to_JSON(self, category_name: str) -> dict:
-        cur = conn.cursor()
         for category in self.categories:
             if category.name == category_name:
-                cur.execute("select id from category where name = %s", [category_name])
-                cat_id = cur.fetchone()[0]
+                cat_id = DbService.get_category_id(category_name)
                 item_list = []
                 for menu_item in self.menu_items:
                     if menu_item.category.name == category.name:
@@ -269,30 +256,13 @@ class Restaurant:
 
     def add_leaderboard_entry(self, name: str, email: str, score: int, time_played: datetime = datetime.now()) -> LeaderboardEntry:
         entry = LeaderboardEntry(name, email, score, time_played)
-        cur = conn.cursor()
-        try:
-            cur.execute("""INSERT INTO leaderboard_entry(name, email, score, time_played) values (%s, %s, %s, %s)""", [name, email, score, time_played])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("Unable to add entry")
-        conn.commit()
+        DbService.insert_leaderboard_entry(name, email, score, time_played)
         self.leaderboard.append(entry)
         return entry
     
     def clear_leaderboard(self) -> dict:
-        cur = conn.cursor()
-        success = True
-        try:
-            cur.execute("""DELETE FROM leaderboard_entry""")
-        except Exception as err:
-            conn.rollback()
-            success = False
-            raise Exception("Unable to delete from leaderboard entry")
-        conn.commit()
-
-        if (success == True):
-            self.leaderboard.clear()
-        
+        DbService.clear_leaderboard()
+        self.leaderboard.clear()
         return self.get_leaderboard()
 
     def get_leaderboard(self, is_customer=False) -> dict:

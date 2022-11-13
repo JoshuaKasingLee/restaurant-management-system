@@ -8,7 +8,7 @@ from datetime import datetime
 from helper import OrderStatus
 from category import Category
 from menu_item import MenuItem
-from helper import get_dish_cost
+from db_service import DbService
 
 import json
 
@@ -175,16 +175,16 @@ class Table:
             p3 = 0
             p4 = 0
             for orderId in dishes["person1"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost(orderId)
                 p1 += dish_cost / dishes_split[orderId]
             for orderId in dishes["person2"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost(orderId)
                 p2 += dish_cost / dishes_split[orderId]
             for orderId in dishes["person3"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost(orderId)
                 p3 += dish_cost / dishes_split[orderId]
             for orderId in dishes["person4"]:
-                dish_cost = get_dish_cost(orderId)
+                dish_cost = DbService.get_dish_cost(orderId)
                 p4 += dish_cost / dishes_split[orderId]
             charge_array = [p1, p2, p3, p4]
 
