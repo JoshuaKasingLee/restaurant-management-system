@@ -8,6 +8,7 @@ import MenuCategory from '../../components/customer/menu/MenuCategory';
 import MenuSort from '../../components/customer/menu/MenuSort';
 import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
+import zIndex from '@mui/material/styles/zIndex';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -188,7 +189,7 @@ function Menu() {
       <Box
         sx={{ height: '100vh', bgcolor: 'background.paper', display: 'flex' }}
       >
-        <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', height: '100vh' }}>
+        <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', height: '100vh', zIndex: 50 }}>
           <Tabs
             orientation="vertical"
             value={value}
@@ -201,7 +202,11 @@ function Menu() {
             {getCategoriesTabs()}
           </Tabs>
         </Box>
-        {getCategoriesTabPanels()}
+        <Box display='flex' alignItems='flex-end' flexDirection="column" spacing={1} sx={{ mt: '10px', mr: '25px', justifyContent: 'right' }}>
+          <MenuFilter submit = { filters => { setFilters(filters) }} />
+          <MenuSort submit = { sort => { setSort(sort) }} />
+          {getCategoriesTabPanels()}
+        </Box>
       </Box>
       <Button 
         sx={{
