@@ -1,5 +1,6 @@
 from init_db import conn
 from datetime import datetime
+from helper import OrderStatus
 
 class DbService:
     
@@ -40,6 +41,17 @@ class DbService:
         cur.execute("update tables set budget = %s where num = %s", [budget, num])
         if not (cur.rowcount == 1):
             raise Exception("Setting budget failed")
+        conn.commit()
+
+    def clear_table_data(num: int):
+        cur = conn.cursor()
+        try:
+            table_id = DbService.get_table_id(num)
+            cur.execute("update tables set budget = %s, needs_assistance = %s, occupied = %s where num = %s", [None, False, False, num])
+            cur.execute("delete from orders where table_num = %s", [table_id])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Clearing table failed")
         conn.commit()
 
     # categories
@@ -165,12 +177,26 @@ class DbService:
 
     # orders
 
+    def insert_order(item_id: int, table_id: int):
+        cur = conn.cursor()
+        try:
+            cur.execute("""INSERT INTO orders(menu_item, table_num, status) values (%s, %s, %s)""", [item_id, table_id, OrderStatus.ORDERED.value])
+        except Exception as err:
+            conn.rollback()
+            raise Exception("Order insert failed")
+        conn.commit()
+
     def update_order_status(order_id: int, status: str):
         cur = conn.cursor()
         cur.execute("""UPDATE orders SET status = %s WHERE id = %s""", [status, order_id])
         if not (cur.rowcount == 1):
             raise Exception("Order update failed")
         conn.commit()
+
+    def get_most_recent_order() -> int:
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
+        return cur.fetchone()[0]
     
     # staff
 

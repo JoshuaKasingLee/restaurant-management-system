@@ -3,7 +3,6 @@
 # order functionalities, budgeting, and notification of whether tables need assistance
 
 from order import Order
-from init_db import conn
 from datetime import datetime
 from helper import OrderStatus
 from category import Category
@@ -57,18 +56,11 @@ class Table:
                 i = i + 1
 
     def order_dish(self, menu_item: MenuItem):
-        cur = conn.cursor()
-        try:
-            item_id = DbService.get_menu_item_id(menu_item.name)
-            table_id = DbService.get_table_id(self.number)
-            cur.execute("""INSERT INTO orders(menu_item, table_num, status) values (%s, %s, %s)""", [item_id, table_id, OrderStatus.ORDERED.value])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("Order insert failed")
+        item_id = DbService.get_menu_item_id(menu_item.name)
+        table_id = DbService.get_table_id(self.number)
+        DbService.insert_order(item_id, table_id)
 
-        conn.commit()
-        cur.execute("SELECT id FROM ORDERS ORDER BY time_ordered DESC LIMIT 1")
-        order_id = cur.fetchone()[0]
+        order_id = DbService.get_most_recent_order()
         self.add_order_to_table(menu_item, order_id)
 
     def add_order_to_table(self, menu_item: MenuItem, order_id: int = None):
@@ -210,16 +202,7 @@ class Table:
     # clear table after dining
         
     def clear_table(self):
-        cur = conn.cursor()
-
-        try:
-            table_id = DbService.get_table_id(self.number)
-            cur.execute("update tables set budget = %s, needs_assistance = %s, occupied = %s where num = %s", [None, False, False, self.number])
-            cur.execute("delete from orders where table_num = %s", [table_id])
-        except Exception as err:
-            conn.rollback()
-            raise Exception("Clearing table failed")
-        conn.commit()
+        DbService.clear_table_data(self.number)
         
         self.budget = None
         self.orders = []
