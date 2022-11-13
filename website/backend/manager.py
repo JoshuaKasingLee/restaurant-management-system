@@ -65,8 +65,8 @@ class Manager(Staff):
                          
         elif type == "keepItems":
             try:
-                cur.execute("update menu_item set category = (select id from category where name = %s)", ["Unassigned"])
-                # BUG BUG BUG ONLY UPDATE WHERE CATEGORY = NAME
+                unassigned_id = DbService.get_category_id("Unassigned")
+                cur.execute("update menu_item set category = %s where category = %s", [unassigned_id, cat_id])
             except:
                 conn.rollback()
                 raise Exception("Moving menu items to Unassigned category failed")
