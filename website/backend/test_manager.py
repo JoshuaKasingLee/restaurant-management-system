@@ -171,9 +171,16 @@ def test_remove_categories_keepItems():
     m.add_menu_item("Fattest big mac", "Very yummy", "Raw salmon, rice, seawood", "12.4", "Burgers")
     m.add_menu_item("Chicken burger", "Shiny", "Block of gold", "1000", "Burgers")
     assert(len(r.menu_items) == 4)
+
+    cur.execute("select id from category where name = %s", ["Unassigned"])
+    u_id = cur.fetchone()[0]
     
     cur.execute("select id from category where name = %s", ["Japanese"])
     j_id = cur.fetchone()[0]
+
+    cur.execute("select id from category where name = %s", ["Burgers"])
+    b_id = cur.fetchone()[0]
+
     m.remove_category(j_id, "keepItems")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 2)
@@ -183,8 +190,12 @@ def test_remove_categories_keepItems():
 
     assert(r.category_exists("Burgers") == True)
     assert(r.category_exists("Japanese") == False)
-    cur.execute("select id from category where name = %s", ["Burgers"])
-    b_id = cur.fetchone()[0]
+    
+    cur.execute("select * from menu_item where category = %s", [u_id])
+    assert(len(cur.fetchall()) == 2)
+    cur.execute("select * from menu_item where category = %s", [b_id])
+    assert(len(cur.fetchall()) == 2)
+    
     m.remove_category(b_id, "keepItems")
     cur.execute("select * from category")
     assert(len(cur.fetchall()) == 1)
