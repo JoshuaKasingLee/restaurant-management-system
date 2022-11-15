@@ -255,8 +255,8 @@ class Restaurant:
         return None
 
     def add_leaderboard_entry(self, name: str, email: str, score: int, time_played: datetime = datetime.now()) -> LeaderboardEntry:
-        entry = LeaderboardEntry(name, email, score, time_played)
-        DbService.insert_leaderboard_entry(name, email, score, time_played)
+        entry = LeaderboardEntry(name, email, score, datetime.now())
+        DbService.insert_leaderboard_entry(name, email, score, datetime.now())
         self.leaderboard.append(entry)
         return entry
     
