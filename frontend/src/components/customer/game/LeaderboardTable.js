@@ -32,17 +32,17 @@ export default function LeaderboardTable({leaderboard}) {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <Typography variant='h6'>
+                  <Typography variant='h6' sx={{ fontWeight: 'regular' }}>
                     {row.position}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant='h6'>
+                  <Typography variant='h6' sx={{ fontWeight: 'regular' }}>
                     {row.name}
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography variant='h6'>
+                  <Typography variant='h6' sx={{ fontWeight: 'regular' }}>
                     {row.score}
                   </Typography>
                 </TableCell>

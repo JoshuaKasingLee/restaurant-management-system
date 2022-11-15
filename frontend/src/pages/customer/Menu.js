@@ -192,10 +192,28 @@ function Menu() {
   return (
     <>
       <Header image={localStorage.getItem('restaurantImage')} title={"Menu"} />
-      <Box
-        sx={{ height: '100vh', bgcolor: 'background.paper', display: 'flex' }}
+      <Box 
+        position='fixed' 
+        display='flex' 
+        alignItems='flex-end' 
+        flexDirection="column" 
+        spacing={1} 
+        zIndex={50}
+        width='86vw'
+        bgcolor='background.paper'
+        sx={{ 
+          top: 50,
+          right: 10,
+          justifyContent: 'right',
+        }}
       >
-        <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', height: '100vh', zIndex: 50 }}>
+        <MenuFilter submit = { filters => { setFilters(filters) }} />
+        <MenuSort submit = { sort => { setSort(sort) }} />
+      </Box>
+      <Box
+        sx={{ bgcolor: 'background.paper', display: 'flex' }}
+      >
+        <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', zIndex: 50 }}>
           <Tabs
             orientation="vertical"
             value={value}
@@ -209,8 +227,6 @@ function Menu() {
           </Tabs>
         </Box>
         <Box display='flex' alignItems='flex-end' flexDirection="column" spacing={1} sx={{ mt: '10px', mr: '25px', justifyContent: 'right' }}>
-          <MenuFilter submit = { filters => { setFilters(filters) }} />
-          <MenuSort submit = { sort => { setSort(sort) }} />
           {getCategoriesTabPanels()}
         </Box>
       </Box>

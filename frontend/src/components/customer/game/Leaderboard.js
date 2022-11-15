@@ -42,15 +42,15 @@ function Leaderboard({submit}) {
   };
 
   return (
-    <Box sx={{ ml: 4, mr: 1, mt: 4, flexGrow: 1 }}>
+    <Box sx={{ ml: 4, mr: 1, mt: 5, flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid container direction="column" item xs={6} md={5.8} sx={{ height: '80vh', mx:1 }}>
-          <Grid item xs={4} sx={{ height: '48vh', p: 1, mt: -2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
+          <Grid item xs={4} sx={{ p: 1, mt: -2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
             <Item>
               <Typography variant='h2'>
                 Play
               </Typography>
-              <Box sx={{ height: '35vh' }} display='flex' justifyContent='center' alignItems='center'>
+              <Box sx={{ height: '30.5vh' }} display='flex' justifyContent='center' alignItems='center'>
                 <IconButton onClick={start}>
                   <PlayCircleRoundedIcon sx={{width: 150, height:150 }} />
                 </IconButton>
@@ -58,27 +58,33 @@ function Leaderboard({submit}) {
             </Item>
           </Grid>
           <br />
-          <Grid item xs={4} sx={{ height: '40vh', p: 2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
+          <Grid item xs={4} sx={{ p: 2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
             <Item>
               <Typography variant='h2'>
                 Instructions
               </Typography>
               <Typography variant='h6'>
-                Tap the cookie before they move.
+                Tap the cookies before they move.
               </Typography>
               <Typography variant='h6'>
                 You get 10 points for each cookie.
               </Typography>
               <Typography variant='h6'>
-                You lose a life if you miss a cookie.
+                You lose a life if you tap a brick.
               </Typography>
               <Typography variant='h6'>
-                Score as many points as possible before you lose all your lives!
+                The game gets more challenging as you play...
+              </Typography>
+              <Typography variant='h6'>
+                Score as many points as you can before
+              </Typography>
+              <Typography variant='h6'>
+                the timer runs out, or you lose all your lives!
               </Typography>
             </Item>
           </Grid>
         </Grid>
-        <Grid item xs={6} md={5.8} sx={{  height: '79vh', mx: 1, borderRadius: 2, boxShadow: 3 }}>
+        <Grid item xs={6} md={5.8} sx={{  height: '78vh', mx: 1, borderRadius: 2, boxShadow: 3 }}>
           <Item>
             <Typography variant='h2'>
               Leaderboard

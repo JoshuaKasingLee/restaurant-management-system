@@ -142,12 +142,12 @@ function OrderTable() {
                         <TableCell key={column.id} align={column.align}>
                           { column.id === 'image' && <img width='160' src={row.img} alt=''/> }
                           { column.format && 
-                            <Typography variant='h6'>
+                            <Typography variant='h6' sx={{ fontWeight: 'regular' }} >
                               {column.format(value)}
                             </Typography> 
                           }
                           { column.id !== 'image' && !column.format && 
-                            <Typography variant='h6'>
+                            <Typography variant='h6' sx={{ fontWeight: 'regular' }}>
                               {value}
                             </Typography> 
                           }
@@ -172,10 +172,14 @@ function OrderTable() {
               position: 'fixed',
               bottom: 20,
               left: 30,
-              height: '60px'
+              height: '60px',
+              // borderRadius: 1,
+              // boxShadow: 2,
+              px: 1,
+              py: 0.5
             }}>
             <Typography variant="h4" >Total: ${totalCost.toFixed(2)}</Typography>
-            <Typography variant="h7" sx={{ mx: '5px' }}>Including Tax</Typography>
+            <Typography sx={{ mx: '5px', lineHeight: '10px' }}>Including Tax</Typography>
           </Stack>
           <Button 
             sx={{

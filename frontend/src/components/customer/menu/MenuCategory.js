@@ -176,7 +176,7 @@ function MenuCategory({submit, category, filters, sort}) {
   };
 
   return (
-    <ImageList sx={{ width: '85vw', height: 'auto', ml: 16, px: 2, pb: 10 }} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: '85vw', height: 'auto', ml: 16, px: 2, pt: 6, pb: 10 }} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
         item.visible &&
         < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
