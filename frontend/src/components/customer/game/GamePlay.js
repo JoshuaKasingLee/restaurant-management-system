@@ -209,7 +209,7 @@ function GamePlay({submit}) {
 
   return (
     <>
-      <Box sx={{ mx: 3, my: 2, border: 1, borderRadius: 3 }}>
+      <Box sx={{ mx: 3, my: 2 }}>
         <Box display="flex" justifyContent="space-between">
           <Typography sx={{ml: 2, mt: 1}} variant='h2'>
             Score: {score}

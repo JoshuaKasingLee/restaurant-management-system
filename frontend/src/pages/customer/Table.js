@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TableForm from '../../components/customer/TableForm';
-import Header from '../../components/customer/Header';
+import Header from '../../utilities/Header';
 import useAlert from '../../utilities/useAlert';
 
 function Table () {  
@@ -8,7 +8,11 @@ function Table () {
 
 	return (
     <>
-      <Header image={localStorage.getItem('restaurantImage')} title={"Table Selection"}/>
+      <Header
+        image={localStorage.getItem('restaurantImage')}
+        title={"Table Selection"}
+        heading={"Table " + localStorage.getItem('table')}
+      />
       <TableForm submit = {async (table) => {
         const response = await fetch('http://localhost:5000/customer/table', {
           method: 'POST',

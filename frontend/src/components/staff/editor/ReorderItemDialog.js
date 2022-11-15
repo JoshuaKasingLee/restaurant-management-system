@@ -10,7 +10,7 @@ import { List, ListItem } from '@mui/material';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 import { Draggable } from 'react-beautiful-dnd';
-import useAlert from '../../utilities/useAlert';
+import useAlert from '../../../utilities/useAlert';
 
 export default function ReorderItemDialog({open, itemsProps, handleClose, updateMenu}) {
 

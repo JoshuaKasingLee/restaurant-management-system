@@ -2,7 +2,7 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import useAlert from './useAlert';
-import Alert from '@mui/material/Alert';
+import Popup from './Popup';
 
 const AlertPopup = () => {
   const { text, setAlert } = useAlert();
@@ -16,13 +16,12 @@ const AlertPopup = () => {
 
   if (text) {
     return (
-      <Stack spacing={2} sx={{ width: '100%' }}>
-        <Snackbar open={true} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-            Error: {text}
-          </Alert>
-        </Snackbar>
-      </Stack>
+      <Popup
+        type="error"
+        open={true}
+        handleClose={handleClose}
+        message={"Error: " + text}
+      />
     );
   } else {
     return <></>;

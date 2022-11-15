@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles';
 import { Box, Grid, IconButton, Paper, Typography } from '@mui/material';
 import PlayCircleRoundedIcon from '@mui/icons-material/PlayCircleRounded';
 import LeaderboardTable from './LeaderboardTable';
+import { Card, CardMedia, CardContent } from '@mui/material';
+import Button from '@mui/material/Button';
 import useAlert from '../../../utilities/useAlert';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -41,55 +43,37 @@ function Leaderboard({submit}) {
     submit(true);
   };
 
-  return (
-    <Box sx={{ ml: 4, mr: 1, mt: 4, flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        <Grid container direction="column" item xs={6} md={5.8} sx={{ height: '80vh', mx:1 }}>
-          <Grid item xs={4} sx={{ height: '48vh', p: 1, mt: -2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
-            <Item>
-              <Typography variant='h2'>
-                Play
-              </Typography>
-              <Box sx={{ height: '35vh' }} display='flex' justifyContent='center' alignItems='center'>
-                <IconButton onClick={start}>
-                  <PlayCircleRoundedIcon sx={{width: 150, height:150 }} />
-                </IconButton>
-              </Box>
-            </Item>
-          </Grid>
-          <br />
-          <Grid item xs={4} sx={{ height: '40vh', p: 2, ml: -2, borderRadius: 2, boxShadow: 3 }}>
-            <Item>
-              <Typography variant='h2'>
-                Instructions
-              </Typography>
-              <Typography variant='h6'>
-                Tap the cookie before they move.
-              </Typography>
-              <Typography variant='h6'>
-                You get 10 points for each cookie.
-              </Typography>
-              <Typography variant='h6'>
-                You lose a life if you miss a cookie.
-              </Typography>
-              <Typography variant='h6'>
-                Score as many points as possible before you lose all your lives!
-              </Typography>
-            </Item>
-          </Grid>
-        </Grid>
-        <Grid item xs={6} md={5.8} sx={{  height: '79vh', mx: 1, borderRadius: 2, boxShadow: 3 }}>
-          <Item>
-            <Typography variant='h2'>
-              Leaderboard
-            </Typography>
-            <br/>
-            <LeaderboardTable leaderboard={leaderboard} />
-          </Item>
-        </Grid>
-      </Grid>
+  return (<>
+    <Box
+      maxWidth="md"
+      mx="auto" 
+      sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', pb: 15, pt: 5 }}
+    >
+      <Card>
+        <CardMedia
+        component="img"
+        height="100"
+        image="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80"
+        />
+        <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Grab the Cookies!
+        </Typography>
+        <Typography variant="body2" color="text.secondary" mb='1rem'>
+          Instructions:
+            Tap the cookie before they move.
+            You get 10 points for each cookie.
+            You lose a life if you miss a cookie.
+            Score as many points as possible before you lose all your lives!
+        </Typography>
+        <LeaderboardTable leaderboard={leaderboard}/>
+        </CardContent>
+      </Card>
+      <Button variant="contained" onClick={start}>
+        START GAME
+      </Button>
     </Box>
-  );
+  </>);
 }
 
 export default Leaderboard;

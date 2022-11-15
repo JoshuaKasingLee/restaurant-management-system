@@ -4,52 +4,28 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 
 export default function LeaderboardTable({leaderboard}) {
   return (
-      <TableContainer component={Paper} sx={{ maxHeight: 458, width: 500, mx: 1, boxShadow: 3 }}>
-        <Table sx={{ width: 500 }}  size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <Typography variant='h4'>
-                  Rank
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant='h4'>
-                  Name
-                </Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography variant='h4'>
-                  Score
-                </Typography>
-              </TableCell>
+    <TableContainer component={Paper}>
+      <Table size="small" stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell>Rank</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Score</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {leaderboard.map((row, i) => (
+            <TableRow
+              key={i}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell >{row.position}</TableCell>
+              <TableCell >{row.name}</TableCell>
+              <TableCell >{row.score}</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {leaderboard.map((row, index) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  <Typography variant='h6'>
-                    {row.position}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant='h6'>
-                    {row.name}
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant='h6'>
-                    {row.score}
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

@@ -16,11 +16,15 @@ import Game from './pages/customer/Game';
 import Order from './pages/customer/Order';
 import Bill from './pages/customer/Bill';
 
+import MenuEditor from './pages/staff/MenuEditor';
+import Settings from './pages/staff/Settings';
+import Entertainment from './pages/staff/Entertainment';
+
 import Login from './pages/staff/Login';
 import Kitchen from './pages/staff/Kitchen';
 import Wait from './pages/staff/Wait';
-import Manager from './pages/staff/Manager';
 import AlertPopup from './utilities/AlertPopup';
+
 
 function App () {
   return (
@@ -38,7 +42,9 @@ function App () {
           <Route exact path='/staff/login' element={<Login />} />
           <Route exact path='/staff/kitchen' element={<Kitchen />} />
           <Route exact path='/staff/wait' element={<Wait />} />
-          <Route exact path='/staff/manager' element={<Manager />} />
+          <Route exact path='/staff/manager/menuEditor' element={<MenuEditor />} />
+          <Route exact path='/staff/manager/settings' element={<Settings />} />
+          <Route exact path='/staff/manager/entertainment' element={<Entertainment />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

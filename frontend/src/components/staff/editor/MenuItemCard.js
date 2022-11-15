@@ -16,14 +16,15 @@ import Slide from '@mui/material/Slide';
 import EditItemDialog from './EditItemDialog';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { ReactComponent as DairyIcon } from '../customer/menu/DF.svg';
-import { ReactComponent as GlutenIcon } from '../customer/menu/GF.svg';
-import { ReactComponent as NutIcon } from '../customer/menu/NF.svg';
-import { ReactComponent as StarIcon } from '../customer/menu/CR.svg';
-import { ReactComponent as VeganIcon } from '../customer/menu/VE.svg';
-import { ReactComponent as VegIcon } from '../customer/menu/V.svg';
+
+import { ReactComponent as DairyIcon } from '../../customer/menu/DF.svg';
+import { ReactComponent as GlutenIcon } from '../../customer/menu/GF.svg';
+import { ReactComponent as NutIcon } from '../../customer/menu/NF.svg';
+import { ReactComponent as StarIcon } from '../../customer/menu/CR.svg';
+import { ReactComponent as VeganIcon } from '../../customer/menu/VE.svg';
+import { ReactComponent as VegIcon } from '../../customer/menu/V.svg';
 import SvgIcon from '@mui/material/SvgIcon';
-import useAlert from '../../utilities/useAlert';
+import useAlert from '../../../utilities/useAlert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -51,12 +52,13 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
   };
 
   const handleToggleVisibility = (e) => {
-    visible ? setVisible(false) : setVisible(true);
-    editItem();
+    let newVisibility = visible ? false : true;
+    setVisible(newVisibility);
+    editItem(newVisibility);
     e.stopPropagation();
   };
 
-  const editItem = async () => {
+  const editItem = async (newVisibility) => {
     const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
       method: 'PUT',
       mode: 'cors',
@@ -80,7 +82,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
         },
         cost: parseFloat(item.cost),
         img: item.img,
-        show: visible
+        show: newVisibility
         })
     });
     const data = await response.json();
@@ -127,7 +129,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
 
   return(
     < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
-      <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%' }} onClick={handleClickOpen}>
+      <ImageListItem sx={{ width: 225, boxShadow: 3, borderRadius: '5%', m: 1.5 }} onClick={handleClickOpen}>
         <img
           style={{ borderRadius: '5% 5% 0% 0%' }}
           src={`${item.img}?w=230&h=200&fit=crop&auto=format`}

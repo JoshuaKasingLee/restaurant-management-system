@@ -51,7 +51,8 @@ function Footer({initialValue, title}) {
       ml: '-120px',
       width: '240px',
       height: '65px',
-      padding: 0}}
+      padding: 0,
+      pb: 0.4}}
     >
       <BottomNavigation
         elevation={3} 
@@ -59,14 +60,14 @@ function Footer({initialValue, title}) {
         onChange={handleChange}
       >
         <BottomNavigationAction
-          label="Menu"
-          value="menu"
+          label="Editor"
+          value="Editor"
           icon={<RestaurantMenuRoundedIcon fontSize="medium" />}
           component={Link} to={'/customer/menu'}
         />
         <BottomNavigationAction
-            label="Order"
-            value="order"
+            label="Settings"
+            value="Settings"
             icon={
               <Badge badgeContent={orders} color="primary">
                 <ListAltRoundedIcon fontSize="medium" />
@@ -75,8 +76,8 @@ function Footer({initialValue, title}) {
             component={Link} to={'/customer/order'}
         />
         <BottomNavigationAction
-            label="Game" 
-            value="game" 
+            label="Entertainment" 
+            value="Entertainment" 
             icon={<SportsEsportsRoundedIcon fontSize="medium" />} 
             component={Link} to={'/customer/game'}
         />
