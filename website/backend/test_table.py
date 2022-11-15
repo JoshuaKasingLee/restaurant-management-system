@@ -11,6 +11,7 @@ from init_db import conn
 from category import Category
 import time
 
+# standard initialisation of category and menu for tests
 
 french = Category("French")
 m1 = MenuItem("Escargot", "Snails in butter", "Snails, butter, oil", 20.80, french)
