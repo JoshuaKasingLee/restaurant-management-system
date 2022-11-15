@@ -1,73 +1,100 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Stack, Avatar, Typography } from '@mui/material';
-import LoginForm from '../../components/staff/LoginForm';
-import Header from '../../components/staff/Header';
+import { Box, Button, Stack, Avatar, Typography, ToggleButton } from '@mui/material';
+import LoginForm from '../../components/staff/settings/LoginForm';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom';
 import useAlert from '../../utilities/useAlert';
 
 export default function Login () {
   
   const { setAlert } = useAlert();
   
-  localStorage.clear();
-
   const navigate = useNavigate();
   const [role, setRole] = React.useState("Admin");
  
-  if (role === "Admin") {
-    return (<>
-        <Header title={role} />
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-          <Stack spacing={2}>
-            <Button variant="contained" onClick={(e) => setRole('kitchen')}>Kitchen Staff</Button>
-            <Button variant="contained" onClick={(e) => setRole('wait')}>Wait Staff</Button>
-            <Button variant="contained" onClick={(e) => setRole('manager')}>Manager</Button>
-          </Stack>
-        </Box>
-      </>
-    );
-    
-  } else {
-    return (<>
-      <Header title={role} />
-      <Box
-      sx={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
+  return (<>
+    <ToggleButton
+      sx={{ width: 40, height: 40, position: 'absolute', right: 3, mr: 5, mt: 2 }}
+      color="primary"
+      value="exit"
+      component={Link} to={'/'}
+    >
+      <LogoutIcon/>
+    </ToggleButton>
+    <Box display="flex" sx={{ height: "100vh" }}>
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
+        sx={{ 
+        width: "50%",
+        bgcolor: 'primary.main',
+        color: 'white'}}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
-        <Typography component="h1" variant="h5">
-          Enter password for {role}
+        <Typography variant='h1' sx={{ width: '80%' }} noWrap align='center'>
+          {role}
         </Typography>
-        <LoginForm submit={async (role, password) => {
-          const response = await fetch('http://localhost:5000/login', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-type': 'application/json',
-              'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-              role: role,
-              password: password,
-            })
-          });
-          const data = await response.json();
-          if (response.ok) {
-            localStorage.setItem('token', data.token);
-            navigate(`/staff/${role}`);
-          } else {
-            setAlert(await data.error);
-          }
-        }} role={role} />
       </Box>
-      </>
-    );
-  }
-
-
-
+      
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
+        sx={{ 
+          width: "50%"}}
+      >
+        <Stack spacing={2} width={'40%'}>
+          { role === "Admin"
+            ? <>
+              <Button
+                variant="contained"
+                sx={{ height: 100, fontSize: 15}}
+                onClick={(e) => setRole('kitchen')}
+              >
+                Kitchen Staff
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ height: 100, fontSize: 15}}
+                onClick={(e) => setRole('wait')}
+              >
+                Wait Staff
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ height: 100, fontSize: 15}}
+                onClick={(e) => setRole('manager')}
+              >
+                Manager
+              </Button>
+              </>
+            : <>
+                <LoginForm submit={async (role, password) => {
+                  const response = await fetch('http://localhost:5000/login', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                      'Content-type': 'application/json',
+                      'Access-Control-Allow-Origin': '*'
+                    },
+                    body: JSON.stringify({
+                      role: role,
+                      password: password,
+                    })
+                  });
+                  const data = await response.json();
+                  if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    if (role != "manager") {
+                      navigate(`/staff/${role}`);
+                    } else {
+                      navigate(`/staff/manager/menuEditor`);
+                    }
+                    
+                  } else {
+                    setAlert(await data.error);
+                  }
+                }} role={role}
+              />
+            </>
+          }
+        </Stack>
+      </Box>
+    </Box>
+  </>);
 }

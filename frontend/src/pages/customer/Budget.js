@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BudgetForm from '../../components/customer/BudgetForm';
-import Header from '../../components/customer/Header';
+import Header from '../../utilities/Header';
 import useAlert from '../../utilities/useAlert';
 
 function Budget () {
@@ -8,7 +8,11 @@ function Budget () {
 
 	return (
     <>
-      <Header image={localStorage.getItem('restaurantImage')} title={"Budget Allocation"}/>
+      <Header
+        image={localStorage.getItem('restaurantImage')}
+        title={"Budget Allocation"}
+        heading={"Table " + localStorage.getItem('table')}
+      />
       <BudgetForm submit = {async (budget) => {
         if (budget !== '') {
           const response = await fetch('http://localhost:5000/customer/budget', {

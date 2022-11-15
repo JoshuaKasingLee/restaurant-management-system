@@ -2,8 +2,10 @@ import * as React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 // import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
-import PasswordInput from './PasswordInput';
+import PasswordInput from '../../components/staff/settings/PasswordInput';
 import useAlert from '../../utilities/useAlert';
+import Header from '../../utilities/Header';
+import Footer from '../../components/staff/Footer';
 
 export default function NewItem() {
   const numTables = 20;
@@ -108,9 +110,15 @@ export default function NewItem() {
   //   setImage(URL.createObjectURL(event.target.files[0]))
   // }
 
-  return (
-    <Box maxWidth="md" m="auto" component="form"
-      sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', p: 10 }} >
+  return (<>
+    <Header
+        image={localStorage.getItem('restaurantImage')}
+        title={"Admin-Manager"}
+        heading="Manager"
+    />
+    <Box maxWidth="md" m="auto"
+      sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', pb: 10, pt: 5 }}
+    >
       <Typography variant="h5">Restaurant</Typography>
       <TextField
       required
@@ -152,7 +160,7 @@ export default function NewItem() {
         /> 
       </Box> 
       <Typography variant="h5">Passwords</Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 3}}>
         <PasswordInput 
           labelName="Kitchen Password*"
           id = "kitchen password"
@@ -184,6 +192,8 @@ export default function NewItem() {
         <Button variant="outlined" sx={{marginLeft: 2}} onClick={() => setTrigger(true)}>Reset</Button>
       </div>
     </Box>
+    <Footer initialValue={"Settings"}></Footer>
+  </>
   )
 }
 

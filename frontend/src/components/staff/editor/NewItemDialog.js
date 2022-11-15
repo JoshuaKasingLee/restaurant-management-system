@@ -7,24 +7,25 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 // import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
-import useAlert from '../../utilities/useAlert';
+import useAlert from '../../../utilities/useAlert';
 
-export default function EditItemDialog({open, item, categoryName, updateMenu, handleClose}) {
+export default function NewItemDialog({open, updateMenu, handleClose}) {
     
-    const [name, setName] = React.useState(item.title);
-    const [category, setCategory] = React.useState(categoryName);
-    const [description, setDescription] = React.useState(item.description);
-    const [ingredients, setIngredients] = React.useState(item.ingredients);
-    const [tags, setTags] = React.useState(item.actualTags);
-    const [cost, setCost] = React.useState(item.cost);
-    const [image, setImage] = React.useState(item.img);
-    const { setAlert } = useAlert();
+    const [name, setName] = React.useState('');
+    const [category, setCategory] = React.useState('');
+    const [description, setDescription] = React.useState('');
+    const [ingredients, setIngredients] = React.useState('');
+    const [tags, setTags] = React.useState([]);
+    const [cost, setCost] = React.useState('');
+    const [image, setImage] = React.useState('https://backend.grindcitymedia.com/wp-content/uploads/2020/03/no-image-availabe.png');
 
+    const { setAlert } = useAlert();
+    
     // const setCostWrapper = (value) => {
-    //     setCost(parseFloat(value))
+    //     setCost(parseFloat(value));
     // }
 
-    const [disabled, setDisabled] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(true);
 
     React.useEffect(() => {
       if (!(name.length <= 100 && name.length > 0)) {
@@ -46,14 +47,19 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         setDisabled(true);
         return;
       }
+
+      if (!(category.length > 0)) {
+        setDisabled(true);
+        return;
+      }
       
       setDisabled(false);
 
     }, [name, ingredients, description, cost, category])
 
-    const editItem = async () => {
-        const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
-          method: 'PUT',
+    const addNewItem = async () => {
+        const response = await fetch('http://localhost:5000/manager/items', {
+          method: 'POST',
           mode: 'cors',
           headers: {
           'Content-type': 'application/json',
@@ -61,7 +67,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
           'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           body: JSON.stringify({
-            newName: name,
+            name: name,
             category: category,
             description: description,
             ingredients: ingredients,
@@ -74,49 +80,37 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
                 "chef recommended": tags.includes("chef recommended"),
             },
             cost: parseFloat(cost),
-            img: image,
-            show: item.visible
+            img: image
             })
         });
         const data = await response.json();
         if (response.ok) {
-            updateMenu(true);
-            handleClose();
+            updateMenu();
+            handleCloseDialog();
         } else {
           setAlert(await data.error);
         }
-    }
-
-    async function deleteItem() {
-        const response = await fetch(`http://localhost:5000/manager/items/${item.id}`, {
-          method: 'DELETE',
-          mode: 'cors',
-          headers: {
-          'Content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({
-            category: category,
-            })
-        });
-        const data = await response.json();
-        if (response.ok) {
-            updateMenu(true);
-            handleClose();
-        } else {
-          setAlert(await data.error);
-        }
-    }
+    } 
 
     // React.useEffect(() => {console.log("CAT", category)})
     // const handleChangeImage = (event) => {
-    //     setImage(URL.createObjectURL(event.target.files[0]))
+    //     setImage(URL.createObjectURL(event.target.files[0]));
     // }
 
+    const handleCloseDialog = () => {
+        setName('');
+        setCategory('');
+        setDescription('');
+        setIngredients('');
+        setTags([]);
+        setCost('');
+        setImage('https://backend.grindcitymedia.com/wp-content/uploads/2020/03/no-image-availabe.png');
+        handleClose();
+    }
+
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth='md'>
-        <DialogTitle>Edit Item</DialogTitle>
+        <Dialog open={open} onClose={handleCloseDialog} fullWidth maxWidth='md'>
+        <DialogTitle>New Item</DialogTitle>
         <DialogContent>
         <Box maxWidth="md" m="auto" component="form"
             sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', p: 5 }} >
@@ -127,7 +121,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
                 helperText="Max 100 characters"
                 onChange={e => setName(e.target.value)}
             />
-            <FormControl fullWidth sx={{ m: 0 }} required>
+            <FormControl fullWidth sx={{ ml: 0 }} required>
                 <InputLabel htmlFor="outlined-adornment-amount">Cost</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-amount"
@@ -179,9 +173,8 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
         </Box>
         </DialogContent>
         <DialogActions>
-            <Button sx={{marginLeft: 2}} onClick={deleteItem}>Delete</Button>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={editItem} disabled={disabled}>Save</Button>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button onClick={addNewItem} disabled={disabled}>Save</Button>
         </DialogActions>
         </Dialog>
     )

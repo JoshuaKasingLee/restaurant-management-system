@@ -25,7 +25,7 @@ export default function PasswordInput ({ labelName, value, id, submit }) {
 
   return (
     <>
-      <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+      <FormControl sx={{ width: '100%' }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment-password">{labelName}</InputLabel>
         <OutlinedInput
           id={id}

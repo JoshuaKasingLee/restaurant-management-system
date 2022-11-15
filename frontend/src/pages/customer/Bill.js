@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import Header from '../../components/customer/Header';
+import Header from '../../utilities/Header';
 import BillTable from '../../components/customer/BillTable';
 import useAlert from '../../utilities/useAlert';
 
@@ -46,7 +46,11 @@ function Bill() {
 
   return (
     <>
-      <Header image={localStorage.getItem('restaurantImage')} title={"Bill"} />
+      <Header
+        image={localStorage.getItem('restaurantImage')}
+        title={"Bill"}
+        heading={"Table " + localStorage.getItem('table')}
+      />
       <Box display="flex" sx={{ height: "93vh" }}>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
           sx={{ 

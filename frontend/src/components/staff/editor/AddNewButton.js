@@ -31,7 +31,7 @@ export default function AddNewButton({updateMenu}) {
     <>
       <Button
         id="basic-button"
-        variant="outlined"
+        variant="contained"
         onClick={handleClick}
       >
         Add New...

@@ -2,8 +2,10 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import Request from './Request'
-import useAlert from '../../utilities/useAlert';
+import Request from './Request';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Card } from '@mui/material';
+import Popup from '../../../utilities/Popup';
+import useAlert from '../../../utilities/useAlert';
 
 
 export default function Requests() {
@@ -38,15 +40,25 @@ export default function Requests() {
   }, []); 
 
   return (
-    <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      <ListItem>
-        <Typography sx={{minWidth: '56px'}}>Table</Typography>
-      </ListItem>
-      {requests.map((r) => {
-        return (
-          <Request table={r.table} />
-        );
-      })}
-    </List>
+    <Card sx={{ px: 5, pr: 0, pt: 3, display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <Typography variant="h3">Assistance</Typography>
+      <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 200 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Table</TableCell>
+            <TableCell ></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {requests.map((request, i) => (
+            <Request
+              key={i}
+              table={request.table}/>
+          ))}
+        </TableBody>
+      </Table>
+      </TableContainer>
+    </Card>
   );
 }

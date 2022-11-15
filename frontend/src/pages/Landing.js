@@ -49,8 +49,8 @@ function Landing () {
           <Typography variant='h4'>
             WELCOME TO
           </Typography>
-          <Typography variant='h1'  >
-            {name.toUpperCase() + "!"}
+          <Typography variant='h1' sx={{ width: '80%' }} noWrap align='center'>
+            {name.toUpperCase()}
           </Typography>
         </Box>
         

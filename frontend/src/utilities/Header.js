@@ -9,11 +9,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import useAlert from '../../utilities/useAlert';
+import useAlert from './useAlert';
+import { borderRadius } from '@mui/system';
 
 const drawerWidth = 50;
 
-function Header({image, title}) {
+function Header({image, title, heading}) {
   const [selected, setSelected] = React.useState(JSON.parse(localStorage.getItem('assistance')));
 
   const { setAlert } = useAlert();
@@ -22,6 +23,23 @@ function Header({image, title}) {
     localStorage.setItem('assistance', !selected);
     setSelected( selected => !selected );
   };
+
+  const renderHeading = (
+    <Box 
+      sx={{
+        ml: 5,
+        height: '30px',
+        bgcolor: (theme) => theme.palette.primary.light,
+        borderRadius: '8px',
+        px: '16px',
+        py: '5px',
+        fontSize: '0.875rem',
+        fontWeight: 700,
+      }}
+    >
+      {heading}
+    </Box>
+  )
 
   React.useEffect(() => {
     if (selected !== null) {
@@ -83,23 +101,15 @@ function Header({image, title}) {
     <Box sx={{ width: '100vp', zIndex: 100, height: 60 }}>
       <AppBar sx={{bgcolor: 'background.paper' }}>
         <Toolbar >
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, pl: 3 }}>
             {/* <img src={'https://menufyproduction.imgix.net/637950714526548063+871748.png'} alt="Logo" height="125px" width="125px"/> */}
             <img src={image} alt="Logo" height="60px" width="60px"/>
-            { title !== 'Table Selection' && title !== 'Admin' &&
-              <Button 
-              sx={{
-                ml: 8,
-                height: '30px'
-              }}
-              variant="contained"
-              disabled
-            >
-              Table {localStorage.getItem("table")}
-            </Button>}
+            { heading !== null
+              && renderHeading
+            }
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'right', flexGrow: 1 }}>
-            {title !== 'Table Selection' && title !== 'Admin' && title !== 'Bill' &&
+            { !title.includes('Admin') && title !== 'Table Selection' && title !== 'Bill' &&
               <ToggleButton
                 value="check"
                 selected={selected}

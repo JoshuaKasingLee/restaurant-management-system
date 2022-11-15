@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
-import { ALL_TAGS_LIST } from '../../utilities/constants';
+import { ALL_TAGS_LIST } from '../../../utilities/constants';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

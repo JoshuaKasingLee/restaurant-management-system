@@ -31,9 +31,8 @@ export default function ReorderButton({categories, items, updateMenu}) {
     <>
       <Button
         id="button-reorder"
-        variant="outlined"
+        variant="contained"
         onClick={handleClick}
-        sx={{mx: 2}}
       >
         Reorder...
       </Button>
