@@ -93,6 +93,13 @@ class Restaurant:
             if item.name == name:
                 return True
         return False
+    
+    def orders_contain(self, menu_item_name: str) -> bool:
+        for table in self.tables:
+            for order in table.orders:
+                if menu_item_name == order.menu_item.name:
+                    return True
+        return False
 
     def category_exists(self, name: str) -> bool:
         for cat in self.categories:

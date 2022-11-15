@@ -7,6 +7,7 @@ from restaurant import Restaurant
 from category import Category
 from wait_staff import WaitStaff
 from kitchen_staff import KitchenStaff
+from menu_item import MenuItem
 from table import Table
 from init_db import conn
 
@@ -343,7 +344,39 @@ def test_remove_nonexistent_menu_items():
     cur.execute("delete from menu_item")
     cur.execute("delete from category")
     conn.commit()
-        
+
+def test_remove_menu_item_when_in_orders():
+    cur = conn.cursor()
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+    conn.commit
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('frenche', TRUE, 92);")
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Escargote', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, (SELECT id from category WHERE name = 'frenche'), null, TRUE);")
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False);")
+    conn.commit
+    restaurant = Restaurant("Catalina")
+    frenche = Category("frenche")
+    manager = Manager("bigboss", restaurant)
+    m1 = MenuItem("Escargote", "Snails in butter", "Snails, butter, oil", 20.80, frenche)
+    m2 = MenuItem("Croissant", "Filled with almond praline cream", "Flour, almonds, butter", 6, frenche)
+    m3 = MenuItem("Steak", "Medium rare", "Beef, red wine jus", 48.50, frenche)
+    restaurant.populate()
+    print(restaurant.tables)
+    table1 = restaurant.tables[0]
+    table1.order_dish(m1)
+    print(restaurant.orders_contain("Escargote"))
+    cur.execute("select id from menu_item where name = %s", ['Escargote'])
+    menu_item_id = cur.fetchall()[0][0]
+    print(menu_item_id)
+    with pytest.raises(Exception):
+        manager.remove_menu_item(menu_item_id)
+    cur.execute("delete from orders")
+    cur.execute("delete from menu_item")
+    cur.execute("delete from category")
+    cur.execute("delete from tables")
+
 # changing passwords
 
 def test_change_manager_pw():
