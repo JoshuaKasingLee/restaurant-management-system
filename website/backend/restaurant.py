@@ -295,7 +295,12 @@ class Restaurant:
     def get_entertainment(self) -> dict:
         toReturn = []
         position = 1
-        for entry in sorted(self.leaderboard, key=lambda x: x.score, reverse=True):
+        for entry in sorted(self.leaderboard, key=lambda x: (-x.score, x.name), reverse=False):
+            if (lastScore == -1):
+                lastScore = entry.score
+            elif (entry.score != lastScore):
+                position = counter
+                lastScore = entry.score
             toReturn.append({
                 "position": position,
                 "name": entry.name,
@@ -303,7 +308,7 @@ class Restaurant:
                 "score": entry.score,
                 "time_played": entry.time_played.strftime("%Y-%m-%d %H:%M:%S")
             })
-            position += 1
+            counter += 1
         return {
             "gameName": "Cookie Game",
             "players": toReturn
