@@ -11,29 +11,30 @@ function Footer({initialValue, title}) {
     ? parseFloat(localStorage.getItem('orders')) : 0);
 
   React.useEffect(() => {
-    const getOrder = async () => {
-      const response = await fetch(`http://localhost:5000/customer/order?table=${localStorage.getItem('table')}`, {  
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.setItem( 'orders', data.orderItems.length );
-        setOrders( data.orderItems.length );
-      } else {
-        alert(await data.error);
-      }
-    };
-    
-    const intervalID = setInterval(getOrder, 1000)
-
-    return (() => {
-      clearInterval(intervalID)
-    })
-
+    if (value === 'menu') {
+      const getOrder = async () => {
+        const response = await fetch(`http://localhost:5000/customer/order?table=${localStorage.getItem('table')}`, {  
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem( 'orders', data.orderItems.length );
+          setOrders( data.orderItems.length );
+        } else {
+          alert(await data.error);
+        }
+      };
+      
+      const intervalID = setInterval(getOrder, 1000)
+  
+      return (() => {
+        clearInterval(intervalID)
+      })  
+    }
   }, []);
 
   const handleChange = (event, newValue) => {
