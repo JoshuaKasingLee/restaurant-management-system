@@ -295,6 +295,8 @@ class Restaurant:
     def get_entertainment(self) -> dict:
         toReturn = []
         position = 1
+        counter = 1
+        lastScore = -1
         for entry in sorted(self.leaderboard, key=lambda x: (-x.score, x.name), reverse=False):
             if (lastScore == -1):
                 lastScore = entry.score
