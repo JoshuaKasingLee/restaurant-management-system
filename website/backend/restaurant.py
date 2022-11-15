@@ -255,8 +255,8 @@ class Restaurant:
         return None
 
     def add_leaderboard_entry(self, name: str, email: str, score: int, time_played: datetime = datetime.now()) -> LeaderboardEntry:
-        entry = LeaderboardEntry(name, email, score, time_played)
-        DbService.insert_leaderboard_entry(name, email, score, time_played)
+        entry = LeaderboardEntry(name, email, score, datetime.now())
+        DbService.insert_leaderboard_entry(name, email, score, datetime.now())
         self.leaderboard.append(entry)
         return entry
     
@@ -295,7 +295,14 @@ class Restaurant:
     def get_entertainment(self) -> dict:
         toReturn = []
         position = 1
-        for entry in sorted(self.leaderboard, key=lambda x: x.score, reverse=True):
+        counter = 1
+        lastScore = -1
+        for entry in sorted(self.leaderboard, key=lambda x: (-x.score, x.name), reverse=False):
+            if (lastScore == -1):
+                lastScore = entry.score
+            elif (entry.score != lastScore):
+                position = counter
+                lastScore = entry.score
             toReturn.append({
                 "position": position,
                 "name": entry.name,
@@ -303,7 +310,7 @@ class Restaurant:
                 "score": entry.score,
                 "time_played": entry.time_played.strftime("%Y-%m-%d %H:%M:%S")
             })
-            position += 1
+            counter += 1
         return {
             "gameName": "Cookie Game",
             "players": toReturn

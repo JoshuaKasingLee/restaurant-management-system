@@ -5,6 +5,10 @@ import pytest
 from restaurant import Restaurant
 from init_db import conn
 from wait_staff import WaitStaff
+from menu_item import MenuItem
+from category import Category
+from helper import OrderStatus
+
 
 def test_get_assistance_requests():
     cur = conn.cursor()
@@ -121,5 +125,45 @@ def test_resolve_assistance_requests():
 
     cur.execute("delete from tables")
     conn.commit()
+
+def test_wait_order_serving():
+    restaurant = Restaurant("Catalina")
+    wait_staff = WaitStaff("test123", restaurant)
+    french = Category("french")
+    m1 = MenuItem("Escargot", "Snails in butter", "Snails, butter, oil", 20.80, french)
+
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM orders")
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+    cur.execute("DELETE FROM tables")
+
+    cur.execute("INSERT INTO category(name, visible, display_order) values ('french', TRUE, 1)")
+    cur.execute("INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Escargot', 'Snails in butter', 'Snails, butter, oil', 20.80, 1, (SELECT id from category WHERE name = 'french'), null, TRUE)")
+
+    cur.execute("INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, True)")
+
+    restaurant.populate()
+    
+    table1 = restaurant.tables[0]
+
+    table1.order_dish(m1)
+
+    ordered_list = restaurant.get_order_list()
+
+    wait_staff.update_status(ordered_list[0]['id'], OrderStatus.COMPLETED)
+
+    ordered_list = restaurant.get_order_list()
+
+    expected = OrderStatus.COMPLETED.value
+
+    cur.execute("DELETE FROM orders")
+    cur.execute("DELETE FROM menu_item")
+    cur.execute("DELETE FROM category")
+    cur.execute("DELETE FROM tables")
+    conn.commit()
+    
+    assert(ordered_list[0]['status'] == expected)
 
 pytest.main()

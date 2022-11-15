@@ -187,13 +187,7 @@ class DbService:
         if not (cur.rowcount == 1): 
             conn.rollback()
             raise Exception("Display order update failed")
-        conn.commit()
-
-
-    # def update_menu_item_to_unassigned()
-
-    # def update_menu_item_display(item_id: int, display: ):
-        
+        conn.commit()        
 
     def get_all_menu_items_in_category(cat_id: int) -> list:
         cur = conn.cursor()
