@@ -66,6 +66,7 @@ function Menu() {
   };
 
   const handleClose = (budgetValue) => {
+
     if(budgetValue !== budget) {
       const updateBudget = async () => {
         const response = await fetch('http://localhost:5000/customer/budget', {
@@ -245,7 +246,7 @@ function Menu() {
     >
       {budget === null || remaining === null
         ? <>Set budget</>
-        : <>Remaining: ${remaining.toFixed(0)}</>
+        : <>Remaining: ${remaining.toFixed(2)}</>
       }
     </Button>
     <BudgetDialog

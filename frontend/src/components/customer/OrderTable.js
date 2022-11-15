@@ -118,7 +118,7 @@ function OrderTable() {
 
   const renderedContent = (
     <Paper sx={{ m: 3, overflow: 'hidden', borderRadius: 2, boxShadow: 3 }}>
-    <TableContainer sx={{ maxHeight: 640 }}>
+    <TableContainer sx={{ maxHeight: 640, px: 3 }}>
       <Table stickyHeader>
         <TableHead>
           <TableRow>
@@ -200,7 +200,6 @@ function OrderTable() {
           TransitionComponent={Transition}
           keepMounted
           onClose={handleClose}
-          aria-describedby="alert-dialog-slide-description"
           fullWidth={true}
           maxWidth='sm'
         >
