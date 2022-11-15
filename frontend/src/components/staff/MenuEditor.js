@@ -50,7 +50,8 @@ function a11yProps(index) {
 function MenuEditor() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("");
-  const [menu, setMenu] = React.useState({'categories': []});
+  const [menu, setMenu] = React.useState({'categories': localStorage.getItem('menu') !== null 
+    ? JSON.parse(localStorage.getItem('menu')) : []});
   const [trigger, setTrigger] = React.useState(false);
   
   const { setAlert } = useAlert();
@@ -80,8 +81,8 @@ function MenuEditor() {
         //   console.log(newTitle);
           // setValue(data.categories[data.categories.findIndex(obj => obj.name === current.name)].display_order - 1);
         // }
+        setMenu( data );
         localStorage.setItem('menu', JSON.stringify(data));
-        setMenu( menu => (data) );
       } else {
         setAlert(await data.error);
       }

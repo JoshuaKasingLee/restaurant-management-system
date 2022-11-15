@@ -4,12 +4,11 @@ import { Badge, BottomNavigation, BottomNavigationAction, Box, Card } from '@mui
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
-import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
-import Typography from '@mui/material/Typography';
 
 function Footer({initialValue, title}) {
   const [value, setValue] = React.useState(initialValue);
-  const [orders, setOrders] = React.useState(0);
+  const [orders, setOrders] = React.useState(localStorage.getItem('orders') !== null 
+    ? parseFloat(localStorage.getItem('orders')) : 0);
 
   React.useEffect(() => {
     const getOrder = async () => {
@@ -22,6 +21,7 @@ function Footer({initialValue, title}) {
       });
       const data = await response.json();
       if (response.ok) {
+        localStorage.setItem( 'orders', data.orderItems.length );
         setOrders( data.orderItems.length );
       } else {
         alert(await data.error);
@@ -43,14 +43,14 @@ function Footer({initialValue, title}) {
   return (
     <Card sx={{
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-end',
       justifyContent: 'space-evenly',
       position: 'fixed',
       bottom: 20,
       left: '50%',
       ml: '-120px',
       width: '240px',
-      height: '60px',
+      height: '65px',
       padding: 0}}
     >
       <BottomNavigation

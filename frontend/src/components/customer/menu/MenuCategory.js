@@ -176,11 +176,11 @@ function MenuCategory({submit, category, filters, sort}) {
   };
 
   return (
-    <ImageList sx={{ width: '80vp', height: 'auto', ml: 16, px: 2, pb: 10 }} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: '85vw', height: 'auto', ml: 16, px: 2, pb: 10 }} cols={4} rowHeight={250}>
       {categoryItems.map((item, index) => (
         item.visible &&
         < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
-          <ImageListItem sx={{ width: 230, boxShadow: 3, borderRadius: '5%', m: 0.8 }} onClick={handleClickOpen(index)}>
+          <ImageListItem sx={{ width: 225, boxShadow: 3, borderRadius: '5%', m: 0.8 }} onClick={handleClickOpen(index)}>
             <img
               style={{ borderRadius: '5% 5% 0% 0%' }}
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
@@ -210,7 +210,7 @@ function MenuCategory({submit, category, filters, sort}) {
               actionPosition="right"
             />
             <ImageListItemBar
-              title={item.title}
+              title={<Typography variant='h6'>{item.title}</Typography>}
               subtitle={<span>${item.cost.toFixed(2)}</span>}
               position="below"
               sx={{ px: 1 }}

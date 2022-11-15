@@ -4,22 +4,22 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 
 export default function LeaderboardTable({leaderboard}) {
   return (
-      <TableContainer component={Paper} sx={{ maxHeight: 470, width: 685, mx: 1, boxShadow: 3 }}>
-        <Table sx={{ width: 680 }}  size="small" stickyHeader>
+      <TableContainer component={Paper} sx={{ maxHeight: 458, width: 500, mx: 1, boxShadow: 3 }}>
+        <Table sx={{ width: 500 }}  size="small" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>
-                <Typography variant='h3'>
+                <Typography variant='h4'>
                   Rank
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography variant='h3'>
+                <Typography variant='h4'>
                   Name
                 </Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography variant='h3'>
+                <Typography variant='h4'>
                   Score
                 </Typography>
               </TableCell>

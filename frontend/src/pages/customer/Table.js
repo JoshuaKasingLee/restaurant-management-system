@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TableForm from '../../components/customer/TableForm';
 import Header from '../../components/customer/Header';
-import Footer from '../../components/customer/Footer';
 import useAlert from '../../utilities/useAlert';
 
 function Table () {  

@@ -157,7 +157,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
           actionPosition="right"
         />
         <ImageListItemBar
-          title={item.title}
+          title={<Typography variant='h6'>{item.title}</Typography>}
           subtitle={<span>${item.cost.toFixed(2)}</span>}
           position="below"
           sx={{ px: 1 }}

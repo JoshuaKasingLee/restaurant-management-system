@@ -46,7 +46,8 @@ function a11yProps(index) {
 function Menu() {
   const [value, setValue] = React.useState(0);
   const [label, setLabel] = React.useState("");
-  const [menu, setMenu] = React.useState({'categories': []}); 
+  const [menu, setMenu] = React.useState({'categories': localStorage.getItem('menu') !== null 
+    ? JSON.parse(localStorage.getItem('menu')) : []});  
   const [sort, setSort] = React.useState({ value: 'none', label: 'None' });
   const [filters, setFilters] = React.useState([]);
   const [budget, setBudget] = React.useState(null); 
@@ -109,8 +110,8 @@ function Menu() {
       });
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('menu', JSON.stringify(data));
         setMenu( data );
+        localStorage.setItem('menu', JSON.stringify(data));
         // console.log(data.categories);
       } else {
         setAlert(await data.error);

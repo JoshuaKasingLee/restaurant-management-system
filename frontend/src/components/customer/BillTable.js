@@ -33,7 +33,7 @@ function BillTable({ orderItems }) {
   }, [orderItems]);
 
   return (
-    <Paper sx={{ width: '30%', overflow: 'hidden' }}>
+    <Paper sx={{ width: '60%', overflow: 'hidden', borderRadius: 2, boxShadow: 2 }}>
       <TableContainer sx={{ fullHeight: true, maxHeight: 400 }}>
         <Table stickyHeader>
           <TableHead>
@@ -42,7 +42,7 @@ function BillTable({ orderItems }) {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  // style={{ minWidth: column.minWidth }}
                 >
                   <Typography variant="h6">
                     {column.label}
@@ -60,7 +60,6 @@ function BillTable({ orderItems }) {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          { column.id === 'image' && <img width='160' src={row.img} alt=''/> }
                           { column.format && column.format(value) }
                           { column.id !== 'image' && !column.format && value }
                         </TableCell>

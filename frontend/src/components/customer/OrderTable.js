@@ -11,7 +11,7 @@ import useAlert from '../../utilities/useAlert';
 const columns = [
   { id: 'image', label: '', minWidth: 160 },
   { id: 'name', label: 'Dish', minWidth: 160 },
-  { id: 'status', label: 'Status', minWidth: 160, align: 'right'},
+  { id: 'status', label: 'Status', minWidth: 160, align: 'center'},
   {
     id: 'cost',
     label: 'Cost',
@@ -55,8 +55,10 @@ BootstrapDialogTitle.propTypes = {
 };
 
 function OrderTable() {
-  const [order, setOrder] = React.useState([]);
-  const [totalCost, setTotalCost] = React.useState(0);
+  const [order, setOrder] = React.useState(localStorage.getItem('order') !== null 
+    ? JSON.parse(localStorage.getItem('order')) : []);
+  const [totalCost, setTotalCost] = React.useState(localStorage.getItem('cost') !== null 
+    ? parseFloat(localStorage.getItem('cost')) : 0);
   const [open, setOpen] = React.useState(false);
   const [valid, setValid] = React.useState(false);
   const { setAlert } = useAlert();
@@ -92,9 +94,11 @@ function OrderTable() {
               cost: data.orderItems[i].cost,
             }
           );
-          setOrder( content );
         }
+        setOrder( content );
+        localStorage.setItem('order', JSON.stringify(content));
         setTotalCost( data.total);
+        localStorage.setItem('cost', data.total);
       } else {
         setAlert(await data.error);
       }
@@ -109,8 +113,8 @@ function OrderTable() {
   }, []);
 
   return (
-    <Paper sx={{ m: 2, overflow: 'hidden', borderRadius: 2, boxShadow: 3 }}>
-      <TableContainer sx={{ maxHeight: 535 }}>
+    <Paper sx={{ m: 3, overflow: 'hidden', borderRadius: 2, boxShadow: 3 }}>
+      <TableContainer sx={{ maxHeight: 640 }}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -120,7 +124,7 @@ function OrderTable() {
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
-                  <Typography variant="h6">
+                  <Typography variant="h4">
                     {column.label}
                   </Typography>
                 </TableCell>
@@ -137,8 +141,16 @@ function OrderTable() {
                       return (
                         <TableCell key={column.id} align={column.align}>
                           { column.id === 'image' && <img width='160' src={row.img} alt=''/> }
-                          { column.format && column.format(value) }
-                          { column.id !== 'image' && !column.format && value }
+                          { column.format && 
+                            <Typography variant='h6'>
+                              {column.format(value)}
+                            </Typography> 
+                          }
+                          { column.id !== 'image' && !column.format && 
+                            <Typography variant='h6'>
+                              {value}
+                            </Typography> 
+                          }
                         </TableCell>
                       );
                     })}
@@ -155,11 +167,30 @@ function OrderTable() {
           alignItems="center" 
           sx={{ width: '97%', position: 'fixed' }}
         >
-          <Stack sx={{ mx:'30px' }}>
-            <Typography variant="h3" >Total: ${totalCost.toFixed(2)}</Typography>
-            <Typography variant="h7" sx={{ mx:'5px' }} >Including Tax</Typography>
+          <Stack 
+            sx={{
+              position: 'fixed',
+              bottom: 20,
+              left: 30,
+              height: '60px'
+            }}>
+            <Typography variant="h4" >Total: ${totalCost.toFixed(2)}</Typography>
+            <Typography variant="h7" sx={{ mx: '5px' }}>Including Tax</Typography>
           </Stack>
-          <Button size="large" variant="contained" onClick={handleClickOpen}>Request Bill</Button>
+          <Button 
+            sx={{
+              position: 'fixed',
+              bottom: 20,
+              right: 30,
+              width:'160px',
+              height: '60px',
+              bgcolor: (theme) => theme.palette.primary.light
+            }}
+            variant='contained'
+            onClick={handleClickOpen}
+          >
+            Request Bill
+          </Button>
           <Dialog
             open={open}
             TransitionComponent={Transition}

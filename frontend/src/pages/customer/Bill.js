@@ -1,8 +1,6 @@
 import * as React from 'react';
+import { Box, Stack, Typography } from '@mui/material';
 import Header from '../../components/customer/Header';
-import Footer from '../../components/customer/Footer';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import BillTable from '../../components/customer/BillTable';
 import useAlert from '../../utilities/useAlert';
 
@@ -49,30 +47,74 @@ function Bill() {
   return (
     <>
       <Header image={localStorage.getItem('restaurantImage')} title={"Bill"} />
-      <Box height='72vh' sx={{ mt: '20px', display: "flex", flexDirection: 'column', justifyContent: "space-between", alignItems: "center"}}>
-        <Typography align='center' variant="h3">
-          Thank you for dining with us!
-        </Typography>
-        <BillTable orderItems={orderItems} />
-        <Box alignItems='end' sx={{ px: '16px', py: '8px', bgcolor: 'text.secondary', borderRadius: '24px' }}>
-          {localStorage.getItem('paymentType') === 'equal' &&
-            <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
-              Charge/pp: ${charge[0].toFixed(2)}
-            </Typography>
-          }
-          {localStorage.getItem('paymentType') === 'dish' &&
-            Array(parseInt(localStorage.getItem('numSplit'))).fill(0).map((person, index) => (
-              <Typography key={index} color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
-                Person {index + 1} Charge : ${charge[index].toFixed(2)}
-              </Typography>
-            ))
-          }
-          <Typography color='background.paper' align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            Total Charge: ${total.toFixed(2)}
+      <Box display="flex" sx={{ height: "93vh" }}>
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
+          sx={{ 
+          width: "50%",
+          bgcolor: 'primary.main',
+          color: 'white'}}
+        >
+          <Typography variant='h4'>
+            Thank you for dining with us!
           </Typography>
-          <Typography color='background.paper' align="center" variant="h7" component="div" sx={{ flexGrow: 1 }}>
+          <Typography align="center" variant="h7" component="div" >
             Please pay at the counter
           </Typography>
+          {localStorage.getItem('paymentType') !== 'together' &&
+          <>
+            <br/>
+            <Box 
+              alignItems='end' 
+              sx={{
+                // position: 'fixed',
+                // bottom: 20,
+                width: '335px',
+                px: '16px', 
+                py: '8px',
+                bgcolor: 'primary.light',
+                borderRadius: 2
+              }}
+            >
+              {localStorage.getItem('paymentType') === 'equal' &&
+                <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+                  Charge/pp: ${charge[0].toFixed(2)}
+                </Typography>
+              }
+              {localStorage.getItem('paymentType') === 'dish' &&
+                <>
+                  <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+                    Charge/pp
+                  </Typography> 
+                  { Array(parseInt(localStorage.getItem('numSplit'))).fill(0).map((person, index) => (
+                    <Typography key={index} align="center" variant="h7" component="div" sx={{ flexGrow: 1 }}>
+                      Person {index + 1}: ${charge[index].toFixed(2)}
+                    </Typography>
+                  ))}
+                </>
+              }
+            </Box>
+          </>
+          }
+          <br/>
+          <Box 
+            alignItems='end' 
+            sx={{
+              // position: 'fixed',
+              // bottom: 20,
+              width: '335px',
+              px: '16px', 
+              py: '8px',
+              bgcolor: 'primary.light',
+              borderRadius: 2
+            }}
+          >
+            <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }}>
+              Total Charge: ${total.toFixed(2)}
+            </Typography>
+          </Box>
+        </Box>
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ width: "50%" }} >
+          <BillTable orderItems={orderItems}/>
         </Box>
       </Box>
     </ >

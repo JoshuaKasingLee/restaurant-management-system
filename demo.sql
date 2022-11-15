@@ -95,6 +95,15 @@ INSERT INTO tag(name) values ('dairy free');
 INSERT INTO tag(name) values ('chef recommended');
 
 INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monk', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monka', 'monkey@gmail.com', 10, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkb', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkc', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkd', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monke', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkf', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkg', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkh', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monki', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
 
 INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
 
@@ -118,11 +127,11 @@ INSERT INTO menu_item(name, description, ingredients, cost, display_order, categ
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Hamachi Toro', 'Yellowtail Belly (raw)', 'Yellowtail Belly', 8, 11, (SELECT id from category WHERE name = 'Sashimi'), 'https://www.japan-guide.com/g8/2044_hotate.jpg', TRUE);
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Hirame', 'Halibut (raw)', 'Halibut', 5, 12, (SELECT id from category WHERE name = 'Sashimi'), 'https://www.japan-guide.com/g8/2044_akagai.jpg', TRUE);
 
-INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Champon', 'Noodle dish from Japanese-Chinese cuisine', 'Pork, Oyster, Prawn, Cabbage, Mushroom, Onion, Bean sprout, Lard, Chicken stock', 12.5, 32, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_tanuki.jpg', TRUE);
+INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Champon', 'Noodle dish from Japanese-Chinese cuisine', 'Pork, Oyster, Prawn, Cabbage, Mushroom, Onion, Bean sprout, Lard, Chicken stock', 12.5, 32, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_tanuki.jpg', FALSE);
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Hoto', 'Japanese noodle soup dish', 'Pork, Chicken, Tofu, Vegetables, Kabocha squaash, Carrot, Negi (long green onion) or leek or green onion, Daikon radish, Potato, Napa cabbage, Any seasonal vegetables', 12, 33, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_kitsune.jpg', TRUE);
-INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Okinawa soba', 'Type of Japanese noodle', 'Wheat noodles, Konbu, Fish cakes, Pork, Sliced scallion, Soki, Koregusu', 18.5, 34, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_tsukimi.jpg', TRUE);
+INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Okinawa soba', 'Type of Japanese noodle', 'Wheat noodles, Konbu, Fish cakes, Pork, Sliced scallion, Soki, Koregusu', 18.5, 34, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_tsukimi.jpg', FALSE);
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Ramen', 'Japanese dish of wheat noodles in a meat or fish broth', 'Garlic, Ginger, Shallot, Pork, Sesame oil, Miso, Sake, Chicken broth, Ramen, Bean sprout, Egg, Nori, Green onion', 12.5, 35, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_tempura.jpg', TRUE);
-INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Shirataki noodles', 'Type of Japanese noodles made from konjac yam', 'Shirataki noodles, Tahini, Soy sauce, Rice vinegar, Red pepper flakes, Shredded cabbage', 13, 36, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_curry.jpg', TRUE);
+INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Shirataki noodles', 'Type of Japanese noodles made from konjac yam', 'Shirataki noodles, Tahini, Soy sauce, Rice vinegar, Red pepper flakes, Shredded cabbage', 13, 36, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_curry.jpg', FALSE);
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Sara udon', 'Japanese noodle dish topped with vegetables', 'Pork belly, Shrimp, Squid, Sake, Soy sauce, Mushrooms, Quail eggs, Fish cake, Onion, Carrot, Napa cabbage, Mushrooms, Snow peas', 18.5, 37, (SELECT id from category WHERE name = 'Noodle'), 'https://www.japan-guide.com/g9/105_chikara.jpg', TRUE);
 
 INSERT INTO menu_item(name, description, ingredients, cost, display_order, category, image, visible) values ('Oyakodon (Chicken and Egg bowl)', 'A play on the chicken-and-egg combination, this protein-filled home style dish wins for its simplicity. Its hearty yet nutritious, making it a favorite meal to start the week.', 'Rice, Egg, Chicken, Chives', 12.5, 45, (SELECT id from category WHERE name = 'Rice bowl'), 'https://www.japan-guide.com/g7/2043_omuraisu.jpg', TRUE);

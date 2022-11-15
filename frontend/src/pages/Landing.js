@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import Header from '../components/customer/Header';
 import { useTheme } from '@mui/material/styles';
-import { fontStyle } from '@mui/system';
 import useAlert from '../utilities/useAlert';
 
 /* Landing Page */
