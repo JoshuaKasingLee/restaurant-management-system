@@ -3,8 +3,37 @@ import PropTypes from 'prop-types';
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, 
   DialogTitle, IconButton, TextField, Typography } from '@mui/material';
 import ReplayCircleFilledRoundedIcon from '@mui/icons-material/ReplayCircleFilledRounded';
-import StopCircleRoundedIcon from '@mui/icons-material/StopCircleRounded';
+import CloseIcon from '@mui/icons-material/Close';
 import useAlert from '../../../utilities/useAlert';
+
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
 
 function EndDialog(props) {
   const { onClose, open, score } = props;
@@ -50,20 +79,17 @@ function EndDialog(props) {
     <Dialog 
       open={open}
     >
-      <DialogTitle textAlign='center'>
+      <BootstrapDialogTitle id="customized-dialog-title" textAlign='center' onClose={() => handleClick('stop')}/>
+
+      <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
         <Typography component='div' variant='h2' >
           Game Over
         </Typography>
         <Typography component='div' variant='h3' >
           Score: {score}
         </Typography>
-      </DialogTitle>
-      <Box display='flex' justifyContent='center'>
         <IconButton onClick={() => handleClick('replay')}>
         <ReplayCircleFilledRoundedIcon sx={{width: 200, height: 200 }} />
-        </IconButton> 
-        <IconButton onClick={() => handleClick('stop')}>
-        <StopCircleRoundedIcon  sx={{width: 200, height: 200 }}  />
         </IconButton> 
       </Box>
       <DialogContent dividers>

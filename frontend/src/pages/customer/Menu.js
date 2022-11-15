@@ -192,53 +192,68 @@ function Menu() {
   };
 
   const renderedContent = (<>
-      <Box
-        sx={{ height: '100vh', bgcolor: 'background.paper', display: 'flex' }}
-      >
-        <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', height: '100vh', zIndex: 50 }}>
-          <Tabs
-            orientation="vertical"
-            value={value}
-            label={label}
-            onChange={handleChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            sx={{ height: '75vh', mr: -0.2}}
-          >
-            {getCategoriesTabs()}
-          </Tabs>
-        </Box>
-        <Box display='flex' alignItems='flex-end' flexDirection="column" spacing={1} sx={{ mt: '10px', mr: '25px', justifyContent: 'right' }}>
-          <MenuFilter submit = { filters => { setFilters(filters) }} />
-          <MenuSort submit = { sort => { setSort(sort) }} />
-          {getCategoriesTabPanels()}
-        </Box>
+    <Box 
+      position='fixed' 
+      display='flex' 
+      alignItems='flex-end' 
+      flexDirection="column" 
+      spacing={1} 
+      zIndex={50}
+      width='86vw'
+      bgcolor='background.paper'
+      sx={{ 
+        top: 50,
+        right: 10,
+        justifyContent: 'right',
+      }}
+    >
+      <MenuFilter submit = { filters => { setFilters(filters) }} />
+      <MenuSort submit = { sort => { setSort(sort) }} />
+    </Box>
+    <Box
+      sx={{ bgcolor: 'background.paper', display: 'flex' }}
+    >
+      <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', zIndex: 50 }}>
+        <Tabs
+          orientation="vertical"
+          value={value}
+          label={label}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{ height: '75vh', mr: -0.2}}
+        >
+          {getCategoriesTabs()}
+        </Tabs>
       </Box>
-      <Button 
-        sx={{
-          position: 'fixed',
-          bottom: 20,
-          right: 30,
-          width:'160px',
-          height: '60px',
-          bgcolor: (theme) => theme.palette.primary.light
-        }}
-        variant='contained'
-        onClick={handleClickOpen}
-      >
-        {budget === null || remaining === null
-          ? <>Set budget</>
-          : <>Remaining: ${remaining.toFixed(0)}</>
-        }
-      </Button>
-      <BudgetDialog
-        open={open}
-        onClose={handleClose}
-        budget={budget}
-        remaining={remaining}
-        order={order}
-      />
-      
+      <Box display='flex' alignItems='flex-end' flexDirection="column" spacing={1} sx={{ mt: '10px', mr: '25px', justifyContent: 'right' }}>
+        {getCategoriesTabPanels()}
+      </Box>
+    </Box>
+    <Button 
+      sx={{
+        position: 'fixed',
+        bottom: 20,
+        right: 30,
+        width:'160px',
+        height: '60px',
+        bgcolor: (theme) => theme.palette.primary.light
+      }}
+      variant='contained'
+      onClick={handleClickOpen}
+    >
+      {budget === null || remaining === null
+        ? <>Set budget</>
+        : <>Remaining: ${remaining.toFixed(0)}</>
+      }
+    </Button>
+    <BudgetDialog
+      open={open}
+      onClose={handleClose}
+      budget={budget}
+      remaining={remaining}
+      order={order}
+    />
   </>)
 
   return (<>

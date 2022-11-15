@@ -56,3 +56,11 @@ I also planned the structure for our second demo. Additionally, I completed my r
 including splitting the bill by dish and allowing an optional budget on their table which would prevent them from
 ordering above the limit. The backend team also discussed overall improvements to code quality that needed to be made,
 which I plan to work on next week.
+
+Week 9
+This week I helped to improve backend code quality by adding input parameter and return type checking, and removing
+unneeded or repeated code. I also created a database service class, and refactored our code so that all direct database
+queries are done in this file - this helped to better separate some of the backend logic.
+
+I then tried to do some edge case functional testing on the frontend interface, to find potential bugs or cases we did not
+previously consider, so our team can implement them before our final demo.

@@ -42,7 +42,7 @@ function BillTable({ orderItems }) {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  // style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.miWidth }}
                 >
                   <Typography variant="h6">
                     {column.label}
