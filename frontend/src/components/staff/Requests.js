@@ -3,11 +3,14 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import Request from './Request'
+import useAlert from '../../utilities/useAlert';
 
 
 export default function Requests() {
 
   const [requests, setRequests] = React.useState([]);
+
+  const { setAlert } = useAlert();
 
   React.useEffect(() => {  
     const getRequests = async () => {
@@ -22,7 +25,7 @@ export default function Requests() {
       if (response.ok) {
         setRequests(data.tables);
       } else {
-        alert(await data.error);
+        setAlert(await data.error);
       }
     }
 

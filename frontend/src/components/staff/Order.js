@@ -6,9 +6,12 @@ import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import useAlert from '../../utilities/useAlert';
 
 export default function Order({id, table, name, nextStatus, role}) {
     const labelId = `checkbox-list-label-${table}`;
+
+    const { setAlert } = useAlert();
 
     async function progressOrderStatus() {
         const response = await fetch(`http://localhost:5000/${role}/orders`, {  
@@ -26,7 +29,7 @@ export default function Order({id, table, name, nextStatus, role}) {
         if (response.ok) {
             
         } else {
-            alert(await data.error);
+            setAlert(await data.error);
         }
     }
 

@@ -9,11 +9,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import useAlert from '../../utilities/useAlert';
 
 const drawerWidth = 50;
 
 function Header({image, title}) {
   const [selected, setSelected] = React.useState(JSON.parse(localStorage.getItem('assistance')));
+
+  const { setAlert } = useAlert();
 
   const handleChange = () => {
     localStorage.setItem('assistance', !selected);
@@ -42,7 +45,7 @@ function Header({image, title}) {
           const data = await response.json();
           if (response.ok) {
           } else {
-            alert(await data.error);
+            setAlert(await data.error);
           }
         };
         setAssistance();
@@ -63,7 +66,7 @@ function Header({image, title}) {
               setSelected(data.request);
               // console.log(data.request);
             } else {
-              alert(await data.error);
+              setAlert(await data.error);
             }
           };
           const intervalID = setInterval(getAssistance, 1000)

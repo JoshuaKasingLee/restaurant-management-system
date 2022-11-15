@@ -10,10 +10,13 @@ import { List, ListItem } from '@mui/material';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 import { Draggable } from 'react-beautiful-dnd';
+import useAlert from '../../utilities/useAlert';
 
 export default function ReorderItemDialog({open, itemsProps, handleClose, updateMenu}) {
 
   const [items, setItems] = React.useState(itemsProps);
+
+  const { setAlert } = useAlert();
 
   async function reorderItems() {
     const response = await fetch(`http://localhost:5000/manager/items`, {  
@@ -31,7 +34,7 @@ export default function ReorderItemDialog({open, itemsProps, handleClose, update
       updateMenu(true);
       handleClose();
     } else {
-      alert(await data.error);
+      setAlert(await data.error);
     }
   }
 

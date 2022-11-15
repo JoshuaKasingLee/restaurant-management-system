@@ -7,6 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 // import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
+import useAlert from '../../utilities/useAlert';
 
 export default function NewItemDialog({open, updateMenu, handleClose}) {
     
@@ -17,6 +18,8 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
     const [tags, setTags] = React.useState([]);
     const [cost, setCost] = React.useState('');
     const [image, setImage] = React.useState('https://backend.grindcitymedia.com/wp-content/uploads/2020/03/no-image-availabe.png');
+
+    const { setAlert } = useAlert();
     
     // const setCostWrapper = (value) => {
     //     setCost(parseFloat(value));
@@ -85,7 +88,7 @@ export default function NewItemDialog({open, updateMenu, handleClose}) {
             updateMenu();
             handleCloseDialog();
         } else {
-          alert(await data.error);
+          setAlert(await data.error);
         }
     } 
 

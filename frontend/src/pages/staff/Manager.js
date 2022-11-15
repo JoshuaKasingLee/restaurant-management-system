@@ -62,17 +62,17 @@ export default function Manager() {
           <Tab label="Entertainment" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <Box>
-            <MenuEditor />
-          </Box>
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <UserManager />
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          <Entertainment />
-        </TabPanel>
+      <TabPanel value={value} index={0} dir={theme.direction}>
+        <Box>
+          <MenuEditor />
+        </Box>
+      </TabPanel>
+      <TabPanel value={value} index={1} dir={theme.direction}>
+        <UserManager />
+      </TabPanel>
+      <TabPanel value={value} index={2} dir={theme.direction}>
+        <Entertainment />
+      </TabPanel>
     </ >
   );
 }
