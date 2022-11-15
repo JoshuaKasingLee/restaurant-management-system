@@ -7,6 +7,7 @@ import { PropTypes } from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import PaymentToggleButton from './PaymentToggleButton';
 import useAlert from '../../utilities/useAlert';
+import Loading from '../../components/Loading';
 
 const columns = [
   { id: 'image', label: '', minWidth: 160 },
@@ -61,6 +62,8 @@ function OrderTable() {
     ? parseFloat(localStorage.getItem('cost')) : 0);
   const [open, setOpen] = React.useState(false);
   const [valid, setValid] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const { setAlert } = useAlert();
 
   const handleClickOpen = () => {
@@ -99,6 +102,7 @@ function OrderTable() {
         localStorage.setItem('order', JSON.stringify(content));
         setTotalCost( data.total);
         localStorage.setItem('cost', data.total);
+        setIsLoading(false);
       } else {
         setAlert(await data.error);
       }
@@ -112,113 +116,120 @@ function OrderTable() {
 
   }, []);
 
-  return (
+  const renderedContent = (
     <Paper sx={{ m: 3, overflow: 'hidden', borderRadius: 2, boxShadow: 3 }}>
-      <TableContainer sx={{ maxHeight: 640 }}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  <Typography variant="h4">
-                    {column.label}
-                  </Typography>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {order
-              .map((row, index) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          { column.id === 'image' && <img width='160' src={row.img} alt=''/> }
-                          { column.format && 
-                            <Typography variant='h6'>
-                              {column.format(value)}
-                            </Typography> 
-                          }
-                          { column.id !== 'image' && !column.format && 
-                            <Typography variant='h6'>
-                              {value}
-                            </Typography> 
-                          }
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Grid container position="fixed" bottom="135px" justify = "center">
-        <Box 
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center" 
-          sx={{ width: '97%', position: 'fixed' }}
+    <TableContainer sx={{ maxHeight: 640 }}>
+      <Table stickyHeader>
+        <TableHead>
+          <TableRow>
+            {columns.map((column) => (
+              <TableCell
+                key={column.id}
+                align={column.align}
+                style={{ minWidth: column.minWidth }}
+              >
+                <Typography variant="h4">
+                  {column.label}
+                </Typography>
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {order
+            .map((row, index) => {
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        { column.id === 'image' && <img width='160' src={row.img} alt=''/> }
+                        { column.format && 
+                          <Typography variant='h6'>
+                            {column.format(value)}
+                          </Typography> 
+                        }
+                        { column.id !== 'image' && !column.format && 
+                          <Typography variant='h6'>
+                            {value}
+                          </Typography> 
+                        }
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+    <Grid container position="fixed" bottom="135px" justify = "center">
+      <Box 
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center" 
+        sx={{ width: '97%', position: 'fixed' }}
+      >
+        <Stack 
+          sx={{
+            position: 'fixed',
+            bottom: 20,
+            left: 30,
+            height: '60px'
+          }}>
+          <Typography variant="h4" >Total: ${totalCost.toFixed(2)}</Typography>
+          <Typography variant="h7" sx={{ mx: '5px' }}>Including Tax</Typography>
+        </Stack>
+        <Button 
+          sx={{
+            position: 'fixed',
+            bottom: 20,
+            right: 30,
+            width:'160px',
+            height: '60px',
+            bgcolor: (theme) => theme.palette.primary.light
+          }}
+          variant='contained'
+          onClick={handleClickOpen}
         >
-          <Stack 
-            sx={{
-              position: 'fixed',
-              bottom: 20,
-              left: 30,
-              height: '60px'
-            }}>
-            <Typography variant="h4" >Total: ${totalCost.toFixed(2)}</Typography>
-            <Typography variant="h7" sx={{ mx: '5px' }}>Including Tax</Typography>
-          </Stack>
-          <Button 
-            sx={{
-              position: 'fixed',
-              bottom: 20,
-              right: 30,
-              width:'160px',
-              height: '60px',
-              bgcolor: (theme) => theme.palette.primary.light
-            }}
-            variant='contained'
-            onClick={handleClickOpen}
-          >
+          Request Bill
+        </Button>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+          fullWidth={true}
+          maxWidth='sm'
+        >
+          <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
             Request Bill
-          </Button>
-          <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            aria-describedby="alert-dialog-slide-description"
-            fullWidth={true}
-            maxWidth='sm'
-          >
-            <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+          </BootstrapDialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              We hope you enjoyed you're meal. How would you like to pay?
+            </Typography>
+            <PaymentToggleButton order={order} disable = { valid => setValid(valid)} submit = { type => localStorage.setItem('paymentType', type) }/>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus component={Link} to={'/customer/bill'} disabled={!valid}>
               Request Bill
-            </BootstrapDialogTitle>
-            <DialogContent dividers>
-              <Typography gutterBottom>
-                We hope you enjoyed you're meal. How would you like to pay?
-              </Typography>
-              <PaymentToggleButton order={order} disable = { valid => setValid(valid)} submit = { type => localStorage.setItem('paymentType', type) }/>
-            </DialogContent>
-            <DialogActions>
-              <Button autoFocus component={Link} to={'/customer/bill'} disabled={!valid}>
-                Request Bill
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Box>
-      </Grid>
-    </Paper>
-  );
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </Grid>
+  </Paper>
+  )
+
+  return (<>
+    { isLoading
+      ? <Loading/>
+      : renderedContent
+    }
+  </>)
 }
 
 export default OrderTable;

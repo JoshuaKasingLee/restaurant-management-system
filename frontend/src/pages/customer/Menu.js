@@ -9,6 +9,7 @@ import MenuSort from '../../components/customer/menu/MenuSort';
 import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
 import useAlert from '../../utilities/useAlert';
+import Loading from '../../components/Loading';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,6 +56,7 @@ function Menu() {
   const [order, setOrder] = React.useState(0); 
   const [ordered, setOrdered] = React.useState(true); 
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const { setAlert } = useAlert();
 
@@ -112,6 +114,7 @@ function Menu() {
       if (response.ok) {
         setMenu( data );
         localStorage.setItem('menu', JSON.stringify(data));
+        setIsLoading(false);
         // console.log(data.categories);
       } else {
         setAlert(await data.error);
@@ -189,9 +192,7 @@ function Menu() {
     return renderedContent;
   };
 
-  return (
-    <>
-      <Header image={localStorage.getItem('restaurantImage')} title={"Menu"} />
+  const renderedContent = (<>
       <Box
         sx={{ height: '100vh', bgcolor: 'background.paper', display: 'flex' }}
       >
@@ -238,7 +239,16 @@ function Menu() {
         remaining={remaining}
         order={order}
       />
-      <Footer initialValue={"menu"}/>
+      
+  </>)
+
+  return (
+    <><Header image={localStorage.getItem('restaurantImage')} title={"Menu"} />
+    { isLoading
+      ? <Loading/>
+      : renderedContent
+    }
+    <Footer initialValue={"menu"}/>
     </ >
   );
 }
