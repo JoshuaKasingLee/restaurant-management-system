@@ -61,14 +61,14 @@ function Footer({initialValue, title}) {
         onChange={handleChange}
       >
         <BottomNavigationAction
-          label="Editor"
-          value="Editor"
+          label="Menu"
+          value="menu"
           icon={<RestaurantMenuRoundedIcon fontSize="medium" />}
           component={Link} to={'/customer/menu'}
         />
         <BottomNavigationAction
-            label="Settings"
-            value="Settings"
+            label="Order"
+            value="order"
             icon={
               <Badge badgeContent={orders} color="primary">
                 <ListAltRoundedIcon fontSize="medium" />
@@ -77,8 +77,8 @@ function Footer({initialValue, title}) {
             component={Link} to={'/customer/order'}
         />
         <BottomNavigationAction
-            label="Entertainment" 
-            value="Entertainment" 
+            label="Game" 
+            value="game" 
             icon={<SportsEsportsRoundedIcon fontSize="medium" />} 
             component={Link} to={'/customer/game'}
         />
