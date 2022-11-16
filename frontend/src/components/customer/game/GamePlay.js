@@ -9,7 +9,7 @@ import EndDialog from './EndDialog'
 
 const gameTop = 241;
 const gameHeight = 484;
-const gameLeft = 25;
+const gameLeft = 24;
 const gameWidth = 1130;
 const circleSize = 100;
 const top = gameTop + circleSize;
@@ -41,6 +41,7 @@ function GamePlay({submit}) {
   const [text2, setText2] = React.useState("");
   const [checked, setChecked] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
+  // const [checkedScore, setCheckedScore] = React.useState(0);
 
   useEffect(() => {
     start();
@@ -48,8 +49,14 @@ function GamePlay({submit}) {
 
   useEffect(() => {
     if(!paused)
-      counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
-  }, [paused, counter]);
+      if (counter > 0) { 
+        setTimeout(() => setCounter(counter - 1), 1000);
+        // if (score !== 0 && score % 30 === 0 && score !== checkedScore) {
+        //   setCheckedScore(score);
+        //   setCounter(Math.min(counter + 5, 60));
+        // }
+      }
+  }, [paused, counter, score]);
 
   useEffect(() => {
     // console.log(boxRef.current.offsetHeight);
@@ -258,7 +265,7 @@ function GamePlay({submit}) {
               1:00
             </Typography>
           }
-          {counter >= 10 && 
+          {counter < 60 && counter >= 10 && 
             <Typography  sx={{ml: -10, mt: 1}} variant='h2'>
               0:{counter}
             </Typography>
