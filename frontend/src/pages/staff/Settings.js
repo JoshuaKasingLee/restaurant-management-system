@@ -117,7 +117,7 @@ export default function NewItem() {
         heading="Manager"
     />
     <Box maxWidth="md" m="auto"
-      sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', pt: 5 }}
+      sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', pt: 5, pb: 5 }}
     >
       <Typography variant="h5">Restaurant</Typography>
       <Box display='flex' flexDirection='row' justifyContent='space-between' >
@@ -158,7 +158,7 @@ export default function NewItem() {
         </Box>
         <Box display='flex' flexDirection='column' alignItems='center'
           sx={{ border:1, borderRadius:2, boxShadow:2, p:2, width: 280, overflow:'hidden'}}>
-          <Typography variant='h3' component='div'>
+          <Typography variant='h3' textAlign='center' component='div'>
             {name}
           </Typography>
           <Box sx={{ width: '150px' }}>

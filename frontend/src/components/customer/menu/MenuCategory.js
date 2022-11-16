@@ -204,7 +204,7 @@ function MenuCategory({submit, category, filters, sort}) {
                   {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
                   {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
                   {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
-                  {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
+                  {item.tags.includes("Dairy Free") && <SvgIcon component={DairyIcon}/>}
                 </IconButton>
               }
               actionPosition="right"

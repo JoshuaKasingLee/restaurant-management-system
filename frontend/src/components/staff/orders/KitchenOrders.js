@@ -10,10 +10,6 @@ import { nextOrderStatus } from '../../../utilities/constants';
 
 export default function KitchenOrders({orders, title}) { 
 
-  // React.useEffect(() => {
-  //   console.log("inside", orders)
-  // })
-
   return (<>
     <Card sx={{ px: 5, pr: 0, pt: 3, display: 'flex', flexDirection: 'column', flex: 1 }}>
       <Typography variant="h3">{title}</Typography>

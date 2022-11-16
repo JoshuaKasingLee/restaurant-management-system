@@ -75,7 +75,7 @@ function BudgetDialog(props) {
         </>
       : <>
           <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
-            Your order total is ${order}.
+            Your order total is ${order.toFixed(2)}.
           </Typography>
           <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
             No budget has been set.
@@ -103,7 +103,7 @@ function BudgetDialog(props) {
       <DialogActions>
         <Button onClick={() => handleClick(null)}>Delete</Button> 
         <Button onClick={() => handleClick(budget)}>Cancel</Button> 
-        <Button onClick={() => handleClick(value)} disabled={value === null || value < order || value > 1000}>Submit</Button>
+        <Button onClick={() => handleClick(value)} disabled={value === null || isNaN(value) || value < order || value > 1000}>Submit</Button>
         {/* {console.log(value)}
         {console.log(typeof(value))} */}
       </DialogActions>

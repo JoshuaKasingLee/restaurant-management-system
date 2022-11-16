@@ -106,7 +106,7 @@ INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Ricky', 
 INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Stephen', 'stephen@gmail.com', 40, '2020-10-25 20:02:30');
 INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Candice', 'candice@gmail.com', 40, '2020-10-25 20:02:30');
 
-INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
+INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, null, False, False), (3, null, False, False);
 
 
 INSERT INTO category(name, visible, display_order) values ('Sashimi', TRUE, 1);
