@@ -10,6 +10,7 @@ import BudgetDialog from '../../components/customer/menu/BudgetDialog';
 import useAlert from '../../utilities/useAlert';
 import Loading from '../../components/Loading';
 import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
+import truncateString from '../../utilities/helpers';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -168,7 +169,7 @@ function Menu() {
     let renderedContent = [];
     let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-        renderedContent.push(<Tab key={i} label={sortedContent[i].title} {...a11yProps(i)} />);
+        renderedContent.push(<Tab key={i} label={truncateString(sortedContent[i].title)} {...a11yProps(i)} />);
         // console.log('tab' + i);
     }
     return renderedContent;

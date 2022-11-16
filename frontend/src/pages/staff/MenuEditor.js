@@ -20,6 +20,7 @@ import Header from '../../utilities/Header';
 import Footer from '../../components/staff/Footer';
 import useAlert from '../../utilities/useAlert';
 import Loading from '../../components/Loading';
+import truncateString from '../../utilities/helpers';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -156,12 +157,13 @@ function MenuEditor() {
       } else {
         renderedContent.push(<Tab
           key={i}
-          label={sortedContent[i].title}
+          label={truncateString(sortedContent[i].title)}
           iconPosition="start"
           icon={ sortedContent[i].visible
               ? <VisibilityIcon fontSize='small' onClick={(e) => handleToggleVisibility(e, sortedContent[i], true)}/>
               : <VisibilityOffIcon fontSize='small' onClick={(e) => handleToggleVisibility(e, sortedContent[i], false)}/>
           }
+          sx={{ minHeight: '48px'}}
           {...a11yProps(i)} />);
       }
     }
@@ -220,7 +222,7 @@ function MenuEditor() {
   }
 
   const renderedContent = (<>
-    <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', position: 'fixed', pt: 5, height: '650px' }}>
+    <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', position: 'fixed' }}>
       <Tabs
         orientation="vertical"
         value={value}
@@ -228,16 +230,16 @@ function MenuEditor() {
         onChange={handleChange}
         variant="scrollable"
         scrollButtons="auto"
-        sx={{ height: '75vh', mr: -0.2}}
+        sx={{ height: '675px', mr: -0.2}}
       >
-        {getCategoriesTabs(menu)}
+        {getCategoriesTabs()}
       </Tabs>
     </Box>
     <Box 
       display='flex'
       sx={{ flexGrow: 1, m: 'auto', pl: 22 }}
     >
-      {getCategoriesTabPanels(menu)}
+      {getCategoriesTabPanels()}
     </Box>
   </>)
 
