@@ -16,7 +16,7 @@ def choose_table():
     num = data["table"]
     tok = restaurant.choose_table(num)
     if (tok == None):
-        return {"error": "Wrong username or password"}, 401
+        return {"error": "Unable to choose table"}, 401
     res = {"token": tok}
     return res
 

@@ -27,7 +27,7 @@ def create_app():
         password = data["password"]
         token = restaurant.login(role, password)
         if (token == None):
-            return {"error": "Wrong username or password"}, 401
+            return {"error": "Wrong password, please try again"}, 401
         res = {"token": token}
         return dumps(res)
         
