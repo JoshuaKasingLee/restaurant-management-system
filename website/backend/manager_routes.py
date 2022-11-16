@@ -89,7 +89,7 @@ def remove_menu_item(ItemId):
     try:
         restaurant.manager.remove_menu_item(ItemId)
     except:
-        return {"error": "Unable to delete menu item"}, 401
+        return {"error": "Menu item currently being ordered, unable to delete menu item"}, 401
     res = restaurant.category_to_JSON(category)
     return res
     
