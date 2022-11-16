@@ -3,6 +3,8 @@ import Header from '../../utilities/Header';
 import Footer from '../../components/customer/Footer';
 import Leaderboard from '../../components/customer/game/Leaderboard';
 import GamePlay from '../../components/customer/game/GamePlay';
+import background from '../../components/customer/game/header.jpg';
+import { Box } from '@mui/material';
 
 function Game() {
 
@@ -15,8 +17,11 @@ function Game() {
         title={"Game"}
         heading={"Table " + localStorage.getItem('table')}
       />
+      
       {play 
-        ? <GamePlay start submit = { play => setPlay(play) } />
+        ? <Box sx={{ pt: 1, height: '92.7vh', backgroundImage: `url(${background})`}}>
+            <GamePlay start submit = { play => setPlay(play) } />
+          </Box>
         : <Leaderboard submit = { play => setPlay(play) } />
       } 
       <Footer initialValue={"game"}/>

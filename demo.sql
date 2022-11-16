@@ -94,21 +94,22 @@ INSERT INTO tag(name) values ('nut free');
 INSERT INTO tag(name) values ('dairy free');
 INSERT INTO tag(name) values ('chef recommended');
 
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monk', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monka', 'monkey@gmail.com', 10, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkb', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkc', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkd', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monke', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkf', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkg', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monkh', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
-INSERT INTO leaderboard_entry(name, email, score, time_played) values ('monki', 'monkey@gmail.com', 20, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('James', 'james@gmail.com', 220, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Kelly', 'kelly@gmail.com', 200, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Josh', 'josh@gmail.com', 190, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Cyrus', 'cyrus@gmail.com', 190, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Jannet', 'jannet@gmail.com', 190, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('John', 'john@gmail.com', 170, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Ben', 'ben@gmail.com', 150, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Emily', 'emily@gmail.com', 40, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Ricky', 'ricky@gmail.com', 40, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Stephen', 'stephen@gmail.com', 40, '2020-10-25 20:02:30');
+INSERT INTO leaderboard_entry(name, email, score, time_played) values ('Candice', 'candice@gmail.com', 40, '2020-10-25 20:02:30');
 
 INSERT INTO tables(num, budget, needs_assistance, occupied) values (1, null, False, False), (2, 99.99, False, True), (3, 500, True, True);
 
 
-INSERT INTO category(name, visible, display_order) values ('Sashimi', FALSE, 1);
+INSERT INTO category(name, visible, display_order) values ('Sashimi', TRUE, 1);
 INSERT INTO category(name, visible, display_order) values ('Noodle', TRUE, 2);
 INSERT INTO category(name, visible, display_order) values ('Rice bowl', TRUE, 3);
 INSERT INTO category(name, visible, display_order) values ('Dessert', TRUE, 4);

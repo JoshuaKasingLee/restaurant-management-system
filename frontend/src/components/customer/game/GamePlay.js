@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, IconButton, Typography } from '@mui/material';
+import { Alert,  Box, IconButton, Stack, Typography } from '@mui/material';
 import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import cookie from './cookie.png';
 import brick from './brick.png';
-import background from './header.jpg';
 import PauseDialog from './PauseDialog'
 import EndDialog from './EndDialog'
 
-const gameTop = 210;
-const gameHeight = 508;
+const gameTop = 241;
+const gameHeight = 484;
 const gameLeft = 25;
 const gameWidth = 1130;
 const circleSize = 100;
@@ -39,7 +38,9 @@ function GamePlay({submit}) {
   const [lives, setLives] = React.useState(3);
   const [counter, setCounter] = React.useState(60);
   const [text, setText] = React.useState([]);
+  const [text2, setText2] = React.useState("");
   const [checked, setChecked] = React.useState(false);
+  const [checked2, setChecked2] = React.useState(false);
 
   useEffect(() => {
     start();
@@ -51,34 +52,40 @@ function GamePlay({submit}) {
   }, [paused, counter]);
 
   useEffect(() => {
-    // console.log(boxRef.current.offsetLeft);
+    // console.log(boxRef.current.offsetHeight);
     if (lives === 0 || counter === 0) 
       handleClickOpenEnd();
   });
 
   useEffect(() => {
     if (score !== 0 && score % 100 === 0) {
-      setText(value => [...value, 'Warning! A new brick has been added...']);
       const timer = setInterval(() => {
         setBrickX(value => ({...value, [bricks]: random(left, right)}));
         setBrickY(value => ({...value, [bricks]: random(top, bottom)}));
       }, random(2000, 3000));
       setTimerBrick(value => ({...value, [bricks]: timer}));
-      setBricks(bricks => bricks + 1);
+      if (bricks < 20) {
+        setText(value => [...value, 'Warning! A new monster has arrived']);
+        setBricks(bricks => bricks + 1);
+      }
       if (score % 200 === 0) {
-        setText(value => [...value, "Good job, you've unlocked a new circle!"]);
         const timer = setInterval(() => {
           setCircleX(value => ({...value, [circles]: random(left, right)}));
           setCircleY(value => ({...value, [circles]: random(top, bottom)}));
         }, random(2000, 3000));
         setTimerCircle(value => ({...value, [circles]: timer}));
-        setCircles(circles => circles + 1);
+        if (circles < 20) {
+          setText(value => [...value, "Good job, extra cookie unlocked!"]);
+          setCircles(circles => circles + 1);
+        }
       }
-      setChecked(true);
-      setTimeout(() => {
-        setChecked(false);
-        setText([]);
-      }, 2000);
+      if (bricks < 20 || circles < 20) {
+        setChecked(true);
+        setTimeout(() => {
+          setChecked(false);
+          setText([]);
+        }, 2000);
+      }
     }
   }, [score]);
 
@@ -97,15 +104,23 @@ function GamePlay({submit}) {
   };
 
   const onClickBrick = (i) => {
-    if (!paused) setLives((l) => Math.max(0, l - 1));
-    clearInterval(timerBrick[i]);
-    setBrickX(value => ({...value, [i]: random(left, right)}));
-    setBrickY(value => ({...value, [i]: random(top, bottom)}));
-    const timer = setInterval(() => {
+    if (!paused) {
+      setLives((l) => Math.max(0, l - 1));
+      clearInterval(timerBrick[i]);
       setBrickX(value => ({...value, [i]: random(left, right)}));
       setBrickY(value => ({...value, [i]: random(top, bottom)}));
-    }, random(2000, 3000));
-    setTimerBrick(value => ({...value, [i]: timer}));
+      const timer = setInterval(() => {
+        setBrickX(value => ({...value, [i]: random(left, right)}));
+        setBrickY(value => ({...value, [i]: random(top, bottom)}));
+      }, random(2000, 3000));
+      setTimerBrick(value => ({...value, [i]: timer}));
+      setText2(`Oh no, you lost a life! Only ${Math.max(0, lives - 1)} remaining...`);
+      setChecked2(true);
+      setTimeout(() => {
+        setChecked2(false);
+        setText2('');
+      }, 2000);
+    }
   };
 
   const start = () => {
@@ -233,29 +248,59 @@ function GamePlay({submit}) {
 
   return (
     <>
-      <Box sx={{ mx: 3, my: 2 }}>
+      <Box sx={{ mx: 3, my: 5, borderRadius: 3, boxShadow: 10, backgroundColor:'background.paper'}}>
         <Box display="flex" justifyContent="space-between">
           <Typography sx={{ml: 2, mt: 1}} variant='h2'>
             Score: {score}
           </Typography>
-          <Typography  sx={{ml: -10, mt: 1}} variant='h2'>
-            {counter === 60 ? '1:00' : `0:${counter}`}
-          </Typography>
+          {counter === 60 &&
+            <Typography  sx={{ml: -10, mt: 1}} variant='h2'>
+              1:00
+            </Typography>
+          }
+          {counter >= 10 && 
+            <Typography  sx={{ml: -10, mt: 1}} variant='h2'>
+              0:{counter}
+            </Typography>
+          }
+          {counter < 10 && 
+            <Typography  sx={{ml: -10, mt: 1, color:'rgb(255,0,0)'}} variant='h2'>
+              0:0{counter}
+            </Typography>
+          }
           <Box>
+            <Stack
+              sx={{
+                position: 'fixed',
+                top: 115,
+                right: 80,
+                width:'320px'
+              }}
+              spacing={1}
+            >
             {checked && text.map((item, index) => (
-              <Typography 
+              <Alert 
+                severity={item.startsWith('W') ? "error" : "success"}
                 key={index}
-                variant='h7'
                 sx={{
-                  position: 'fixed',
-                  top: 95 + (index * 25),
-                  right: 60,
-                  width:'300px'
+                  height: 50
                 }}
               >
                 {item}
-              </Typography>
+              </Alert>
             ))}
+            {checked2 &&
+              <Alert 
+                severity={"error"}
+                key="2"
+                sx={{
+                  height: 50
+                }}
+              >
+                {text2}
+              </Alert>
+            }
+            </Stack>
             <IconButton onClick={handleClickOpenPause}>
               <PauseCircleFilledRoundedIcon sx={{width: 40, height:40 }} />
             </IconButton> 
@@ -281,9 +326,8 @@ function GamePlay({submit}) {
           className="Game" 
           ref={boxRef} 
           sx={{ 
-            height: '62vh', 
+            height: '59vh', 
             borderRadius: '0px 0px 20px 20px', 
-            backgroundImage: `url(${background})`,
           }}
         >
           {getRenderedCircles()}
