@@ -4,6 +4,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ReorderCategoryDialog from './ReorderCategoryDialog';
 import ReorderItemDialog from './ReorderItemDialog';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 
 export default function ReorderButton({categories, items, updateMenu}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -33,8 +35,11 @@ export default function ReorderButton({categories, items, updateMenu}) {
         id="button-reorder"
         variant="contained"
         onClick={handleClick}
+        endIcon={!open 
+          ? <KeyboardArrowDownRoundedIcon/>
+          : <KeyboardArrowUpRoundedIcon/>}
       >
-        Reorder...
+        Reorder
       </Button>
       <Menu
         id="menu-reorder"

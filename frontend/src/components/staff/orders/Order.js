@@ -3,6 +3,7 @@ import { TableRow, TableCell } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Popup from '../../../utilities/Popup';
 import useAlert from '../../../utilities/useAlert';
+import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
 
 export default function Order({order, nextStatus, role}) {
   const [loading, setLoading] = React.useState(false);
@@ -54,6 +55,7 @@ export default function Order({order, nextStatus, role}) {
           loading={loading}
           onClick={progressOrderStatus}
           sx={{ mr: 3 }}
+          endIcon={<KeyboardDoubleArrowRightRoundedIcon/>}
         >
           {nextStatus}
         </LoadingButton>

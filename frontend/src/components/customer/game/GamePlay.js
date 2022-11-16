@@ -4,6 +4,7 @@ import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledR
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import cookie from './cookie.png';
 import brick from './brick.png';
+import background from './header.jpg';
 import PauseDialog from './PauseDialog'
 import EndDialog from './EndDialog'
 
@@ -243,6 +244,7 @@ function GamePlay({submit}) {
           <Box>
             {checked && text.map((item, index) => (
               <Typography 
+                key={index}
                 variant='h7'
                 sx={{
                   position: 'fixed',
@@ -275,7 +277,15 @@ function GamePlay({submit}) {
           : <Box sx={{ color: 'red', width: 60, height: 60 }} />
           }
         </Box>
-        <Box className="Game" ref={boxRef} sx={{ height: '62vh' }}>
+        <Box 
+          className="Game" 
+          ref={boxRef} 
+          sx={{ 
+            height: '62vh', 
+            borderRadius: '0px 0px 20px 20px', 
+            backgroundImage: `url(${background})`,
+          }}
+        >
           {getRenderedCircles()}
           {getRenderedBricks()}
         </Box>

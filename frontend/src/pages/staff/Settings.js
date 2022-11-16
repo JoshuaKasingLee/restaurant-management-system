@@ -117,48 +117,58 @@ export default function NewItem() {
         heading="Manager"
     />
     <Box maxWidth="md" m="auto"
-      sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', pb: 10, pt: 5 }}
+      sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', pt: 5 }}
     >
       <Typography variant="h5">Restaurant</Typography>
-      <TextField
-      required
-      label="Name"
-      value={name}
-      onChange={e => setName(e.target.value)}
-      />
-      <FormControl fullWidth required>
-        <InputLabel>Tables</InputLabel>
-        <Select
-          value={tables}
-          label="Table"
-          onChange={e => setTables(e.target.value)}
-          MenuProps={{
-            PaperProps: {
-              style: {
-                maxHeight: 224
-              },
-            },
-          }}
-        >
-          {getTableContent(numTables)}
-        </Select>
-      </FormControl>
-      {/* <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
-        Upload Image
-        <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
-      </Button> */}
-      <TextField
-        required
-        label="Image Link"
-        value={image}
-        onChange={e => setImage(e.target.value)}
-      />
-      <Box sx={{ width: '200px' }}>
-        <img 
-          src={image}
-          alt="img"
-        /> 
-      </Box> 
+      <Box display='flex' flexDirection='row' justifyContent='space-between' >
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', width:590 }}>
+          <TextField
+            required
+            label="Name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+          <FormControl fullWidth required>
+            <InputLabel>Tables</InputLabel>
+            <Select
+              value={tables}
+              label="Table"
+              onChange={e => setTables(e.target.value)}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 224
+                  },
+                },
+              }}
+            >
+              {getTableContent(numTables)}
+            </Select>
+          </FormControl>
+          {/* <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
+            Upload Image
+            <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
+          </Button> */}
+          <TextField
+            required
+            label="Image Link"
+            value={image}
+            onChange={e => setImage(e.target.value)}
+          />
+        </Box>
+        <Box display='flex' flexDirection='column' alignItems='center'
+          sx={{ border:1, borderRadius:2, boxShadow:2, p:2, width: 280, overflow:'hidden'}}>
+          <Typography variant='h3' component='div'>
+            {name}
+          </Typography>
+          <Box sx={{ width: '150px' }}>
+            <img 
+              src={image}
+              alt="img"
+            /> 
+          </Box> 
+        </Box>
+      </Box>
       <Typography variant="h5">Passwords</Typography>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 3}}>
         <PasswordInput 

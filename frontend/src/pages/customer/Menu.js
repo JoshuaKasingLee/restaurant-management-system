@@ -9,6 +9,7 @@ import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
 import useAlert from '../../utilities/useAlert';
 import Loading from '../../components/Loading';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -94,6 +95,7 @@ function Menu() {
     }
     setOpen(false);
   };
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -242,6 +244,7 @@ function Menu() {
       }}
       variant='contained'
       onClick={handleClickOpen}
+      endIcon={<SavingsRoundedIcon/>}
     >
       {budget === null || remaining === null
         ? <>Set budget</>

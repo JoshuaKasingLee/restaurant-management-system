@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import Header from '../../utilities/Header';
 import Footer from '../../components/staff/Footer';
 import useAlert from '../../utilities/useAlert';
+import header from '../../components/customer/game/header.jpg';
 
 export default function Entertainment() {
   const [records, setRecords] = React.useState([]);
@@ -70,7 +71,8 @@ export default function Entertainment() {
         <CardMedia
         component="img"
         height="100"
-        image="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80"
+        image={header}
+        // image="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80"
         />
         <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -78,14 +80,18 @@ export default function Entertainment() {
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Instructions:
-            Tap the cookie before they move.
+            Tap the cookies before they move.
             You get 10 points for each cookie.
             You lose a life if you miss a cookie.
-            Score as many points as possible before you lose all your lives!
+            Score as many points as you can before time runs out, 
+            or before you lose all your lives!
         </Typography>
         </CardContent>
       </Card>
 
+      <Button  onClick={reset} variant="outlined">
+        Reset Leaderboard
+      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -113,10 +119,6 @@ export default function Entertainment() {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Button  onClick={reset} variant="outlined">
-        Reset
-      </Button>
     </Box>
     <Footer initialValue={"Game"}></Footer>
   </>);
