@@ -1,33 +1,32 @@
 import * as React from 'react';
-import Header from '../../components/staff/Header';
-import WaitOrders from '../../components/staff/WaitOrders';
-import Requests from '../../components/staff/Requests';
+import Header from '../../utilities/Header';
+import WaitOrders from '../../components/staff/orders/WaitOrders';
+import Requests from '../../components/staff/orders/Requests';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 function Wait() {
   
   return (
-      <>
-        <Header title={"WAIT"} />
+    <>
+      <Header
+        image={localStorage.getItem('restaurantImage')}
+        title={"Admin-Waiter"}
+        heading="Waiter"
+      />
         <Box sx={{
           width: '100%',
-          height: 800,
-          m: 1,
-          display: 'flex'
+          height: '93%',
+          display: 'flex',
+          p: 3,
+          gap: 3
         }}>
-          <Box sx={{ p: 2, m: 3, display: 'flex', flexDirection: 'column', flex: 3 }}>
-            <Typography variant="h5">Waiting to be Served</Typography>
-            <WaitOrders></WaitOrders>
-          </Box>
-          <Box sx={{ p: 2, m: 3, display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <Typography variant="h5">Requests for Assistance</Typography>
-            <Requests></Requests>
-          </Box>
+          <WaitOrders></WaitOrders>
+          <Requests></Requests>
         </Box>
-      </ >
-    );
-  }
+    </ >
+  );
+}
   
   export default Wait;
 

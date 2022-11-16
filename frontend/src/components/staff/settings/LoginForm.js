@@ -16,7 +16,6 @@ export default function LoginForm ({ submit, role }) {
       submit = { password => setPassword(password) } 
     />
     <Button
-        sx={{ mt: 3, mb: 2 }}
         id='login'
         variant="contained"
         onClick={onSubmit}>Log in
@@ -24,7 +23,6 @@ export default function LoginForm ({ submit, role }) {
   </>)
 }
 
-// TODO: add proptype
 LoginForm.propTypes = {
   submit: PropTypes.elementType
 }

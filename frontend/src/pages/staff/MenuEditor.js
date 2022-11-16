@@ -4,15 +4,22 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import MenuItemList from './MenuItemList';
-import AddNewButton from './AddNewButton';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+
+import MenuItemList from '../../components/staff/editor/MenuItemList';
+import AddNewButton from '../../components/staff/editor/AddNewButton';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-import EditCategoryDialog from './EditCategoryDialog';
-import ReorderButton from './ReorderButton';
+import EditCategoryDialog from '../../components/staff/editor/EditCategoryDialog';
+import ReorderButton from '../../components/staff/editor/ReorderButton';
+
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Header from '../../utilities/Header';
+import Footer from '../../components/staff/Footer';
 import useAlert from '../../utilities/useAlert';
+import Loading from '../../components/Loading';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,6 +63,7 @@ function MenuEditor() {
   
   const { setAlert } = useAlert();
   const [reorderTrigger, setReorderTrigger] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     const getMenu = async () => {
@@ -83,6 +91,7 @@ function MenuEditor() {
         // }
         setMenu( data );
         localStorage.setItem('menu', JSON.stringify(data));
+        setIsLoading(false);
       } else {
         setAlert(await data.error);
       }
@@ -167,7 +176,7 @@ function MenuEditor() {
     let sortedContent = getContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
       renderedContent.push(
-        <TabPanel  key={i} value={value} index={i}>
+        <TabPanel key={i} value={value} index={i} sx={{ minHeight: '750px' }}>
           <div style={{ display: 'inline-flex' }}>
             { sortedContent[i].title !== "Unassigned" &&
               <IconButton onClick={() => {handleOpenEditCategory()}} sx={{ mr: 2 }}>
@@ -210,38 +219,72 @@ function MenuEditor() {
     setLabel(label);
   }
 
+  const renderedContent = (<>
+    <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', position: 'fixed', pt: 5, height: '650px' }}>
+      <Tabs
+        orientation="vertical"
+        value={value}
+        label={label}
+        onChange={handleChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        sx={{ height: '75vh', mr: -0.2}}
+      >
+        {getCategoriesTabs(menu)}
+      </Tabs>
+    </Box>
+    <Box 
+      display='flex'
+      sx={{ flexGrow: 1, m: 'auto', pl: 22 }}
+    >
+      {getCategoriesTabPanels(menu)}
+    </Box>
+  </>)
+
   return (
     <>
-      <Box
+      <Header
+        image={localStorage.getItem('restaurantImage')}
+        title={"Admin-Manager"}
+        heading="Manager"
+      />
+      { menu.categories.length > 0 && 
+        <>
+          <Box
+            sx={{
+              mx: 'auto',
+              mt: 2,
+              width: '1300px',
+              display: 'flex',
+              justifyContent: 'end',
+              zIndex: 50,
+              py: 3,
+              px: 2,
+            }}
+            gap={2}>
+            <ReorderButton categories={menu.categories}
+              items={menu.categories.filter(c => c.display_order === getSortedContent()[value].order)[0].menu_items}
+              updateMenu={setReorderTrigger}/>
+            <AddNewButton updateMenu={setTrigger}/>
+          </Box>
+      </>}
+      <Card
         sx={{
-          height: 70,
-          position: 'fixed',
-          right: '40px',
-        }}>
-        { menu.categories.length > 0 && <>
-          <ReorderButton categories={menu.categories}
-          items={menu.categories.filter(c => c.display_order === getSortedContent()[value].order)[0].menu_items}
-          updateMenu={setReorderTrigger}/>
-          <AddNewButton updateMenu={setTrigger}/>
-        </>}
-      </Box>
-      <Box
-        sx={{ height: '80vh', bgcolor: 'background.paper', display: 'flex' }}
+          m: 'auto',
+          width: '1300px',
+          height: '750px',
+          py: 4,
+          display: 'flex',
+          alignItems: 'center',
+          overflowY: 'auto'
+        }}
       >
-        <Tabs
-          orientation="vertical"
-          value={value}
-          label={label}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="Vertical tabs for menu categories"
-          sx={{ width: 180, borderRight: 1, borderColor: 'divider' }}
-        >
-          {getCategoriesTabs(menu)}
-        </Tabs>
-        {getCategoriesTabPanels(menu)}
-      </Box>
+      { isLoading
+        ? <Loading/>
+        : renderedContent
+      }
+      </Card>      
+      <Footer initialValue={"Editor"}></Footer>
     </ >
   );
 }

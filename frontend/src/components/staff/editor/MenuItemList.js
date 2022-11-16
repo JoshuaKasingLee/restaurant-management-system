@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import MenuItemCard from './MenuItemCard';
-import { ALL_TAGS_LIST } from '../../utilities/constants';
+import { ALL_TAGS_LIST } from '../../../utilities/constants';
 
 
 export default function MenuItemList({category, updateMenu}) {
@@ -41,7 +41,7 @@ export default function MenuItemList({category, updateMenu}) {
   }, [category]);
  
   return ( categoryItems &&
-    <ImageList sx={{ width: 950, height: 510 }} cols={4} rowHeight={250}>
+    <ImageList sx={{ width: '100%', minHeight: '550px', px: 2, pb: 3 }} cols={4} rowHeight={250}>
       {categoryItems.map((item) => (
         <MenuItemCard key={`item-${item.id}`} item={item} categoryName={category.name} updateMenu={updateMenu}/>
       ))}

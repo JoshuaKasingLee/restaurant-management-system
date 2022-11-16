@@ -6,7 +6,7 @@
   import DialogContent from '@mui/material/DialogContent';
   import DialogContentText from '@mui/material/DialogContentText';
   import DialogTitle from '@mui/material/DialogTitle';
-  import useAlert from '../../utilities/useAlert';
+  import useAlert from '../../../utilities/useAlert';
   
   export default function NewCategoryDialog({open, handleClose, updateMenu}) {
 

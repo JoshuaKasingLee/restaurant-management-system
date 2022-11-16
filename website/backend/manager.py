@@ -140,6 +140,9 @@ class Manager(Staff):
         name = DbService.get_menu_item_name(id)
         if not self.restaurant.menu_contains(name):
             raise Exception(f"Menu item with name {name} does not exist")
+        
+        if self.restaurant.orders_contain(name):
+            raise Exception(f"Menu item with name {name} cannot be deleted if item exist in orders")
 
         # remove from database
         item_id = DbService.get_menu_item_id(name)

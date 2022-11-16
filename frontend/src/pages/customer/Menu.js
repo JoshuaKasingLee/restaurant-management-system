@@ -1,8 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, Tab, Tabs, Typography } from '@mui/material';
-
-import Header from '../../components/customer/Header';
+import Header from '../../utilities/Header';
 import Footer from '../../components/customer/Footer';
 import MenuCategory from '../../components/customer/menu/MenuCategory';
 import MenuSort from '../../components/customer/menu/MenuSort';
@@ -258,8 +257,12 @@ function Menu() {
     />
   </>)
 
-  return (
-    <><Header image={localStorage.getItem('restaurantImage')} title={"Menu"} />
+  return (<>
+    <Header
+      image={localStorage.getItem('restaurantImage')}
+      title={"Menu"}
+      heading={"Table " + localStorage.getItem('table')}
+    />
     { isLoading
       ? <Loading/>
       : renderedContent
