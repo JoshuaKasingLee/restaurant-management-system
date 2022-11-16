@@ -47,7 +47,7 @@ export default function WaitOrders() {
     <Card sx={{ px: 5, pr: 0, pt: 3, display: 'flex', flexDirection: 'column', flex: 5 }}>
       <Typography variant="h3">Waiting to be Served</Typography>
       <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
+      <Table sx={{ maxWidth: 1020 }}>
         <TableHead>
           <TableRow>
             <TableCell>Table</TableCell>

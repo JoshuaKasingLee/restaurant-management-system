@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import Header from '../../utilities/Header';
-import BillTable from '../../components/customer/BillTable';
+import BillTable from '../../components/customer/order/BillTable';
 import useAlert from '../../utilities/useAlert';
 
 function Bill() {

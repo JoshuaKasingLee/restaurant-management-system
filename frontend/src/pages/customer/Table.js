@@ -11,7 +11,7 @@ function Table () {
       <Header
         image={localStorage.getItem('restaurantImage')}
         title={"Table Selection"}
-        heading={"Table " + localStorage.getItem('table')}
+        heading={null}
       />
       <TableForm submit = {async (table) => {
         const response = await fetch('http://localhost:5000/customer/table', {

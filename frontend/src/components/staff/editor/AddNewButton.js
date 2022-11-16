@@ -4,6 +4,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import NewCategoryDialog from './NewCategoryDialog';
 import NewItemDialog from './NewItemDialog';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 
 export default function AddNewButton({updateMenu}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -33,8 +35,11 @@ export default function AddNewButton({updateMenu}) {
         id="basic-button"
         variant="contained"
         onClick={handleClick}
+        endIcon={!open 
+          ? <KeyboardArrowDownRoundedIcon/>
+          : <KeyboardArrowUpRoundedIcon/>}
       >
-        Add New...
+        Add New
       </Button>
       <Menu
         id="basic-menu"

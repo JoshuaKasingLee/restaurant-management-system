@@ -43,7 +43,7 @@ export default function Requests() {
     <Card sx={{ px: 5, pr: 0, pt: 3, display: 'flex', flexDirection: 'column', flex: 1 }}>
       <Typography variant="h3">Assistance</Typography>
       <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 200 }}>
+      <Table sx={{ maxWidth: 170 }}>
         <TableHead>
           <TableRow>
             <TableCell>Table</TableCell>

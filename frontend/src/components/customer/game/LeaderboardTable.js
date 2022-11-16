@@ -4,7 +4,7 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 
 export default function LeaderboardTable({leaderboard}) {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ maxHeight: 293 }}>
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>

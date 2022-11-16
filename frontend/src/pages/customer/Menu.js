@@ -9,6 +9,8 @@ import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
 import useAlert from '../../utilities/useAlert';
 import Loading from '../../components/Loading';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
+import truncateString from '../../utilities/helpers';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,6 +67,7 @@ function Menu() {
   };
 
   const handleClose = (budgetValue) => {
+
     if(budgetValue !== budget) {
       const updateBudget = async () => {
         const response = await fetch('http://localhost:5000/customer/budget', {
@@ -93,6 +96,7 @@ function Menu() {
     }
     setOpen(false);
   };
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -165,7 +169,7 @@ function Menu() {
     let renderedContent = [];
     let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-        renderedContent.push(<Tab key={i} label={sortedContent[i].title} {...a11yProps(i)} />);
+        renderedContent.push(<Tab key={i} label={truncateString(sortedContent[i].title)} {...a11yProps(i)} />);
         // console.log('tab' + i);
     }
     return renderedContent;
@@ -241,10 +245,11 @@ function Menu() {
       }}
       variant='contained'
       onClick={handleClickOpen}
+      endIcon={<SavingsRoundedIcon/>}
     >
       {budget === null || remaining === null
         ? <>Set budget</>
-        : <>Remaining: ${remaining.toFixed(0)}</>
+        : <>Remaining: ${remaining.toFixed(2)}</>
       }
     </Button>
     <BudgetDialog

@@ -18,7 +18,7 @@ export default function KitchenOrders({orders, title}) {
     <Card sx={{ px: 5, pr: 0, pt: 3, display: 'flex', flexDirection: 'column', flex: 1 }}>
       <Typography variant="h3">{title}</Typography>
       <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
+      <Table sx={{ maxWidth: 650 }}>
         <TableHead>
           <TableRow>
             <TableCell>Table</TableCell>

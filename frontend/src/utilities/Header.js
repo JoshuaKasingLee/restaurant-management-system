@@ -11,17 +11,27 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import useAlert from './useAlert';
 import { borderRadius } from '@mui/system';
+import ExitDialog from '../components/customer/ExitDialog';
 
 const drawerWidth = 50;
 
 function Header({image, title, heading}) {
   const [selected, setSelected] = React.useState(JSON.parse(localStorage.getItem('assistance')));
+  const [open, setOpen] = React.useState(false);
 
   const { setAlert } = useAlert();
 
   const handleChange = () => {
     localStorage.setItem('assistance', !selected);
     setSelected( selected => !selected );
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const renderHeading = (
@@ -120,14 +130,33 @@ function Header({image, title, heading}) {
                 <RecordVoiceOverRoundedIcon/>
               </ToggleButton>
             }
-            <ToggleButton
-              sx={{ mr: 3, width: 40, height: 40}}
-              color="primary"
-              value="exit"
-              component={Link} to={'/'}
-            >
-              <LogoutIcon/>
-            </ToggleButton>
+            { title.includes('Admin') || title === 'Table Selection' || title === 'Bill'
+              ? <>
+                <ToggleButton
+                  sx={{ mr: 3, width: 40, height: 40}}
+                  color="primary"
+                  value="exit"
+                  component={Link} to={'/'}
+                >
+                  <LogoutIcon/>
+                </ToggleButton>
+              </> 
+            : <>
+                <ToggleButton
+                  sx={{ mr: 3, width: 40, height: 40}}
+                  color="primary"
+                  value="exit"
+                  onClick={handleClickOpen}
+                >
+                  <LogoutIcon/>
+                </ToggleButton>
+                <ExitDialog
+                  open={open}
+                  onClose={handleClose}
+                />
+              </>
+            }
+            
           </Box>
         </Toolbar>
       </AppBar>

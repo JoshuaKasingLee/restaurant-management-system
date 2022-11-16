@@ -1,8 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, 
-  InputAdornment, TextField, Typography } from '@mui/material';
+  InputAdornment, Slide, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
@@ -40,11 +44,13 @@ function BudgetDialog(props) {
   const handleClick = (value) => {
     onClose(value);
   };
-  
+
   return (
     <Dialog 
       open={open}
       onClose={() => handleClick(budget)}
+      TransitionComponent={Transition}
+      keepMounted
     >
       {budget !== null
       ? <BootstrapDialogTitle id="customized-dialog-title" onClose={() => handleClick(budget)}>
@@ -58,10 +64,10 @@ function BudgetDialog(props) {
       {budget !== null 
       ? <>
           <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
-            Your total budget is ${budget}.
+            Your total budget is ${budget.toFixed(2)}.
           </Typography>
           <Typography color='text.secondary' variant="h6" component="div" textAlign='center'>
-            You have ${remaining} remaining.
+            You have ${remaining !== null ? remaining.toFixed(2) : (budget - order).toFixed(2)} remaining.
           </Typography>
           <Typography color='text.secondary' component="div">
             Would you like to update your total budget?
@@ -97,7 +103,7 @@ function BudgetDialog(props) {
       <DialogActions>
         <Button onClick={() => handleClick(null)}>Delete</Button> 
         <Button onClick={() => handleClick(budget)}>Cancel</Button> 
-        <Button onClick={() => handleClick(value)} disabled={!value || value < order || value > 1000}>Submit</Button>
+        <Button onClick={() => handleClick(value)} disabled={value === null || value < order || value > 1000}>Submit</Button>
         {/* {console.log(value)}
         {console.log(typeof(value))} */}
       </DialogActions>
