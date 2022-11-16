@@ -37,7 +37,17 @@ to the payment options. I tested the assistance functionality and connection bet
 customer and waitstaff interface. I displayed restaurant name and image to frontend.
 
 Week 8
-I continued coding for sprint 2. I applied display order 
-to the categories and menu items on the frontend. I added pause and game over 
-screens to the game so that customers can play, pause and reset the game. I added
-validation helper text to input fields.
+I continued coding for sprint 2. I applied display order to the categories and menu 
+items on the frontend. I added pause and game over screens to the game so that customers 
+can play, pause and reset the game. I added validation helper text to input fields.
+
+Week 9
+I worked on sprint 3. I implemented split by dish functionality to complete the set of
+payment options. I added the budget page and dialog for users to add, update and
+delete budget. I also added a game leaderboard on the customer side and connected it
+to the game.
+
+Week 10
+I cleaned up sprint 3 functionality. I also improved the game by adding lives and a timer.
+I also made the game more difficult as the score grew. I cleaned up the UI and fixed 
+any bugs and display issues.
