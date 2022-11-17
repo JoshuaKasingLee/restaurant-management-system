@@ -7,7 +7,8 @@ conn = psycopg2.connect(
     # connection to your local database
     host="localhost",
     database="flask_db",
-    user="postgres"
+    user="lubuntu",
+    password="lubuntu"
 
     # connection to the AWS server
     # database="postgres",
