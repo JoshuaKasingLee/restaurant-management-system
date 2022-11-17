@@ -30,6 +30,13 @@ class DbService:
             raise Exception("SQL Statement Failed")
         conn.commit()
 
+    def get_table_occupied(num: int):
+        cur = conn.cursor()
+        cur.execute("""select occupied from tables where num = %s""", [num])
+        if not (cur.rowcount == 1):
+            raise Exception(f"Table {num} could not be found")
+        return cur.fetchone()[0]
+
     def update_table_to_occupied(num: int):
         cur = conn.cursor()
         cur.execute("""update tables set occupied = True where num = %s""", [num])

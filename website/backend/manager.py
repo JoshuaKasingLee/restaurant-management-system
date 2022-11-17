@@ -173,14 +173,21 @@ class Manager(Staff):
             raise Exception("Number of tables cannot be negative")
             
         table_num = 1
-        while (len(self.restaurant.tables) < number):
-            while (self.restaurant.tab_num_exist(table_num)):
+        if (self.restaurant.count_tables() < number):
+            while (self.restaurant.count_tables() < number):
+                while (self.restaurant.tab_num_exist(table_num)):
+                    table_num += 1
+                DbService.insert_new_table(table_num)
+                self.restaurant.tables.append(Table(table_num))
+        elif (self.restaurant.count_tables() > number):
+            table_num = number + 1
+            while (table_num <= self.restaurant.count_tables()):
+                if (DbService.get_table_occupied(table_num)):
+                    raise Exception(f"Table {table_num} is currently occupied")
                 table_num += 1
-            DbService.insert_new_table(table_num)
-            self.restaurant.tables.append(Table(table_num))
-                
-        while (len(self.restaurant.tables) > number):
-            self.restaurant.remove_table()
+
+            while (self.restaurant.count_tables() > number):
+                self.restaurant.remove_table()
     
     def category_edit(self, cat_id: int, show: bool, new_name: str):
         name = DbService.get_category_name(cat_id)

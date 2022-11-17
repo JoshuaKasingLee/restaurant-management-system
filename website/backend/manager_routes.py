@@ -23,7 +23,10 @@ def change_restaurant_info():
     data = request.get_json()
     rest_obj = data["restaurant"] 
     pass_obj = data["passwords"]
-    restaurant.change_restaurant_info(rest_obj["name"], rest_obj["tables"], rest_obj["image"], pass_obj["kitchen"], pass_obj["wait"], pass_obj["manager"])
+    try:
+        restaurant.change_restaurant_info(rest_obj["name"], rest_obj["tables"], rest_obj["image"], pass_obj["kitchen"], pass_obj["wait"], pass_obj["manager"])
+    except:
+        return {"error": f"Tables cannot be removed, as they are currently being occupied"}, 401
     return restaurant.get_restaurant_info()
     
 @manager_routes.route('/menu', methods=['GET'])
