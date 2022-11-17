@@ -26,7 +26,6 @@ function Table () {
         const data = await response.json();
         if (response.ok) {
           localStorage.setItem('assistance', false);
-          // console.log(data);
           localStorage.setItem('token', data.token);
         } else {
           setAlert(await data.error);

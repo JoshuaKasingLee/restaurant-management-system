@@ -1,21 +1,10 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Header from '../../utilities/Header';
-import Footer from '../../components/staff/Footer';
-import useAlert from '../../utilities/useAlert';
+import { Button, Box, Card, CardContent, CardMedia, Paper, Table, TableBody, TableCell, TableContainer, 
+  TableHead, TableRow, Typography } from '@mui/material';
 import header from '../../components/customer/game/header.jpg';
+import Footer from '../../components/staff/Footer';
+import Header from '../../utilities/Header';
+import useAlert from '../../utilities/useAlert';
 
 export default function Entertainment() {
   const [records, setRecords] = React.useState([]);
@@ -69,10 +58,9 @@ export default function Entertainment() {
     >
       <Card>
         <CardMedia
-        component="img"
-        height="100"
-        image={header}
-        // image="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80"
+          component="img"
+          height="100"
+          image={header}
         />
         <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -88,7 +76,6 @@ export default function Entertainment() {
         </Typography>
         </CardContent>
       </Card>
-
       <Button  onClick={reset} variant="outlined">
         Reset Leaderboard
       </Button>

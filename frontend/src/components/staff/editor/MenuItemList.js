@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ImageList from '@mui/material/ImageList';
+import { ImageList } from '@mui/material';
 import MenuItemCard from './MenuItemCard';
 import { ALL_TAGS_LIST } from '../../../utilities/constants';
 
@@ -29,21 +29,25 @@ export default function MenuItemList({category, updateMenu}) {
           description: category.menu_items[i].description,
           ingredients: category.menu_items[i].ingredients,
           order: category.menu_items[i].display_order,
-          tags: tagList, //"Chef's Reccomendation"
+          tags: tagList,
           actualTags: actualTags,
           visible: category.menu_items[i].visible
         }
       );
       content.sort( (a, b) => a.order < b.order ? -1 : 1 );
-      setCategoryItems( categoryItems => content );
+      setCategoryItems( content );
     }
-    // console.log(content);
   }, [category]);
  
   return ( categoryItems &&
     <ImageList sx={{ width: '100%', minHeight: '550px', px: 2, pb: 3 }} cols={4} rowHeight={250}>
       {categoryItems.map((item) => (
-        <MenuItemCard key={`item-${item.id}`} item={item} categoryName={category.name} updateMenu={updateMenu}/>
+        <MenuItemCard 
+          key={`item-${item.id}`} 
+          item={item} 
+          categoryName={category.name} 
+          updateMenu={updateMenu}
+        />
       ))}
     </ImageList>
   );

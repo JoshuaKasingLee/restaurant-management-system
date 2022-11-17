@@ -2,16 +2,15 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
-  IconButton, ImageList, ImageListItem, ImageListItemBar, Slide, Typography } from '@mui/material';
+  IconButton, ImageList, ImageListItem, ImageListItemBar, Slide, SvgIcon, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import QuantityButtonGroup from '../QuantityButtonGroup';
 import { ReactComponent as DairyIcon } from './DF.svg';
 import { ReactComponent as GlutenIcon } from './GF.svg';
 import { ReactComponent as NutIcon } from './NF.svg';
 import { ReactComponent as StarIcon } from './CR.svg';
 import { ReactComponent as VeganIcon } from './VE.svg';
 import { ReactComponent as VegIcon } from './V.svg';
-import SvgIcon from '@mui/material/SvgIcon';
+import QuantityButtonGroup from '../QuantityButtonGroup';
 import useAlert from '../../../utilities/useAlert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -26,7 +25,6 @@ const BootstrapDialogTitle = (props) => {
       {children}
       {onClose ? (
         <IconButton
-          aria-label="close"
           onClick={onClose}
           sx={{
             position: 'absolute',
@@ -176,11 +174,18 @@ function MenuCategory({submit, category, filters, sort}) {
   };
 
   return (
-    <ImageList sx={{ width: '85vw', height: 'auto', ml: 16, px: 2, pt: 6, pb: 10 }} cols={4} rowHeight={250}>
+    <ImageList 
+      sx={{ width: '85vw', height: 'auto', ml: 16, px: 2, pt: 6, pb: 10 }} 
+      cols={4} 
+      rowHeight={250}
+    >
       {categoryItems.map((item, index) => (
         item.visible &&
         < div key={item.img} style={{ borderRadius: '5% 5% 0% 0%' }}>
-          <ImageListItem sx={{ width: 225, boxShadow: 3, borderRadius: '5%', m: 0.8 }} onClick={handleClickOpen(index)}>
+          <ImageListItem 
+            sx={{ width: 225, boxShadow: 3, borderRadius: '5%', m: 0.8 }} 
+            onClick={handleClickOpen(index)}
+          >
             <img
               style={{ borderRadius: '5% 5% 0% 0%' }}
               src={`${item.img}?w=230&h=200&fit=crop&auto=format`}
@@ -197,7 +202,7 @@ function MenuCategory({submit, category, filters, sort}) {
               }}
               actionIcon={
                 <IconButton
-                  aria-label={`star ${item.title}`}
+                  id={`star ${item.title}`}
                 >
                   {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
                   {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
@@ -221,7 +226,6 @@ function MenuCategory({submit, category, filters, sort}) {
             TransitionComponent={Transition}
             keepMounted
             onClose={handleClose(index)}
-            aria-describedby="alert-dialog-slide-description"
             fullWidth={true}
             maxWidth='sm'
           >
@@ -253,7 +257,7 @@ function MenuCategory({submit, category, filters, sort}) {
                     {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
                     {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
                     {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
-                    {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
+                    {item.tags.includes("Dairy Free") && <SvgIcon component={DairyIcon}/>}
                   </Typography>
                   <Typography gutterBottom>
                     Cost: ${item.cost.toFixed(2)}

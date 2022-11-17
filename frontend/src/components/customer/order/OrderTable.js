@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
   IconButton, Paper, Slide, Stack, Table, TableBody, TableHead, 
   TableCell, TableContainer, TableRow, Typography } from '@mui/material';
-import { PropTypes } from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import PaymentToggleButton from './PaymentToggleButton';
-import useAlert from '../../../utilities/useAlert';
 import Loading from '../../Loading';
+import useAlert from '../../../utilities/useAlert';
 
 const columns = [
   { id: 'image', label: '', minWidth: 160 },
@@ -35,7 +35,6 @@ const BootstrapDialogTitle = (props) => {
       {children}
       {onClose ? (
         <IconButton
-          aria-label="close"
           onClick={onClose}
           sx={{
             position: 'absolute',
@@ -179,8 +178,12 @@ function OrderTable() {
             left: 30,
             height: '60px'
           }}>
-          <Typography variant="h4" >Total: ${totalCost.toFixed(2)}</Typography>
-          <Typography variant="h7" sx={{ mx: '5px' }}>Including Tax</Typography>
+          <Typography variant="h4" >
+            Total: ${totalCost.toFixed(2)}
+          </Typography>
+          <Typography variant="h7" sx={{ mx: '5px' }}>
+            Including Tax
+          </Typography>
         </Stack>
         <Button 
           sx={{
@@ -205,14 +208,18 @@ function OrderTable() {
           fullWidth={true}
           maxWidth='sm'
         >
-          <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+          <BootstrapDialogTitle onClose={handleClose}>
             Request Bill
           </BootstrapDialogTitle>
           <DialogContent dividers>
             <Typography gutterBottom>
               We hope you enjoyed you're meal. How would you like to pay?
             </Typography>
-            <PaymentToggleButton order={order} disable = { valid => setValid(valid)} submit = { type => localStorage.setItem('paymentType', type) }/>
+            <PaymentToggleButton 
+              order={order} 
+              disable={valid => setValid(valid)} 
+              submit={type => localStorage.setItem('paymentType', type)}
+            />
           </DialogContent>
           <DialogActions>
             <Button autoFocus component={Link} to={'/customer/bill'} disabled={!valid}>
@@ -225,12 +232,14 @@ function OrderTable() {
   </Paper>
   )
 
-  return (<>
-    { isLoading
-      ? <Loading/>
-      : renderedContent
-    }
-  </>)
+  return (
+    <>
+      { isLoading
+        ? <Loading/>
+        : renderedContent
+      }
+    </>
+  )
 }
 
 export default OrderTable;

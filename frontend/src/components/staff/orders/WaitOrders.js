@@ -1,18 +1,12 @@
 import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Typography from '@mui/material/Typography';
+import { Card, Paper, Table, TableBody, TableCell, 
+  TableContainer, TableHead, TableRow, Typography  } from '@mui/material';
 import Order from './Order'
 import { nextOrderStatus } from '../../../utilities/constants';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Card } from '@mui/material';
 import useAlert from '../../../utilities/useAlert';
 
 
-export default function WaitOrders() { 
-
-  // React.useEffect(() => {
-  //   console.log("inside", orders)
-  // })
+export default function WaitOrders() {
 
   const [preparedOrders, setPrepared] = React.useState([]);
 

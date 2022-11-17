@@ -19,11 +19,11 @@ export const AlertProvider = ({ children }) => {
   return (
     <AlertContext.Provider
     value={{
-        text,
-        setAlert,
+      text,
+      setAlert,
     }}
     >
-    {children}
+      {children}
     </AlertContext.Provider>
   );
 };

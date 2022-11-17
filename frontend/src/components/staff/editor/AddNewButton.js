@@ -1,11 +1,8 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { Button, Menu, MenuItem } from '@mui/material/';
 import NewCategoryDialog from './NewCategoryDialog';
 import NewItemDialog from './NewItemDialog';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
+import Iconify from '../../Iconify';
 
 export default function AddNewButton({updateMenu}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,12 +29,10 @@ export default function AddNewButton({updateMenu}) {
   return (
     <>
       <Button
-        id="basic-button"
+        id="add-new-button"
         variant="contained"
         onClick={handleClick}
-        endIcon={!open 
-          ? <KeyboardArrowDownRoundedIcon/>
-          : <KeyboardArrowUpRoundedIcon/>}
+        endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
       >
         Add New
       </Button>
@@ -47,8 +42,12 @@ export default function AddNewButton({updateMenu}) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => {handleClose(); setOpenNewCategory(true);}}>Category</MenuItem>
-        <MenuItem onClick={() => {handleClose(); setOpenNewItem(true);}}>Food Item</MenuItem>
+        <MenuItem onClick={() => {handleClose(); setOpenNewCategory(true);}}>
+          Category
+        </MenuItem>
+        <MenuItem onClick={() => {handleClose(); setOpenNewItem(true);}}>
+          Food Item
+        </MenuItem>
       </Menu>
       <NewCategoryDialog
         open={openNewCategory}
@@ -63,6 +62,3 @@ export default function AddNewButton({updateMenu}) {
     </ >
   );
 }
-
-
-

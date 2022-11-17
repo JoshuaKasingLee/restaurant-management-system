@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import Header from '../../utilities/Header';
+import * as React from 'react';
+import { Box } from '@mui/material';
+import background from '../../components/customer/game/header.jpg';
 import Footer from '../../components/customer/Footer';
 import Leaderboard from '../../components/customer/game/Leaderboard';
 import GamePlay from '../../components/customer/game/GamePlay';
-import background from '../../components/customer/game/header.jpg';
-import { Box } from '@mui/material';
+import Header from '../../utilities/Header';
 
 function Game() {
 
-  const [play, setPlay] = useState(false);
+  const [play, setPlay] = React.useState(false);
 
   return (
     <>

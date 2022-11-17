@@ -1,17 +1,14 @@
 import * as React from 'react';
+import { Chip, Stack } from '@mui/material';
+import SvgIcon from '@mui/material/SvgIcon';
 import { ReactComponent as DairyIcon } from './DF.svg';
 import { ReactComponent as GlutenIcon } from './GF.svg';
 import { ReactComponent as NutIcon } from './NF.svg';
 import { ReactComponent as StarIcon } from './CR.svg';
 import { ReactComponent as VeganIcon } from './VE.svg';
 import { ReactComponent as VegIcon } from './V.svg';
-import { Chip, Stack } from '@mui/material';
-import SvgIcon from '@mui/material/SvgIcon';
-
-// ----------------------------------------------------------------------
 
 function MenuFilter({ submit }) {
-  // const [filters, setFilters] = React.useState([]);
   const [chipData, setChipData] = React.useState([
     { key: 0, label: "Chef's Recommendation", icon: StarIcon, selected: 'outlined default' },
     { key: 1, label: 'Vegetarian', icon: VegIcon, selected: 'outlined default' },

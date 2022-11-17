@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, BottomNavigation, BottomNavigationAction, Box, Card } from '@mui/material';
+import { Badge, BottomNavigation, BottomNavigationAction, Card } from '@mui/material';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
 
-function Footer({initialValue, title}) {
+function Footer({initialValue}) {
   const [value, setValue] = React.useState(initialValue);
   const [orders, setOrders] = React.useState(localStorage.getItem('orders') !== null 
     ? parseFloat(localStorage.getItem('orders')) : 0);
@@ -35,7 +35,7 @@ function Footer({initialValue, title}) {
         clearInterval(intervalID)
       })  
     }
-  }, []);
+  }, [value]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

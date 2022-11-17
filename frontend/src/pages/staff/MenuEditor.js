@@ -1,25 +1,18 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-
-import MenuItemList from '../../components/staff/editor/MenuItemList';
-import AddNewButton from '../../components/staff/editor/AddNewButton';
+import { Box, Card, Tab, Tabs, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-import EditCategoryDialog from '../../components/staff/editor/EditCategoryDialog';
-import ReorderButton from '../../components/staff/editor/ReorderButton';
-
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Header from '../../utilities/Header';
+import MenuItemList from '../../components/staff/editor/MenuItemList';
+import AddNewButton from '../../components/staff/editor/AddNewButton';
+import EditCategoryDialog from '../../components/staff/editor/EditCategoryDialog';
+import ReorderButton from '../../components/staff/editor/ReorderButton';
 import Footer from '../../components/staff/Footer';
-import useAlert from '../../utilities/useAlert';
 import Loading from '../../components/Loading';
+import Header from '../../utilities/Header';
+import useAlert from '../../utilities/useAlert';
 import truncateString from '../../utilities/helpers';
 
 function TabPanel(props) {
@@ -30,7 +23,6 @@ function TabPanel(props) {
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -50,8 +42,7 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
+    id: `vertical-tab-${index}`
   };
 }
 
@@ -68,7 +59,6 @@ function MenuEditor() {
 
   React.useEffect(() => {
     const getMenu = async () => {
-      // await new Promise(response => setTimeout(response, 1000));
       const response = await fetch(`http://localhost:5000/manager/menu`, {  
         method: 'GET',
         headers: {
@@ -78,18 +68,6 @@ function MenuEditor() {
       });
       const data = await response.json();
       if (response.ok) {
-      // this is for changing tabs for reordering, works for existing categories but not for new categories
-        // console.log(data);
-        // console.log(data.categories);
-        // console.log(value);
-        // if (reorderTrigger) {
-        //   console.log('run one');
-        //   const current = menu.categories[menu.categories.findIndex(obj => obj.display_order === value + 1)];
-        //   console.log(current);
-        //   const newTitle = data.categories[data.categories.findIndex(obj => obj.name === current.name)];
-        //   console.log(newTitle);
-          // setValue(data.categories[data.categories.findIndex(obj => obj.name === current.name)].display_order - 1);
-        // }
         setMenu( data );
         localStorage.setItem('menu', JSON.stringify(data));
         setIsLoading(false);
@@ -170,8 +148,6 @@ function MenuEditor() {
     return renderedContent;
   };
 
-  // React.useEffect(() => {console.log("check value", value)}, [value])
-
   const getCategoriesTabPanels = () => {
     let renderedContent = [];
     let content = getContent();
@@ -206,7 +182,6 @@ function MenuEditor() {
   };
 
   const [openEditCategory, setOpenEditCategory] = React.useState(false);
-  // const [category, setCategory] = React.useState(null);
 
   const  handleOpenEditCategory = () => {
     setOpenEditCategory(true);

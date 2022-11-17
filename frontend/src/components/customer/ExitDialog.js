@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, 
   Slide, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -17,7 +17,6 @@ const BootstrapDialogTitle = (props) => {
       {children}
       {onClose ? (
         <IconButton
-          aria-label="close"
           onClick={onClose}
           sx={{
             position: 'absolute',
@@ -54,7 +53,7 @@ function ExitDialog(props) {
     >
       {localStorage.getItem('orders') !== null && localStorage.getItem('orders') !== '0'
       ? <>
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClick}>
+        <BootstrapDialogTitle id="exit-dialog-title" onClose={handleClick}>
           Pending items in order list
         </BootstrapDialogTitle>
         <DialogContent dividers>
@@ -69,7 +68,7 @@ function ExitDialog(props) {
           <Button onClick={handleClick}>OK</Button> 
         </DialogActions>
       </> : <>
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClick}>
+        <BootstrapDialogTitle id="exit-dialog-title" onClose={handleClick}>
           Cancel seating
         </BootstrapDialogTitle>
         <DialogContent dividers>

@@ -1,12 +1,6 @@
 import * as React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
-import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
-import Box from '@mui/material/Box';
+import { Box, Checkbox, InputLabel, ListItemText, FormControl, MenuItem, 
+  OutlinedInput, Select } from '@mui/material';
 import { ALL_TAGS_LIST } from '../../../utilities/constants';
 
 const ITEM_HEIGHT = 48;
@@ -28,8 +22,6 @@ export default function Checkboxes({update, tags}) {
     } = event;
     update(typeof value === 'string' ? value.split(',') : value);
   };
-
-  // React.useEffect(() => {console.log("INSIDE TAGS", tags)});
 
   return (
     <Box sx={{ minWidth: 120 }}>

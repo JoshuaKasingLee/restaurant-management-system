@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 import PasswordInput from './PasswordInput';
 
 export default function LoginForm ({ submit, role }) {

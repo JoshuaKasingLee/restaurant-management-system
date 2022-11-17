@@ -37,11 +37,11 @@ function PaymentToggleButton({ submit, disable, order }) {
           <GroupsRoundedIcon/>
           Pay together
         </ToggleButton>
-        <ToggleButton color="primary" value="equal" aria-label="split equally" onClick={() => setValid(true)}>
+        <ToggleButton color="primary" value="equal" onClick={() => setValid(true)}>
           <BalanceRoundedIcon />
           Split equally
         </ToggleButton>
-        <ToggleButton color="primary" value="dish" aria-label="split by dish" onClick={() => setValid(false)}>
+        <ToggleButton color="primary" value="dish" onClick={() => setValid(false)}>
           <RestaurantRoundedIcon />
           Split by dish
         </ToggleButton>
@@ -68,7 +68,11 @@ function PaymentToggleButton({ submit, disable, order }) {
       }
       <br />
       { type === 'dish' &&
-        <PaymentDishSelection submit={(valid) => setValid(valid)} people={Array(quantity).fill(0)} order={order}/>
+        <PaymentDishSelection 
+          submit={(valid) => setValid(valid)} 
+          people={Array(quantity).fill(0)} 
+          order={order}
+        />
       }
     </ >
   );

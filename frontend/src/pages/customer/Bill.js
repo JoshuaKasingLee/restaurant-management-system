@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Box, Stack, Typography } from '@mui/material';
-import Header from '../../utilities/Header';
+import { Box, Typography } from '@mui/material';
 import BillTable from '../../components/customer/order/BillTable';
+import Header from '../../utilities/Header';
 import useAlert from '../../utilities/useAlert';
 
 function Bill() {
@@ -10,8 +10,7 @@ function Bill() {
   const [orderItems, setOrderItems] = React.useState([]);
 
   const { setAlert } = useAlert();
-  // const [people, setPeople] = React.useState(Array(parseInt(localStorage.getItem('numSplit'))).fill(0));
-
+  
   React.useEffect(() => {
     const getBill = async () => {
       const response = await fetch('http://localhost:5000/customer/bill', {
@@ -41,7 +40,6 @@ function Bill() {
       }
     }
     getBill();
-    // localStorage.clear();
   }, []);
 
   return (
@@ -52,11 +50,12 @@ function Bill() {
         heading={"Table " + localStorage.getItem('table')}
       />
       <Box display="flex" sx={{ height: "93vh" }}>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
-          sx={{ 
-          width: "50%",
-          bgcolor: 'primary.main',
-          color: 'white'}}
+        <Box 
+          display="flex" 
+          flexDirection="column" 
+          justifyContent="center" 
+          alignItems="center"
+          sx={{ width: "50%", bgcolor: 'primary.main', color: 'white' }}
         >
           <Typography variant='h4'>
             Thank you for dining with us!
@@ -70,8 +69,6 @@ function Bill() {
             <Box 
               alignItems='end' 
               sx={{
-                // position: 'fixed',
-                // bottom: 20,
                 width: '335px',
                 px: '16px', 
                 py: '8px',
@@ -90,7 +87,13 @@ function Bill() {
                     Charge/pp
                   </Typography> 
                   { Array(parseInt(localStorage.getItem('numSplit'))).fill(0).map((person, index) => (
-                    <Typography key={index} align="center" variant="h7" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography 
+                      key={index} 
+                      align="center" 
+                      variant="h7" 
+                      component="div" 
+                      sx={{ flexGrow: 1 }}
+                    >
                       Person {index + 1}: ${charge[index].toFixed(2)}
                     </Typography>
                   ))}
@@ -103,8 +106,6 @@ function Bill() {
           <Box 
             alignItems='end' 
             sx={{
-              // position: 'fixed',
-              // bottom: 20,
               width: '335px',
               px: '16px', 
               py: '8px',
@@ -117,7 +118,13 @@ function Bill() {
             </Typography>
           </Box>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ width: "50%" }} >
+        <Box 
+          display="flex" 
+          flexDirection="column" 
+          justifyContent="center" 
+          alignItems="center" 
+          sx={{ width: "50%" }} 
+        >
           <BillTable orderItems={orderItems}/>
         </Box>
       </Box>

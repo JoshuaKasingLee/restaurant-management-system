@@ -1,12 +1,9 @@
 import { alpha } from '@mui/material/styles';
 
-// ----------------------------------------------------------------------
-
 function createGradient(color1, color2) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
 
-// SETUP COLORS
 const GREY = {
   0: '#FFFFFF',
   100: '#F9FAFB',

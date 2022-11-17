@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
-  Typography } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 export default function LeaderboardTable({leaderboard}) {
   return (
@@ -19,9 +18,9 @@ export default function LeaderboardTable({leaderboard}) {
               key={i}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell >{row.position}</TableCell>
-              <TableCell >{row.name}</TableCell>
-              <TableCell >{row.score}</TableCell>
+              <TableCell>{row.position}</TableCell>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.score}</TableCell>
             </TableRow>
           ))}
         </TableBody>

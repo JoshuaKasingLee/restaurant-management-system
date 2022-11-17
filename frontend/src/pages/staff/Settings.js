@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
-import { MenuItem, FormControl, InputLabel, Select } from '@mui/material';
-// import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
+import { Box, Button, MenuItem, FormControl, InputLabel, Select, TextField, 
+  Typography } from '@mui/material';
 import PasswordInput from '../../components/staff/settings/PasswordInput';
-import useAlert from '../../utilities/useAlert';
-import Header from '../../utilities/Header';
 import Footer from '../../components/staff/Footer';
+import Header from '../../utilities/Header';
+import useAlert from '../../utilities/useAlert';
 
 export default function NewItem() {
   const numTables = 20;
@@ -16,7 +15,6 @@ export default function NewItem() {
   const [wPass, setWPass] = React.useState('');
   const [mPass, setMPass] = React.useState('');
   const [trigger, setTrigger] = React.useState(false);
-
   const [disabled, setDisabled] = React.useState(false);
 
   const { setAlert } = useAlert();
@@ -106,22 +104,20 @@ export default function NewItem() {
     }
   } 
 
-  // const handleChangeImage = (event) => {
-  //   setImage(URL.createObjectURL(event.target.files[0]))
-  // }
-
   return (<>
     <Header
-        image={localStorage.getItem('restaurantImage')}
-        title={"Admin-Manager"}
-        heading="Manager"
+      image={localStorage.getItem('restaurantImage')}
+      title={"Admin-Manager"}
+      heading="Manager"
     />
-    <Box maxWidth="md" m="auto"
+    <Box 
+      maxWidth="md"
+      m="auto"
       sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', pt: 5, pb: 5 }}
     >
       <Typography variant="h5">Restaurant</Typography>
       <Box display='flex' flexDirection='row' justifyContent='space-between' >
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', width:590 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: 590 }}>
           <TextField
             required
             label="Name"
@@ -145,10 +141,6 @@ export default function NewItem() {
               {getTableContent(numTables)}
             </Select>
           </FormControl>
-          {/* <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
-            Upload Image
-            <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
-          </Button> */}
           <TextField
             required
             label="Image Link"
@@ -156,7 +148,10 @@ export default function NewItem() {
             onChange={e => setImage(e.target.value)}
           />
         </Box>
-        <Box display='flex' flexDirection='column' alignItems='center'
+        <Box 
+          display='flex' 
+          flexDirection='column' 
+          alignItems='center'
           sx={{ border:1, borderRadius:2, boxShadow:2, p:2, width: 280, overflow:'hidden'}}>
           <Typography variant='h3' textAlign='center' component='div'>
             {name}
@@ -190,13 +185,6 @@ export default function NewItem() {
           submit = { password => setMPass(password) } 
         />
       </ Box>
-      {/* <TextField
-      label="Manager Password"
-      required
-      type="password"
-      value={mPass}
-      onChange={e => setMPass(e.target.value)}
-      /> */}
       <div>
         <Button variant="contained" onClick={updateInfo} disabled={disabled}>Save</Button>
         <Button variant="outlined" sx={{marginLeft: 2}} onClick={() => setTrigger(true)}>Reset</Button>
@@ -206,5 +194,3 @@ export default function NewItem() {
   </>
   )
 }
-
-

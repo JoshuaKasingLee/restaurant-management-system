@@ -1,10 +1,8 @@
 import * as React from 'react';
-import Header from '../../utilities/Header';
+import { Box } from '@mui/material';
 import KitchenOrders from '../../components/staff/orders/KitchenOrders';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Header from '../../utilities/Header';
 import useAlert from '../../utilities/useAlert';
-import { Card } from '@mui/material';
 
 export default function Kitchen() {
   const [notStartedOrders, setNotStarted] = React.useState([]);

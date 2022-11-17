@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { BottomNavigation, BottomNavigationAction, Box, Card } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Card } from '@mui/material';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';

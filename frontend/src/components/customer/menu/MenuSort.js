@@ -1,10 +1,6 @@
-import { useState } from 'react';
-// material
+import * as React from 'react';
 import { Menu, Button, MenuItem, Typography } from '@mui/material';
-// component
 import Iconify from '../../Iconify';
-
-// ----------------------------------------------------------------------
 
 const SORT_BY_OPTIONS = [
   { value: 'none', label: 'None' },
@@ -13,8 +9,8 @@ const SORT_BY_OPTIONS = [
 ];
 
 function MenuSort({ submit }) {
-  const [open, setOpen] = useState(null);
-  const [sort, setSort] = useState({ value: 'none', label: 'None' });
+  const [open, setOpen] = React.useState(null);
+  const [sort, setSort] = React.useState({ value: 'none', label: 'None' });
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -22,7 +18,6 @@ function MenuSort({ submit }) {
 
   const handleClose = (option) => {
     setOpen(null);
-    console.log(option);
     
     if (option.value === 'none' || option.value === 'priceDesc' || option.value === 'priceAsc') {
       setSort(option);

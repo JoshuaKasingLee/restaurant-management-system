@@ -1,11 +1,8 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { Button, Menu, MenuItem } from '@mui/material/';
 import ReorderCategoryDialog from './ReorderCategoryDialog';
 import ReorderItemDialog from './ReorderItemDialog';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
+import Iconify from '../../Iconify';
 
 export default function ReorderButton({categories, items, updateMenu}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -35,9 +32,7 @@ export default function ReorderButton({categories, items, updateMenu}) {
         id="button-reorder"
         variant="contained"
         onClick={handleClick}
-        endIcon={!open 
-          ? <KeyboardArrowDownRoundedIcon/>
-          : <KeyboardArrowUpRoundedIcon/>}
+        endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
       >
         Reorder
       </Button>
@@ -47,8 +42,12 @@ export default function ReorderButton({categories, items, updateMenu}) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => {handleClose(); setOpenReorderCategory(true);}}>Categories</MenuItem>
-        <MenuItem onClick={() => {handleClose(); setOpenReorderItem(true);}}>Food Items</MenuItem>
+        <MenuItem onClick={() => {handleClose(); setOpenReorderCategory(true);}}>
+          Categories
+        </MenuItem>
+        <MenuItem onClick={() => {handleClose(); setOpenReorderItem(true);}}>
+          Food Items
+        </MenuItem>
       </Menu>
       <ReorderCategoryDialog
         open={openReorderCategory}
@@ -65,6 +64,3 @@ export default function ReorderButton({categories, items, updateMenu}) {
     </ >
   );
 }
-
-
-

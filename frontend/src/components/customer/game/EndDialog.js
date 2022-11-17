@@ -14,7 +14,6 @@ const BootstrapDialogTitle = (props) => {
       {children}
       {onClose ? (
         <IconButton
-          aria-label="close"
           onClick={onClose}
           sx={{
             position: 'absolute',
@@ -79,9 +78,17 @@ function EndDialog(props) {
     <Dialog 
       open={open}
     >
-      <BootstrapDialogTitle id="customized-dialog-title" textAlign='center' onClose={() => handleClick('stop')}/>
-
-      <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+      <BootstrapDialogTitle 
+        id="exit-dialog-title" 
+        textAlign='center' 
+        onClose={() => handleClick('stop')}
+      />
+      <Box 
+        display='flex' 
+        flexDirection='column' 
+        alignItems='center' 
+        justifyContent='center'
+      >
         <Typography component='div' variant='h2' >
           Game Over
         </Typography>
@@ -118,7 +125,9 @@ function EndDialog(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmit} disabled={!email.includes('@') || submitted}>Submit</Button> 
+        <Button onClick={handleSubmit} disabled={!email.includes('@') || submitted}>
+          Submit
+        </Button> 
       </DialogActions>
       {submitted && 
         <Alert severity="success">

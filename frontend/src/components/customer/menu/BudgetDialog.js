@@ -16,7 +16,6 @@ const BootstrapDialogTitle = (props) => {
       {children}
       {onClose ? (
         <IconButton
-          aria-label="close"
           onClick={onClose}
           sx={{
             position: 'absolute',
@@ -53,10 +52,10 @@ function BudgetDialog(props) {
       keepMounted
     >
       {budget !== null
-      ? <BootstrapDialogTitle id="customized-dialog-title" onClose={() => handleClick(budget)}>
+      ? <BootstrapDialogTitle id="budget-dialog-title" onClose={() => handleClick(budget)}>
         Update budget
       </BootstrapDialogTitle>
-      : <BootstrapDialogTitle id="customized-dialog-title" onClose={() => handleClick(budget)}>
+      : <BootstrapDialogTitle id="budget-dialog-title" onClose={() => handleClick(budget)}>
         Set budget
       </BootstrapDialogTitle>
       }
@@ -103,9 +102,11 @@ function BudgetDialog(props) {
       <DialogActions>
         <Button onClick={() => handleClick(null)}>Delete</Button> 
         <Button onClick={() => handleClick(budget)}>Cancel</Button> 
-        <Button onClick={() => handleClick(value)} disabled={value === null || isNaN(value) || value < order || value > 1000}>Submit</Button>
-        {/* {console.log(value)}
-        {console.log(typeof(value))} */}
+        <Button onClick={() => handleClick(value)} 
+          disabled={value === null || isNaN(value) || value < order || value > 1000}
+        >
+          Submit
+        </Button>
       </DialogActions>
     </Dialog>
   );

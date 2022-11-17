@@ -15,13 +15,18 @@ function QuantityButtonGroup({initial, min, max, submit}) {
   };
 
   return (
-		<ButtonGroup variant="outlined" aria-label="outlined button group">
+		<ButtonGroup variant="outlined">
 			<Button sx={{ width: 50 }} onClick={handleSubtract} disabled={quantity === min}>
 				<Typography variant="h4">
 					-
 				</Typography>
 			</Button>
-			<Box display="flex" sx={{ border: 1, width: 50, textAlign: 'center' }} justifyContent="center" alignItems="center">
+			<Box 
+				display="flex" 
+				sx={{ border: 1, width: 50, textAlign: 'center' }} 
+				justifyContent="center" 
+				alignItems="center"
+			>
 				<Typography variant="h4">
 					{JSON.stringify(quantity)}
 				</Typography>

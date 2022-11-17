@@ -41,25 +41,18 @@ function GamePlay({submit}) {
   const [text2, setText2] = React.useState("");
   const [checked, setChecked] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
-  // const [checkedScore, setCheckedScore] = React.useState(0);
 
   useEffect(() => {
     start();
   }, []);
 
   useEffect(() => {
-    if(!paused)
-      if (counter > 0) { 
-        setTimeout(() => setCounter(counter - 1), 1000);
-        // if (score !== 0 && score % 30 === 0 && score !== checkedScore) {
-        //   setCheckedScore(score);
-        //   setCounter(Math.min(counter + 5, 60));
-        // }
-      }
-  }, [paused, counter, score]);
+    if(!paused && counter > 0) { 
+      setTimeout(() => setCounter(counter - 1), 1000);
+    }
+  }, [paused, counter]);
 
   useEffect(() => {
-    // console.log(boxRef.current.offsetHeight);
     if (lives === 0 || counter === 0) 
       handleClickOpenEnd();
   });
@@ -94,7 +87,7 @@ function GamePlay({submit}) {
         }, 2000);
       }
     }
-  }, [score]);
+  }, [score, bricks, circles]);
 
   const onClickCircle = (i) => {
     if (!paused) {

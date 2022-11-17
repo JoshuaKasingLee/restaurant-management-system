@@ -1,11 +1,10 @@
 import * as React from 'react';
-import Header from '../../utilities/Header';
+import { Box } from '@mui/material';
 import WaitOrders from '../../components/staff/orders/WaitOrders';
 import Requests from '../../components/staff/orders/Requests';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Header from '../../utilities/Header';
 
-function Wait() {
+export default function Wait() {
   
   return (
     <>
@@ -14,22 +13,18 @@ function Wait() {
         title={"Admin-Waiter"}
         heading="Waiter"
       />
-        <Box sx={{
+      <Box 
+        sx={{
           width: '100%',
           height: '93%',
           display: 'flex',
           p: 3,
           gap: 3
-        }}>
-          <WaitOrders></WaitOrders>
-          <Requests></Requests>
-        </Box>
+        }}
+      >
+        <WaitOrders/>
+        <Requests/>
+      </Box>
     </ >
   );
 }
-  
-  export default Wait;
-
-
-
-  

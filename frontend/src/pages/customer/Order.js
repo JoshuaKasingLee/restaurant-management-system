@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Header from '../../utilities/Header';
 import OrderTable from '../../components/customer/order/OrderTable';
 import Footer from '../../components/customer/Footer';
+import Header from '../../utilities/Header';
 
 function Order() {
   return (

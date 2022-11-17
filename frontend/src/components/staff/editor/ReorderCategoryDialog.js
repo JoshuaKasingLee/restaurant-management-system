@@ -1,15 +1,7 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-// import ReorderIcon from '@mui/icons-material/Reorder';
-import { List, ListItem } from '@mui/material';
-import { DragDropContext } from 'react-beautiful-dnd';
-import { Droppable } from 'react-beautiful-dnd';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, List, 
+  ListItem } from '@mui/material';
 import useAlert from '../../../utilities/useAlert';
 
 export default function ReorderCategoryDialog({open, categoriesProps, handleClose, updateMenu}) {
@@ -69,8 +61,6 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
     const draggableCategory = categories[source.index];
     newCategories.splice(source.index, 1);
     newCategories.splice(destination.index, 0, draggableCategory);
-    // console.log(newCategories);
-
     setCategories(newCategories);
   }
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import useAlert from '../utilities/useAlert';
 
 /* Landing Page */
@@ -11,11 +10,7 @@ function Landing () {
   
   const { setAlert } = useAlert();
 
-  const theme = useTheme();
-
   React.useEffect(() => {
-    // console.log(localStorage.getItem('restaurantImage'));
-    // console.log(localStorage.getItem('assistance'));
     localStorage.clear();
     const getRestaurantInfo = async () => {
       const response = await fetch(`http://localhost:5000/restaurant`, {  
@@ -40,11 +35,12 @@ function Landing () {
   return (
     <>
       <Box display="flex" sx={{ height: "100vh" }}>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
-          sx={{ 
-          width: "50%",
-          bgcolor: 'primary.main',
-          color: 'white'}}
+        <Box 
+          display="flex" 
+          flexDirection="column" 
+          justifyContent="center" 
+          alignItems="center"
+          sx={{ width: "50%", bgcolor: 'primary.main', color: 'white' }}
         >
           <Typography variant='h4'>
             WELCOME TO
@@ -54,9 +50,12 @@ function Landing () {
           </Typography>
         </Box>
         
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
-          sx={{ 
-            width: "50%"}}
+        <Box 
+          display="flex" 
+          flexDirection="column" 
+          justifyContent="center" 
+          alignItems="center"
+          sx={{ width: "50%" }}
         >
           <Stack spacing={2} width={'40%'}>
             <Typography variant='body2'>

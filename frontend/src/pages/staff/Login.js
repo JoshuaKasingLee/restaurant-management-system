@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, Stack, Avatar, Typography, ToggleButton } from '@mui/material';
-import LoginForm from '../../components/staff/settings/LoginForm';
+import { Link, useNavigate } from 'react-router-dom';
+import { Box, Button, Stack, ToggleButton, Typography } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+import LoginForm from '../../components/staff/settings/LoginForm';
 import useAlert from '../../utilities/useAlert';
 
 export default function Login () {
@@ -23,7 +22,11 @@ export default function Login () {
       <LogoutIcon/>
     </ToggleButton>
     <Box display="flex" sx={{ height: "100vh" }}>
-      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
+      <Box 
+        display="flex" 
+        flexDirection="column" 
+        justifyContent="center" 
+        alignItems="center"
         sx={{ 
         width: "50%",
         bgcolor: 'primary.main',
@@ -34,9 +37,12 @@ export default function Login () {
         </Typography>
       </Box>
       
-      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
-        sx={{ 
-          width: "50%"}}
+      <Box 
+        display="flex" 
+        flexDirection="column" 
+        justifyContent="center" 
+        alignItems="center"
+        sx={{ width: "50%" }}
       >
         <Stack spacing={2} width={'40%'}>
           { role === "Admin"
@@ -64,33 +70,33 @@ export default function Login () {
               </Button>
               </>
             : <>
-                <LoginForm submit={async (role, password) => {
-                  const response = await fetch('http://localhost:5000/login', {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                      'Content-type': 'application/json',
-                      'Access-Control-Allow-Origin': '*'
-                    },
-                    body: JSON.stringify({
-                      role: role,
-                      password: password,
-                    })
-                  });
-                  const data = await response.json();
-                  if (response.ok) {
-                    localStorage.setItem('token', data.token);
-                    if (role != "manager") {
-                      navigate(`/staff/${role}`);
-                    } else {
-                      navigate(`/staff/manager/menuEditor`);
-                    }
-                    
+              <LoginForm submit={async (role, password) => {
+                const response = await fetch('http://localhost:5000/login', {
+                  method: 'POST',
+                  mode: 'cors',
+                  headers: {
+                    'Content-type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                  },
+                  body: JSON.stringify({
+                    role: role,
+                    password: password,
+                  })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                  localStorage.setItem('token', data.token);
+                  if (role !== "manager") {
+                    navigate(`/staff/${role}`);
                   } else {
-                    setAlert(await data.error);
+                    navigate(`/staff/manager/menuEditor`);
                   }
-                }} role={role}
-              />
+                  
+                } else {
+                  setAlert(await data.error);
+                }
+              }} role={role}
+            />
             </>
           }
         </Stack>

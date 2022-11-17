@@ -11,13 +11,10 @@ export default function PaymentDishelection({ submit, people, order }) {
   }, [submit, valid]);
 
   const handleChange = (row, column, event) => {
-
-    // update checked array
     let newChecked = [...checked];
     newChecked[row][column] = event.target.checked;
     setChecked(newChecked);
 
-    // check if all dishes have at least one check
     let dishChecked = Array(order.length).fill(false);
     for ( let i = 0; i < order.length; i++ ) {
       if (checked[i].includes(true)) 
@@ -27,9 +24,6 @@ export default function PaymentDishelection({ submit, people, order }) {
       setValid(true);
     else setValid(false);
 
-    console.log(valid);
-
-    // convert into required json format to be given to backend
     let splitDishes = {};
     let dishes = [];
     for ( let i = 0; i < 4; i++ ) {
@@ -40,14 +34,11 @@ export default function PaymentDishelection({ submit, people, order }) {
       splitDishes[`person${i+1}`] = dishes;
     }
     localStorage.setItem('dishes', JSON.stringify(splitDishes));
-    // console.log(localStorage.getItem('dishes'));
-    console.log(checked);
-    console.log(splitDishes);
   };
 
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 300, width: 550, boxShadow: 3 }}>
-      <Table stickyHeader size="small" aria-label="simple table">
+      <Table stickyHeader size="small">
         <TableHead>
           <TableRow>
             <TableCell align='center' sx={{width:'100px'}} key='dish'>

@@ -1,29 +1,17 @@
 import * as React from 'react';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
-import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import DialogTitle from '@mui/material/DialogTitle';
-import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
-import Slide from '@mui/material/Slide';
-import EditItemDialog from './EditItemDialog';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, 
+  IconButton, ImageListItem, ImageListItemBar, Slide, SvgIcon, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
 import { ReactComponent as DairyIcon } from '../../customer/menu/DF.svg';
 import { ReactComponent as GlutenIcon } from '../../customer/menu/GF.svg';
 import { ReactComponent as NutIcon } from '../../customer/menu/NF.svg';
 import { ReactComponent as StarIcon } from '../../customer/menu/CR.svg';
 import { ReactComponent as VeganIcon } from '../../customer/menu/VE.svg';
 import { ReactComponent as VegIcon } from '../../customer/menu/V.svg';
-import SvgIcon from '@mui/material/SvgIcon';
+import EditItemDialog from './EditItemDialog';
 import useAlert from '../../../utilities/useAlert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -117,9 +105,6 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
     }
   };
 
-  // React.useEffect(() => {console.log("open", openEditItem);})
-
-  
   const Img = styled('img')({
     margin: 'auto',
     display: 'block',
@@ -146,14 +131,14 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
           }}
           actionIcon={
             <IconButton
-              aria-label={`star ${item.title}`}
+              id={`star ${item.title}`}
             >
               {item.tags.includes("Chef's Recommendation") && <SvgIcon component={StarIcon}/>}
               {item.tags.includes("Vegetarian") && <SvgIcon component={VegIcon}/>}
               {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
               {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
               {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
-              {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
+              {item.tags.includes("Dairy Free") && <SvgIcon component={DairyIcon}/>}
             </IconButton>
           }
           actionPosition="right"
@@ -179,13 +164,11 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
         fullWidth={true}
         maxWidth='sm'
       >
         <DialogTitle sx={{ m: 0, p: 2 }}>
             <IconButton
-              aria-label="close"
               onClick={handleClose}
               sx={{
                 position: 'absolute',
@@ -223,7 +206,7 @@ export default function MenuItemCard({item, categoryName, updateMenu}) {
                 {item.tags.includes("Vegan") && <SvgIcon component={VeganIcon}/>}
                 {item.tags.includes("Gluten Free") && <SvgIcon component={GlutenIcon}/>}
                 {item.tags.includes("Nut Free") && <SvgIcon component={NutIcon}/>}
-                {item.tags.includes("Diary Free") && <SvgIcon component={DairyIcon}/>}
+                {item.tags.includes("Dairy Free") && <SvgIcon component={DairyIcon}/>}
               </Typography>
               <Typography gutterBottom>
                 Cost: ${item.cost.toFixed(2)}

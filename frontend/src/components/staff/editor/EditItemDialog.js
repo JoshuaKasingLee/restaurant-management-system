@@ -1,12 +1,8 @@
 import * as React from 'react';
-import { Box, Button, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
+import { Box, Button,Dialog, DialogActions, DialogContent, DialogTitle, TextField, 
+  FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
 import Dropdown from './Dropdown';
 import Checkboxes from './Checkboxes';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-// import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
 import useAlert from '../../../utilities/useAlert';
 
 export default function EditItemDialog({open, item, categoryName, updateMenu, handleClose}) {
@@ -18,13 +14,8 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
     const [tags, setTags] = React.useState(item.actualTags);
     const [cost, setCost] = React.useState(item.cost);
     const [image, setImage] = React.useState(item.img);
-    const { setAlert } = useAlert();
-
-    // const setCostWrapper = (value) => {
-    //     setCost(parseFloat(value))
-    // }
-
     const [disabled, setDisabled] = React.useState(false);
+    const { setAlert } = useAlert();
 
     React.useEffect(() => {
       if (!(name.length <= 100 && name.length > 0)) {
@@ -108,12 +99,7 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
           setAlert(await data.error);
         }
     }
-
-    // React.useEffect(() => {console.log("CAT", category)})
-    // const handleChangeImage = (event) => {
-    //     setImage(URL.createObjectURL(event.target.files[0]))
-    // }
-
+    
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth='md'>
         <DialogTitle>Edit Item</DialogTitle>
@@ -160,10 +146,6 @@ export default function EditItemDialog({open, item, categoryName, updateMenu, ha
             />
             <Dropdown update={setCategory} category={category}/>
             <Checkboxes update={setTags} tags={tags}/>
-            {/* <Button variant="outlined" component="label" startIcon={<CameraAltRoundedIcon />}>
-                Upload Image
-                <input hidden accept="image/*" type="file" onChange={handleChangeImage}/>
-            </Button> */}
             <TextField
                 required
                 label="Image Link"

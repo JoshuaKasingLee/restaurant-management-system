@@ -1,17 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from '@mui/material';
 import useAlert from '../../utilities/useAlert';
-
-/* Table Form Component */
 
 function TableForm ({ submit }) {
   const [table, setTable] = React.useState('');
@@ -20,7 +11,6 @@ function TableForm ({ submit }) {
 
   const onSubmit = () => {
     submit(table);
-    // console.log(table);
     localStorage.setItem('table', table);
   }
 
@@ -51,7 +41,13 @@ function TableForm ({ submit }) {
   };
   
   return (
-    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="80vh">
+    <Box 
+      display="flex" 
+      flexDirection="column" 
+      justifyContent="center" 
+      alignItems="center" 
+      minHeight="80vh"
+    >
 			<Stack spacing={2}>
         <Box sx={{ width: '370px'}}>
           <Typography variant="h4" textAlign="center">
@@ -59,10 +55,12 @@ function TableForm ({ submit }) {
           </Typography>
           <br/>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Table</InputLabel>
+            <InputLabel id="table-select-label">
+              Table
+            </InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="table-select-label"
+              id="table-select"
               value={table}
               label="Table"
               onChange={e => setTable(e.target.value)}
@@ -78,7 +76,13 @@ function TableForm ({ submit }) {
             </Select>
           </FormControl>
         </Box>
-        <Button component={Link} to={'/customer/budget'} variant="contained" onClick={onSubmit} disabled={table === ''}>
+        <Button 
+          component={Link} 
+          to={'/customer/budget'} 
+          variant="contained" 
+          onClick={onSubmit} 
+          disabled={table === ''}
+        >
           Confirm
         </Button>
       </Stack>

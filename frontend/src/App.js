@@ -1,10 +1,5 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom';
-
 import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import ThemeProvider from './theme';
 
@@ -24,7 +19,6 @@ import Login from './pages/staff/Login';
 import Kitchen from './pages/staff/Kitchen';
 import Wait from './pages/staff/Wait';
 import AlertPopup from './utilities/AlertPopup';
-
 
 function App () {
   return (

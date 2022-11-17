@@ -1,15 +1,15 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, Tab, Tabs, Typography } from '@mui/material';
-import Header from '../../utilities/Header';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 import Footer from '../../components/customer/Footer';
 import MenuCategory from '../../components/customer/menu/MenuCategory';
 import MenuSort from '../../components/customer/menu/MenuSort';
 import MenuFilter from '../../components/customer/menu/MenuFilter';
 import BudgetDialog from '../../components/customer/menu/BudgetDialog';
-import useAlert from '../../utilities/useAlert';
 import Loading from '../../components/Loading';
-import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
+import Header from '../../utilities/Header';
+import useAlert from '../../utilities/useAlert';
 import truncateString from '../../utilities/helpers';
 
 function TabPanel(props) {
@@ -20,7 +20,6 @@ function TabPanel(props) {
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -40,8 +39,7 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
+    id: `vertical-tab-${index}`
   };
 }
 
@@ -102,10 +100,7 @@ function Menu() {
   };
 
   React.useEffect(() => {
-    // if (localStorage.getItem('assistance') === null)
-    //   localStorage.setItem('assistance', false);
     const getMenu = async () => {
-      // await new Promise(response => setTimeout(response, 1000));
       const response = await fetch(`http://localhost:5000/customer/menu`, {  
         method: 'GET',
         headers: {
@@ -118,7 +113,6 @@ function Menu() {
         setMenu( data );
         localStorage.setItem('menu', JSON.stringify(data));
         setIsLoading(false);
-        // console.log(data.categories);
       } else {
         setAlert(await data.error);
       }
@@ -169,8 +163,13 @@ function Menu() {
     let renderedContent = [];
     let sortedContent = getFilteredContent().sort( (a, b) => a.order < b.order ? -1 : 1 );
     for (let i = 0; i < sortedContent.length; i++) {
-        renderedContent.push(<Tab key={i} label={truncateString(sortedContent[i].title)} {...a11yProps(i)} />);
-        // console.log('tab' + i);
+      renderedContent.push(
+        <Tab 
+          key={i} 
+          label={truncateString(sortedContent[i].title)} 
+          {...a11yProps(i)} 
+        />
+      );
     }
     return renderedContent;
   };
@@ -217,7 +216,16 @@ function Menu() {
     <Box
       sx={{ bgcolor: 'background.paper', display: 'flex' }}
     >
-      <Box sx={{ width: 150, borderRight: 1, borderColor: 'divider', pt: 5, position: 'fixed', zIndex: 50 }}>
+      <Box 
+        sx={{ 
+          width: 150, 
+          borderRight: 1, 
+          borderColor: 'divider', 
+          pt: 5, 
+          position: 'fixed', 
+          zIndex: 50 
+        }}
+      >
         <Tabs
           orientation="vertical"
           value={value}
@@ -230,7 +238,14 @@ function Menu() {
           {getCategoriesTabs()}
         </Tabs>
       </Box>
-      <Box display='flex' alignItems='flex-end' flexDirection="column" spacing={1} sx={{ mt: '10px', mr: '25px', justifyContent: 'right' }}>
+      <Box 
+        display='flex' 
+        justifyContent='right'
+        alignItems='flex-end' 
+        flexDirection="column" 
+        spacing={1} 
+        sx={{ mt: '10px', mr: '25px' }}
+      >
         {getCategoriesTabPanels()}
       </Box>
     </Box>
