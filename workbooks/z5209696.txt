@@ -40,3 +40,6 @@ software quality for the backend as well and discussed ideas about what to fix e
 
 Week 9 
 Worked on the final report and have been trying to use/setup the Virtual Machine setup as we found it might be better performance wise than using AWS. Also did some limit testing on the frontend. 
+
+Week 10 
+Worked on the final report again to clean up Backend functionalities used as well as writing up the overall system design for backend. I also fixed some bugs relating to error message display and finalised some Virtual Machine setup instructions.
