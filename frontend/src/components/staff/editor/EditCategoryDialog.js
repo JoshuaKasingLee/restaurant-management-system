@@ -6,7 +6,6 @@ import useAlert from '../../../utilities/useAlert';
 export default function EditCategoryDialog({open, category, handleClose, updateMenu}) {
 
   const [name, setName] = React.useState(category.title);
-  const [show, setShow] = React.useState(category.visible);
   const { setAlert } = useAlert();
 
   React.useEffect(() => {
@@ -32,7 +31,7 @@ export default function EditCategoryDialog({open, category, handleClose, updateM
         },
         body: JSON.stringify({
             name: name,
-            show: show
+            show: category.visible
         })
     });
     const data = await response.json();

@@ -58,7 +58,7 @@ export default function NewItem() {
 
     getFields()
     setTrigger(false)
-
+  // eslint-disable-next-line
     }, [trigger]);
 
   const getTableContent = numTables => {

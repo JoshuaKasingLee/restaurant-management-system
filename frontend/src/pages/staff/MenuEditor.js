@@ -78,6 +78,7 @@ function MenuEditor() {
     getMenu();
     setTrigger(false);
     setReorderTrigger(false);
+  // eslint-disable-next-line
   }, [trigger, reorderTrigger]);
 
   async function editCategory(id, name, visible) {

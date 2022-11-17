@@ -34,7 +34,7 @@ export default function WaitOrders() {
     return (() => {
       clearInterval(intervalID)
     })
-
+  // eslint-disable-next-line
   }, []);
 
   return (

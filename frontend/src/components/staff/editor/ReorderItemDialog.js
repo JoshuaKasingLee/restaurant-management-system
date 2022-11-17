@@ -32,6 +32,7 @@ export default function ReorderItemDialog({open, itemsProps, handleClose, update
 
   const convertItems = () => {
     var result = [];
+    // eslint-disable-next-line
     items.map((c, i) => {
       result.push({
         id: c.id, 

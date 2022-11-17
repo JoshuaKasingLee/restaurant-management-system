@@ -40,6 +40,7 @@ function Bill() {
       }
     }
     getBill();
+  // eslint-disable-next-line
   }, []);
 
   return (

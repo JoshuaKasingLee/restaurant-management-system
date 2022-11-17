@@ -44,6 +44,7 @@ function GamePlay({submit}) {
 
   useEffect(() => {
     start();
+  // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

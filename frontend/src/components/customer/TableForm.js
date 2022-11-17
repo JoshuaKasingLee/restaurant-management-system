@@ -30,6 +30,7 @@ function TableForm ({ submit }) {
       }
     };
     getNumTables();
+  // eslint-disable-next-line
   }, []);
 
   const getTableContent = numTables => {

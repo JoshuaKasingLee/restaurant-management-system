@@ -33,7 +33,7 @@ export default function Requests() {
     return (() => {
       clearInterval(intervalID)
     })
-
+  // eslint-disable-next-line
   }, []); 
 
   return (

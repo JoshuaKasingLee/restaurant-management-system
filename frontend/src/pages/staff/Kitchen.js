@@ -34,7 +34,7 @@ export default function Kitchen() {
     return (() => {
       clearInterval(intervalID)
     })
-
+  // eslint-disable-next-line
   }, []);  
   
   return (

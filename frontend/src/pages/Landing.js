@@ -6,7 +6,6 @@ import useAlert from '../utilities/useAlert';
 /* Landing Page */
 function Landing () {
   const [name, setName] = React.useState('');
-  const [image, setImage] = React.useState('');  
   
   const { setAlert } = useAlert();
 
@@ -22,7 +21,6 @@ function Landing () {
       const data = await response.json();
       if (response.ok) {
         setName(data.name);
-        setImage(data.image);
         localStorage.setItem('restaurantName', data.name);
         localStorage.setItem('restaurantImage', data.image);
       } else {
@@ -30,6 +28,7 @@ function Landing () {
       }
     };
     getRestaurantInfo();
+  // eslint-disable-next-line
   }, []);
   
   return (

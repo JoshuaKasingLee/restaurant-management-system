@@ -113,7 +113,7 @@ function OrderTable() {
     return (() => {
       clearInterval(intervalID)
     })
-
+  // eslint-disable-next-line
   }, []);
 
   const renderedContent = (

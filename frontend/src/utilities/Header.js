@@ -93,6 +93,7 @@ function Header({image, title, heading}) {
         }
       }
     }
+  // eslint-disable-next-line
   }, [title, selected]);
 
   return (

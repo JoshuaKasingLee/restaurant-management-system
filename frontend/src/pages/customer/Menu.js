@@ -117,8 +117,8 @@ function Menu() {
         setAlert(await data.error);
       }
     };
-
     getMenu();
+  // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {
@@ -139,8 +139,8 @@ function Menu() {
         setAlert(await data.error);
       }
     };
-
     getBudget();
+  // eslint-disable-next-line
   }, [budget, ordered]);
 
   const getContent = () => {

@@ -33,6 +33,7 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
 
   const convertCategories = () => {
     var result = [];
+    // eslint-disable-next-line
     categories.map((c, i) => {
       result.push({
         id: c.id, 
@@ -44,7 +45,7 @@ export default function ReorderCategoryDialog({open, categoriesProps, handleClos
   }
 
   const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
 
     if (!destination) {
       return;

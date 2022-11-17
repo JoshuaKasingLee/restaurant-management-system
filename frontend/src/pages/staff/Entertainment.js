@@ -13,11 +13,11 @@ export default function Entertainment() {
 
   const reset = async () => {
     const response = await fetch(`http://localhost:5000/manager/entertainment/leaderboard/reset `, {  
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
     });
     const data = await response.json();
     if (response.ok) {
@@ -25,7 +25,7 @@ export default function Entertainment() {
     } else {
       setAlert(await data.error);
     }
-}
+  }
 
   React.useEffect(() => {
     const getLeaderboardRecords = async () => {
@@ -45,6 +45,7 @@ export default function Entertainment() {
     };
     getLeaderboardRecords();
     setTrigger(false);
+  // eslint-disable-next-line
   }, [trigger]);
 
   return (<>

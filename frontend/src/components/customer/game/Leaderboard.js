@@ -26,6 +26,7 @@ function Leaderboard({submit}) {
     };
 
     getLeaderboard();
+  // eslint-disable-next-line
   }, []);
 
   const start = () => {
