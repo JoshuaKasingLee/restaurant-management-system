@@ -64,3 +64,9 @@ queries are done in this file - this helped to better separate some of the backe
 
 I then tried to do some edge case functional testing on the frontend interface, to find potential bugs or cases we did not
 previously consider, so our team can implement them before our final demo.
+
+Week 10
+This week I mainly focused on functional testing, to iron out any final bugs that we could find through edge cases.
+I planned the structure for our final demo, including the flow of user stories to be shown. I also created a template for
+the final report, and helped out with writing about the overview, backend challenges and user manual.
+
