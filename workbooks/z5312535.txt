@@ -29,3 +29,9 @@ I continued doing the frontend implementation for staff sprint 2. This included,
 Week 8
 
 I added validation checking for all the cases needing user input, and finished off the reordering functionality. Also, solved a small problem for the deleting categories functionality.
+
+Week 9
+I implemented the hide/unhide functionality for food items and categories. I implemeneted an alert snackbar popup to replace all the alerts in the code whenever a failed api request happened. Also implemented an extra user feedback for the kitchen and wait staff interfaces for when orders were completed / loading, in conjunction, also the loading screens for the customer side.
+
+Week 10
+I went through and redesigned the layout and aesthetics for both customer and staff so that they were more consistent in theme, and cleaner looking. I also changed the colour of the theme, and fixed a problem with too many categories, and long category names. In the later end of the week, for the report, I wrote up the third-party functionalities and the implementation challenges for the frontend. Jannet helped me the do the references, and took the screenshots for the user manual.
