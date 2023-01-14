@@ -1,2 +1,1 @@
-# plateup
-COMP3900
+A restaurant management system with a PostgreSQL database, Python backend and React frontend
